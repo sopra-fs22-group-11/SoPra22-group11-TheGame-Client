@@ -15,6 +15,7 @@ const Player = ({user}) => (
   </div>
 );
 
+
 Player.propTypes = {
   user: PropTypes.object
 };
