@@ -1,7 +1,7 @@
 /**
- * User model
+ * Player model
  */
-class User {
+class Player {
   constructor(data = {}) {
     this.id = null;
     this.name = null;
@@ -11,4 +11,4 @@ class User {
     Object.assign(this, data);
   }
 }
-export default User;
+export default Player;

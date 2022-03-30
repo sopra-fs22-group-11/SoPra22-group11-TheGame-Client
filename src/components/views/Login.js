@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {api, handleError} from 'helpers/api';
-import User from 'models/User';
+import Player from 'models/Player';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Login.scss';
@@ -43,10 +43,10 @@ const Login = props => {
   const doLogin = async () => {
     try {
       const requestBody = JSON.stringify({username, name});
-      const response = await api.post('/users', requestBody);
+      const response = await api.post('/players', requestBody);
 
       // Get the returned user and update a new object.
-      const user = new User(response.data);
+      const user = new Player(response.data);
 
       // Store the token into the local storage.
       localStorage.setItem('token', user.token);
@@ -58,10 +58,20 @@ const Login = props => {
     }
   };
 
+  const doRegistration = async () => {
+    try {
+      // registration --> navigate to the route /registration in the AppRouter
+      history.push(`/registration`);
+    } catch (error) {
+      alert(`Something went wrong during the registration: \n${handleError(error)}`);
+    }
+  };
+
   return (
     <BaseContainer>
       <div className="login container">
         <div className="login form">
+          <h3>Login</h3>
           <FormField
             label="Username"
             value={username}
@@ -80,6 +90,14 @@ const Login = props => {
             >
               Login
             </Button>
+            <div className="registration primary-button">
+              <Button
+                  width="100%"
+                  onClick={() => doRegistration()}
+              >
+               go to registration
+              </Button>
+            </div>
           </div>
         </div>
       </div>
