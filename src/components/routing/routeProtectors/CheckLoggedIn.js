@@ -5,14 +5,15 @@ import PropTypes from "prop-types";
  *
  * Another way to export directly your functional component.
  */
-export const RegistrationGuard = props => {
-    if (!localStorage.getItem("token")) {
+
+export  const CheckLoggedIn = props => {
+    if (localStorage.getItem("token")) {
         return props.children;
     }
     // if user is already registered, redirects to the main app
-    return <Redirect to="/startpage"/>;
+    return <Redirect to="/login"/>;
 };
 
-RegistrationGuard.propTypes = {
+CheckLoggedIn.propTypes = {
     children: PropTypes.node
 }

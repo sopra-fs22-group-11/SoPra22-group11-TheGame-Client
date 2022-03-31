@@ -5,6 +5,18 @@ import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
 import Login from "components/views/Login";
 import {RegistrationGuard} from "components/routing/routeProtectors/RegistrationGuard";
 import Registration from "components/views/Registration";
+import {CheckLoggedIn} from "../routeProtectors/CheckLoggedIn";
+import Scoreboard from "../../views/Scoreboard";
+import RulePage from "../../views/RulePage";
+import Startpage from "../../views/Startpage";
+import Profile from "../../views/Profile";
+import {SettingsGuard} from "../routeProtectors/SettingsGuard";
+import ProfileSettings from "../../views/ProfileSettings";
+import Game from "../../views/Game";
+import GameResult from "../../views/GameResult";
+import WaitingroomOverview from "../../views/WaitingroomOverview";
+import {GameIdGuard} from "../routeProtectors/GameIdGuard";
+import Waitingroom from "../../views/Waitingroom";
 
 /**
  * Main router of your application.
@@ -19,24 +31,87 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/game">
+
+        <Route exact path="/">
+          <Redirect to="/startpage"/>
+        </Route>
+
+        <Route path="/startpage">
           <GameGuard>
-            <GameRouter base="/game"/>
+            <GameRouter base="/startpage"/>
           </GameGuard>
         </Route>
-        <Route exact path="/login">
-          <LoginGuard>
-            <Login/>
-          </LoginGuard>
-        </Route>
+
         <Route exact path="/registration">
           <RegistrationGuard>
             <Registration/>
           </RegistrationGuard>
         </Route>
-        <Route exact path="/">
-          <Redirect to="/game"/>
+
+        <Route exact path="/login">
+          <LoginGuard>
+            <Login/>
+          </LoginGuard>
         </Route>
+
+        <Route exact path ="/scoreboard">
+          <CheckLoggedIn>
+            <Scoreboard/>
+          </CheckLoggedIn>
+        </Route>
+
+        <Route exact path ="/rulePage">
+          <CheckLoggedIn>
+            <RulePage/>
+          </CheckLoggedIn>
+        </Route>
+
+        <Route exact path ="/player/:playerId">
+          <CheckLoggedIn>
+            <Profile/>
+          </CheckLoggedIn>
+        </Route>
+
+        <Route exact path ="/player/:playerId/settings/:playerId">
+          <SettingsGuard playerId>
+            <ProfileSettings/>
+          </SettingsGuard>
+        </Route>
+
+        <Route exact path ="/waitingroomOverview">
+          <CheckLoggedIn>
+            <WaitingroomOverview/>
+          </CheckLoggedIn>
+        </Route>
+
+        <Route exact path ="/waitingroom/:gameId">
+          <CheckLoggedIn>
+            <Waitingroom/>
+          </CheckLoggedIn>
+        </Route>
+
+        <Route exact path ="/game">
+          <CheckLoggedIn>
+          <GameIdGuard>
+            <Game/>
+          </GameIdGuard>
+          </CheckLoggedIn>
+        </Route>
+
+        <Route exact path ="/gameResults">
+          <CheckLoggedIn>
+          <GameIdGuard>
+            <GameResult/>
+          </GameIdGuard>
+          </CheckLoggedIn>
+        </Route>
+
+        <Route path="*">
+          <CheckLoggedIn>
+          <Startpage/>
+          </CheckLoggedIn>
+        </Route>
+
       </Switch>
     </BrowserRouter>
   );

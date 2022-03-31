@@ -5,16 +5,13 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import "styles/views/Waitingroom.scss";
+import "styles/views/Profile.scss";
 
-const Waitingroom = () => {
-
-    // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
-    // siehe gameIdGuard in RouteProtectors
+const Profile = () => {
 
 
     return (
-        <BaseContainer className = "waitingroom container">
+        <BaseContainer className = "ProfileSettings container">
 
         </BaseContainer>
 
@@ -23,4 +20,4 @@ const Waitingroom = () => {
 
 }
 
-export default Waitingroom;
+export default Profile;
