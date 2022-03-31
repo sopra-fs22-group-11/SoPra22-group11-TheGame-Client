@@ -38,19 +38,19 @@ FormField.propTypes = {
 const Login = props => {
   const history = useHistory();
   const [name, setName] = useState(null);
-  const [username, setUsername] = useState(null);
+  const [Playername, setPlayername] = useState(null);
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({username, name});
+      const requestBody = JSON.stringify({ Playername, name});
       const response = await api.post('/players', requestBody);
 
-      // Get the returned user and update a new object.
-      const user = new Player(response.data);
+      // Get the returned player and update a new object.
+      const player = new Player(response.data);
 
       // Store the token into the local storage.
-      localStorage.setItem('token', user.token);
-      localStorage.setItem('loggedInPlayer', user.id);
+      localStorage.setItem('token', player.token);
+      localStorage.setItem('loggedInPlayer', player.id);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/game`);
@@ -74,9 +74,9 @@ const Login = props => {
         <div className="login form">
           <h3>Login</h3>
           <FormField
-            label="Username"
-            value={username}
-            onChange={un => setUsername(un)}
+            label="Playername"
+            value={Playername}
+            onChange={un => setPlayername(un)}
           />
           <FormField
             label="Name"
@@ -85,7 +85,7 @@ const Login = props => {
           />
           <div className="login button-container">
             <Button
-              disabled={!username || !name}
+              disabled={!Playername || !name}
               width="100%"
               onClick={() => doLogin()}
             >
