@@ -7,25 +7,21 @@ import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
-/*
-It is possible to add multiple components inside a single file,
-however be sure not to clutter your files with an endless amount!
-As a rule of thumb, use one file per component and only add small,
-specific components that belong to the main one in the same file.
- */
+
 const FormField = props => {
   return (
-    <div className="login field">
-      <label className="login label">
-        {props.label}
-      </label>
-      <input
-        className="login input"
-        placeholder="enter here.."
-        value={props.value}
-        onChange={e => props.onChange(e.target.value)}
-      />
-    </div>
+      <div className="login field">
+        <label className="login label">
+          {props.label}
+        </label>
+        <input
+            type={props.type}
+            className="login input"
+            placeholder="enter here.."
+            value={props.value}
+            onChange={e => props.onChange(e.target.value)}
+        />
+      </div>
   );
 };
 
@@ -37,21 +33,19 @@ FormField.propTypes = {
 
 const Login = props => {
   const history = useHistory();
-  const [name, setName] = useState(null);
-  const [Playername, setPlayername] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [playername, setPlayername] = useState(null);
+
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({ Playername, name});
-      const response = await api.post('/players', requestBody);
-
-      // Get the returned player and update a new object.
-      const player = new Player(response.data);
-
+      const requestBody = JSON.stringify({playername, password});
+      const response = await api.put('/session', requestBody)
+      // Get the returned Player and update a new object.
+      const player = new Player(response.data)
       // Store the token into the local storage.
-      localStorage.setItem('token', player.token);
+      localStorage.setItem('token', player.token)
       localStorage.setItem('loggedInPlayer', player.id);
-
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/game`);
     } catch (error) {
@@ -59,50 +53,81 @@ const Login = props => {
     }
   };
 
-  const doRegistration = async () => {
+  async function fetchData() {
     try {
-      // registration --> navigate to the route /registration in the AppRouter
-      history.push(`/registration`);
+      const response = await api.put('/players');
+
+      // delays continuous execution of an async operation for 1 second.
+      // This is just a fake async call, so that the spinner can be displayed
+      // feel free to remove it :)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Get the returned players and update the state.
+      //setPlayers(response.data);
+
+      // This is just some data for you to see what is available.
+      // Feel free to remove it.
+      console.log('request to:', response.request.responseURL);
+      console.log('status code:', response.status);
+      console.log('status text:', response.statusText);
+      console.log('requested data:', response.data);
+
+      // See here to get more data.
+      console.log(response);
+
     } catch (error) {
+      console.error(`Something went wrong while fetching the players: \n${handleError(error)}`);
+      console.error("Details:", error);
+      alert("Something went wrong while fetching the players! See the console for details.");
+    }
+  }
+
+// moves to the registration page
+  const doRegister = async () =>{
+    try{
+      history.push(`/registration`);
+    }
+    catch (error){
       alert(`Something went wrong during the registration: \n${handleError(error)}`);
     }
-  };
 
+  }
+  //  <!-- Kopie von oben -->
   return (
-    <BaseContainer>
-      <div className="login container">
-        <div className="login form">
-          <h3>Login</h3>
-          <FormField
-            label="Playername"
-            value={Playername}
-            onChange={un => setPlayername(un)}
-          />
-          <FormField
-            label="Name"
-            value={name}
-            onChange={n => setName(n)}
-          />
-          <div className="login button-container">
-            <Button
-              disabled={!Playername || !name}
-              width="100%"
-              onClick={() => doLogin()}
-            >
-              Login
-            </Button>
-            <div className="registration primary-button">
+      <BaseContainer>
+        <div className="login container">
+          <div className="login form">
+            <FormField
+                label="Playername"
+                value={playername}
+                onChange={un => setPlayername(un)}
+            />
+            <FormField
+                label="Password"
+                value={password}
+                type ={"password"}
+                onChange={n => setPassword(n)}
+            />
+            <div className="login button-container">
+              <Button
+                  disabled={!playername || !password}
+                  width="100%"
+                  onClick={() => doLogin()}
+              >
+                Login
+              </Button>
+            </div>
+            <div className="register button-container">
               <Button
                   width="100%"
-                  onClick={() => doRegistration()}
+                  onClick={() => doRegister()}
               >
-               go to registration
+                Click here to register
               </Button>
             </div>
           </div>
         </div>
-      </div>
-    </BaseContainer>
+      </BaseContainer>
   );
 };
 

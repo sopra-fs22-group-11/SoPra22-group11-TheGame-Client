@@ -7,6 +7,7 @@ import 'styles/views/Registration.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
+
 const FormField = props => {
     return (
         <div className="login field">
@@ -14,6 +15,7 @@ const FormField = props => {
                 {props.label}
             </label>
             <input
+                type={props.type}
                 className="login input"
                 placeholder="enter here.."
                 value={props.value}
@@ -29,22 +31,26 @@ FormField.propTypes = {
     onChange: PropTypes.func
 };
 
+
 const Registration = props => {
     const history = useHistory();
-    const [password, setPassword] = useState(null);
+    const [Password, setPassword] = useState(null);
     const [playername, setPlayername] = useState(null);
 
-    const doRegistration = async () => {
+    const doRegister = async () => { //Registers the player
         try {
-            let creationDate = new Date(); // if this does not work while testing try instant()
-            const requestBody = JSON.stringify({playername: playername, password: password, creationDate});
+
+            const requestBody = JSON.stringify({playername,  password: Password});
             const response = await api.post('/players', requestBody);
+
 
             // Get the returned player and update a new object.
             const player = new Player(response.data);
 
             // Store the token into the local storage.
             localStorage.setItem('token', player.token);
+            localStorage.setItem('loggedInPlayer', player.id);
+
 
             // Registration successfully worked --> navigate to the route /game in the GameRouter
             history.push(`/game`);
@@ -57,7 +63,6 @@ const Registration = props => {
         <BaseContainer>
             <div className="login container">
                 <div className="login form">
-                    <h3>Registration</h3>
                     <FormField
                         label="Playername"
                         value={playername}
@@ -65,14 +70,15 @@ const Registration = props => {
                     />
                     <FormField
                         label="Password"
-                        value={password}
+                        value={Password}
+                        type ={"password"}
                         onChange={n => setPassword(n)}
                     />
-                    <div className="registration button-container">
+                    <div className="register button-container">
                         <Button
-                            disabled={!playername || !password}
+                            disabled={!playername || !Password}
                             width="100%"
-                            onClick={() => doRegistration()}
+                            onClick={() => doRegister()}
                         >
                             Register
                         </Button>
@@ -83,6 +89,10 @@ const Registration = props => {
     );
 };
 
+/**
+ * You can get access to the history object's properties via the withRouter.
+ * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
+ */
 export default Registration;
 
 

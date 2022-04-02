@@ -9,7 +9,7 @@ export const RegistrationGuard = props => {
     if (!localStorage.getItem("token")) {
         return props.children;
     }
-    // if user is already registered, redirects to the main app
+    // if player is already registered, redirects to the main app
     return <Redirect to="/startpage"/>;
 };
 

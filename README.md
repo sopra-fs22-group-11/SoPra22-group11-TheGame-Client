@@ -30,7 +30,7 @@ Notice that the page will reload if you make any edits. You will also see any li
 Testing is optional, and you can run the tests with `npm run test`.
 This launches the test runner in an interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-> For macOS user running into a 'fsevents' error: https://github.com/jest-community/vscode-jest/issues/423
+> For macOS player running into a 'fsevents' error: https://github.com/jest-community/vscode-jest/issues/423
 
 ### Build
 Finally, `npm run build` builds the app for production to the `build` folder.<br>
