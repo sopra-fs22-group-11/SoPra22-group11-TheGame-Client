@@ -57,7 +57,7 @@ const Login = props => {
   const doLogin = async () => {
     try {
       const requestBody = JSON.stringify({playername, password});
-      const response = await api.put('/session', requestBody)
+      const response = await api.post('/session', requestBody)
       // Get the returned Player and update a new object.
       const player = new Player(response.data)
       // Store the token into the local storage.
