@@ -21,8 +21,9 @@
   border-radius: $borderRadius;
   cursor: pointer;
   opacity: 1;
-  color: $background;
-  background-color: $accent;
+  color: white;
+  background-color: $buttonColor;
+  outline: $accent 2px solid;
   transition: all 0.3s ease;
 }
 

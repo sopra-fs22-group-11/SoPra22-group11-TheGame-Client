@@ -11,15 +11,29 @@ import "styles/views/Header.scss";
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
+
+const logout = () => {
+
+
+}
 const Header = props => (
-  <div className="header container" style={{height: props.height}}>
-    <h1 className="header title">Group 11</h1>
-    <ReactLogo width="60px" height="60px"/>
-  </div>
+    <div className="header container">
+        <div className="header title">
+            The Game |
+        </div>
+        <div className="header-right">
+            <a href="/login"
+               onClick={() => logout()}
+            >Login </a>
+            <a href="/registration"
+               onClick={() => logout()}
+            >Register</a>
+        </div>
+    </div>
 );
 
 Header.propTypes = {
-  height: PropTypes.string
+    height: PropTypes.string
 };
 
 /**

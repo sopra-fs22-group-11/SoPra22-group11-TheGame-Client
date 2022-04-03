@@ -10,13 +10,30 @@ import PropTypes from "prop-types";
 
 const FormField = props => {
     return (
-        <div className="login field">
-            <label className="login label">
+        <div className="registration field">
+            <label className="registration label">
                 {props.label}
             </label>
             <input
                 type={props.type}
-                className="login input"
+                className="registration input"
+                placeholder="enter here.."
+                value={props.value}
+                onChange={e => props.onChange(e.target.value)}
+            />
+        </div>
+    );
+};
+
+const FormField2 = props => {
+    return (
+        <div className="registration field">
+            <label className="registration labelAccent">
+                {props.label}
+            </label>
+            <input
+                type={props.type}
+                className="registration input"
                 placeholder="enter here.."
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
@@ -61,9 +78,12 @@ const Registration = props => {
 
     return (
         <BaseContainer>
-            <div className="login container">
-                <div className="login form">
-                    <FormField
+            <div className="registration container">
+                <div className="registration form">
+                    <div h1 className="registration title">
+                        Registration
+                    </div>
+                    <FormField2
                         label="Playername"
                         value={playername}
                         onChange={un => setPlayername(un)}

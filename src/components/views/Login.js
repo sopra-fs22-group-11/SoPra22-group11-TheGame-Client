@@ -25,6 +25,23 @@ const FormField = props => {
   );
 };
 
+const FormField2 = props => {
+  return (
+      <div className="login field">
+        <label className="login labelAccent">
+          {props.label}
+        </label>
+        <input
+            type={props.type}
+            className="login input"
+            placeholder="enter here.."
+            value={props.value}
+            onChange={e => props.onChange(e.target.value)}
+        />
+      </div>
+  );
+};
+
 FormField.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
@@ -97,7 +114,10 @@ const Login = props => {
       <BaseContainer>
         <div className="login container">
           <div className="login form">
-            <FormField
+            <div h1 className="login title">
+              Login
+            </div>
+            <FormField2
                 label="Playername"
                 value={playername}
                 onChange={un => setPlayername(un)}
@@ -117,7 +137,7 @@ const Login = props => {
                 Login
               </Button>
             </div>
-            <div className="register button-container">
+            <div className="login button-container">
               <Button
                   width="100%"
                   onClick={() => doRegister()}

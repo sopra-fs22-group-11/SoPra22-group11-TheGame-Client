@@ -19,7 +19,7 @@
     padding-left: 37px;
     padding-right: 37px;
     border-radius: 0.75em;
-    background-color: $background;
+    background-color: $accentDark;
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
 }
@@ -41,7 +41,7 @@
   &.label {
     color: $textColor;
     margin-bottom: 10px;
-    text-transform: lowercase;
+    //text-transform: lowercase;
     font-weight: 300;
 }
   &.button-container {

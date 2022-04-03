@@ -12,15 +12,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 60%;
+    width: 80%;
     max-width: 30em;
-    height: 20em;
+    height: 25em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
     padding-right: 37px;
     border-radius: 0.75em;
-    background-color: $background;
+    background-color: $accentDark;
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
   }
@@ -37,7 +37,7 @@
     border-radius: 0.75em;
     margin-bottom: 20px;
     background: transparentize(white, 0.85);
-    color: $textColor;
+    color: $accent;
   }
   &.label {
     color: $textColor;
@@ -45,9 +45,26 @@
     text-transform: lowercase;
     font-weight: 300;
   }
+  &.labelAccent {
+    color: $accent;
+    margin-bottom: 10px;
+    text-transform: lowercase;
+    font-weight: 300;
+  }
   &.button-container {
     display: flex;
     justify-content: center;
-    margin-top: 2em;
+    margin-top: 1em;
+    color: $buttonColor;
+  }
+
+  &.title {
+    color: $textColor;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: xxx-large;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
   }
 }
