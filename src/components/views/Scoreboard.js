@@ -5,13 +5,13 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import "styles/views/Scoreboard.scss";
+import "styles/views/Home.scss";
 
 const Scoreboard = () => {
 
 
     return (
-        <BaseContainer className = "scoreboard container">
+        <BaseContainer className = "Home container">
 
         </BaseContainer>
 

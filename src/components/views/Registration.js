@@ -3,20 +3,20 @@ import {api, handleError} from 'helpers/api';
 import Player from 'models/Player';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
-import 'styles/views/Registration.scss';
+import 'styles/views/Entry.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
 
 const FormField = props => {
     return (
-        <div className="registration field">
-            <label className="registration label">
+        <div className="entry field">
+            <label className="entry label">
                 {props.label}
             </label>
             <input
                 type={props.type}
-                className="registration input"
+                className="entry input"
                 placeholder="enter here.."
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
@@ -27,13 +27,13 @@ const FormField = props => {
 
 const FormField2 = props => {
     return (
-        <div className="registration field">
-            <label className="registration labelAccent">
+        <div className="entry field">
+            <label className="entry labelAccent">
                 {props.label}
             </label>
             <input
                 type={props.type}
-                className="registration input"
+                className="entry input"
                 placeholder="enter here.."
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
@@ -70,7 +70,7 @@ const Registration = props => {
 
 
             // Registration successfully worked --> navigate to the route /game in the GameRouter
-            history.push(`/game`);
+            history.push(`/startpage`);
         } catch (error) {
             alert(`Something went wrong during the registration: \n${handleError(error)}`);
         }
@@ -78,9 +78,9 @@ const Registration = props => {
 
     return (
         <BaseContainer>
-            <div className="registration container">
-                <div className="registration form">
-                    <div h1 className="registration title">
+            <div className="entry container">
+                <div className="entry form">
+                    <div h1 className="entry title">
                         Registration
                     </div>
                     <FormField2
@@ -94,7 +94,7 @@ const Registration = props => {
                         type ={"password"}
                         onChange={n => setPassword(n)}
                     />
-                    <div className="register button-container">
+                    <div className="entry button-container">
                         <Button
                             disabled={!playername || !Password}
                             width="100%"

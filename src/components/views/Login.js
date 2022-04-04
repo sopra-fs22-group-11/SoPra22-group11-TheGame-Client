@@ -3,20 +3,20 @@ import {api, handleError} from 'helpers/api';
 import Player from 'models/Player';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
-import 'styles/views/Login.scss';
+import 'styles/views/Entry.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
 
 const FormField = props => {
   return (
-      <div className="login field">
-        <label className="login label">
+      <div className="entry field">
+        <label className="entry label">
           {props.label}
         </label>
         <input
             type={props.type}
-            className="login input"
+            className="entry input"
             placeholder="enter here.."
             value={props.value}
             onChange={e => props.onChange(e.target.value)}
@@ -27,13 +27,13 @@ const FormField = props => {
 
 const FormField2 = props => {
   return (
-      <div className="login field">
-        <label className="login labelAccent">
+      <div className="entry field">
+        <label className="entry labelAccent">
           {props.label}
         </label>
         <input
             type={props.type}
-            className="login input"
+            className="entry input"
             placeholder="enter here.."
             value={props.value}
             onChange={e => props.onChange(e.target.value)}
@@ -64,7 +64,7 @@ const Login = props => {
       localStorage.setItem('token', player.token)
       localStorage.setItem('loggedInPlayer', player.id);
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/game`);
+      history.push(`/startpage`);
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
@@ -112,9 +112,9 @@ const Login = props => {
   //  <!-- Kopie von oben -->
   return (
       <BaseContainer>
-        <div className="login container">
-          <div className="login form">
-            <div h1 className="login title">
+        <div className="entry container">
+          <div className="entry form">
+            <div h1 className="entry title">
               Login
             </div>
             <FormField2
@@ -128,7 +128,7 @@ const Login = props => {
                 type ={"password"}
                 onChange={n => setPassword(n)}
             />
-            <div className="login button-container">
+            <div className="entry button-container">
               <Button
                   disabled={!playername || !password}
                   width="100%"
@@ -137,7 +137,7 @@ const Login = props => {
                 Login
               </Button>
             </div>
-            <div className="login button-container">
+            <div className="entry button-container">
               <Button
                   width="100%"
                   onClick={() => doRegister()}

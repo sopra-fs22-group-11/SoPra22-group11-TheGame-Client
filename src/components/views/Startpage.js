@@ -5,15 +5,15 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import "styles/views/Startpage.scss";
+import "styles/views/Home.scss";
 
 
 // COPY FROM GAME SITE OF M1
 const Player = ({player}) => (
-    <div className="player container">
-        <div className="player playername">{player.playername}</div>
-        <div className="player name">{player.name}</div>
-        <div className="player id">id: {player.id}</div>
+    <div className="user container">
+        <div className="user playername">{player.playername}</div>
+        <div className="user name">{player.name}</div>
+        <div className="user id">id: {player.id}</div>
     </div>
 );
 
@@ -79,8 +79,8 @@ const Startpage = () => {
 
     if (players) {
         content = (
-            <div className="game">
-                <ul className="game player-list">
+            <div className="home">
+                <ul className="home player-list">
                     {players.map(player => (
                         <Player player={player} key={player.id}/>
                     ))}
@@ -89,7 +89,19 @@ const Startpage = () => {
                     width="100%"
                     onClick={() => logout()}
                 >
-                    Logout
+                    Play
+                </Button>
+                <Button
+                    width="100%"
+                    onClick={() => logout()}
+                >
+                    Rules
+                </Button>
+                <Button
+                    width="100%"
+                    onClick={() => logout()}
+                >
+                    Score
                 </Button>
             </div>
         );
@@ -97,12 +109,15 @@ const Startpage = () => {
 
 
     return (
-        <BaseContainer className="game container">
-            <h2>Happy Coding!</h2>
-            <p className="game paragraph">
-                Get all players from secure endpoint:
-            </p>
-            {content}
+        <BaseContainer className="home container">
+            <h2> Welcome to</h2>
+            <div className="home form">
+                <div className="home title">
+                    The Game
+                </div>
+                {content}
+            </div>
+
         </BaseContainer>
     );
 }

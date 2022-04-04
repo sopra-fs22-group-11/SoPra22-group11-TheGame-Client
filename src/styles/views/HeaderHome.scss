@@ -1,6 +1,6 @@
 @import 'styles/theme';
 
-.header {
+.headerHome {
   &.container {
     @include center;
     overflow: hidden;
@@ -52,9 +52,8 @@
   &.header-right {
     float: right;
     position: absolute;
-    top: 2em;
-    right: 6em;
-    color: white;
+    top: 1px;
+    right: 2px;
   }
 
   /* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */

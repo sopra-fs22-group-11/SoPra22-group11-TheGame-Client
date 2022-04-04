@@ -17,6 +17,7 @@ import GameResult from "../../views/GameResult";
 import WaitingroomOverview from "../../views/WaitingroomOverview";
 import {GameIdGuard} from "../routeProtectors/GameIdGuard";
 import Waitingroom from "../../views/Waitingroom";
+import {StartpageGuard} from "../routeProtectors/StartpageGuard";
 
 /**
  * Main router of your application.
@@ -37,9 +38,9 @@ const AppRouter = () => {
         </Route>
 
         <Route path="/startpage">
-          <GameGuard>
-            <GameRouter base="/startpage"/>
-          </GameGuard>
+          <StartpageGuard>
+            <Startpage/>
+          </StartpageGuard>
         </Route>
 
         <Route exact path="/registration">

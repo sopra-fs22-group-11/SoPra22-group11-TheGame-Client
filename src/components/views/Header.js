@@ -2,6 +2,7 @@ import React from "react";
 import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
+import logout from "./Startpage";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -12,10 +13,7 @@ import "styles/views/Header.scss";
  * @FunctionalComponent
  */
 
-const logout = () => {
 
-
-}
 const Header = props => (
     <div className="header container">
         <div className="header title">

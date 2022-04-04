@@ -1,9 +1,9 @@
 @import 'styles/theme';
 
-.login {
+.home {
   &.container {
     margin-top: 2em;
-    min-height: 300px;
+    min-height: 200px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
@@ -12,9 +12,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 80%;
-    max-width: 30em;
-    height: 25em;
+    width: 90%;
+    max-width: 80em;
+    height: 20em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -28,6 +28,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-color: $accentDark;
   }
   &.input {
     height: 35px;
@@ -66,5 +67,31 @@
     font-weight: 700;
     text-align: center;
     text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
+  }
+
+  .user {
+    &.container {
+      margin: 0.5em 0;
+      width: 20em;
+      padding: 10px;
+      border-radius: $borderRadius;
+      display: flex;
+      align-items: center;
+      background: lighten($background, 5);
+    }
+    &.name {
+      font-weight: 300;
+      margin-left: 5px;
+    }
+    &.username {
+      font-weight: 500;
+      color: $accent;
+    }
+    &.id {
+      margin-left: auto;
+      margin-right: 10px;
+      font-family: $fontMono;
+      font-weight: 300;
+    }
   }
 }
