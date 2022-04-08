@@ -99,7 +99,7 @@ const Startpage = () => {
                 </Button>
                 <Button
                     width="100%"
-                    onClick={() => logout()}
+                    onClick={() => history.push('/scoreboard')}
                 >
                     Score
                 </Button>
