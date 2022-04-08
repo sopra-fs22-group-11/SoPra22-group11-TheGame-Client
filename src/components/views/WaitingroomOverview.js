@@ -9,9 +9,20 @@ import "styles/views/Home.scss";
 
 const WaitingroomOverview = () => {
 
+    const history = useHistory();
+
+    const joinWaitingroom = () => {
+        history.push('/waitingroom/1'); //for the start we need the waitingroom 1
+    }
 
     return (
         <BaseContainer className = "home container">
+            <Button
+                width="100%"
+                onClick={() => joinWaitingroom()}
+            >
+                Join Waiting Room
+            </Button>
 
         </BaseContainer>
 
