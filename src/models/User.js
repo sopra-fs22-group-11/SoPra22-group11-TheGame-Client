@@ -1,14 +1,14 @@
 /**
- * Player model
+ * User model
  */
-class Player {
+class User {
   constructor(data = {}) {
     this.id = null;
     this.name = null;
-    this.playername = null;
+    this.username = null;
     this.token = null;
     this.status = null;
     Object.assign(this, data);
   }
 }
-export default Player;
+export default User;

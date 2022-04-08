@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {api, handleError} from 'helpers/api';
-import Player from 'models/Player';
+import User from 'models/User';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Entry.scss';
@@ -52,21 +52,21 @@ FormField.propTypes = {
 const Registration = props => {
     const history = useHistory();
     const [Password, setPassword] = useState(null);
-    const [playername, setPlayername] = useState(null);
+    const [username, setUsername] = useState(null);
 
-    const doRegister = async () => { //Registers the player
+    const doRegister = async () => { //Registers the user
         try {
 
-            const requestBody = JSON.stringify({playername,  password: Password});
-            const response = await api.post('/players', requestBody);
+            const requestBody = JSON.stringify({username,  password: Password});
+            const response = await api.post('/users', requestBody);
 
 
-            // Get the returned player and update a new object.
-            const player = new Player(response.data);
+            // Get the returned user and update a new object.
+            const user = new User(response.data);
 
             // Store the token into the local storage.
-            localStorage.setItem('token', player.token);
-            localStorage.setItem('loggedInPlayer', player.id);
+            localStorage.setItem('token', user.token);
+            localStorage.setItem('loggedInUser', user.id);
 
 
             // Registration successfully worked --> navigate to the route /game in the GameRouter
@@ -84,9 +84,9 @@ const Registration = props => {
                         Registration
                     </div>
                     <FormField2
-                        label="Playername"
-                        value={playername}
-                        onChange={un => setPlayername(un)}
+                        label="Username"
+                        value={username}
+                        onChange={un => setUsername(un)}
                     />
                     <FormField
                         label="Password"
@@ -96,7 +96,7 @@ const Registration = props => {
                     />
                     <div className="entry button-container">
                         <Button
-                            disabled={!playername || !Password}
+                            disabled={!username || !Password}
                             width="100%"
                             onClick={() => doRegister()}
                         >

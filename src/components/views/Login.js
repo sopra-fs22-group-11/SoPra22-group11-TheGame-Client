@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {api, handleError} from 'helpers/api';
-import Player from 'models/Player';
+import User from 'models/User';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Entry.scss';
@@ -51,18 +51,18 @@ FormField.propTypes = {
 const Login = props => {
   const history = useHistory();
   const [password, setPassword] = useState(null);
-  const [playername, setPlayername] = useState(null);
+  const [username, setUsername] = useState(null);
 
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({playername, password});
+      const requestBody = JSON.stringify({username, password});
       const response = await api.post('/session', requestBody)
-      // Get the returned Player and update a new object.
-      const player = new Player(response.data)
+      // Get the returned User and update a new object.
+      const user = new User(response.data)
       // Store the token into the local storage.
-      localStorage.setItem('token', player.token)
-      localStorage.setItem('loggedInPlayer', player.id);
+      localStorage.setItem('token', user.token)
+      localStorage.setItem('loggedInUser', user.id);
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/startpage`);
     } catch (error) {
@@ -72,15 +72,15 @@ const Login = props => {
 
   async function fetchData() {
     try {
-      const response = await api.put('/players');
+      const response = await api.put('/users');
 
       // delays continuous execution of an async operation for 1 second.
       // This is just a fake async call, so that the spinner can be displayed
       // feel free to remove it :)
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Get the returned players and update the state.
-      //setPlayers(response.data);
+      // Get the returned users and update the state.
+      //setUsers(response.data);
 
       // This is just some data for you to see what is available.
       // Feel free to remove it.
@@ -93,9 +93,9 @@ const Login = props => {
       console.log(response);
 
     } catch (error) {
-      console.error(`Something went wrong while fetching the players: \n${handleError(error)}`);
+      console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
       console.error("Details:", error);
-      alert("Something went wrong while fetching the players! See the console for details.");
+      alert("Something went wrong while fetching the users! See the console for details.");
     }
   }
 
@@ -118,9 +118,9 @@ const Login = props => {
               Login
             </div>
             <FormField2
-                label="Playername"
-                value={playername}
-                onChange={un => setPlayername(un)}
+                label="Username"
+                value={username}
+                onChange={un => setUsername(un)}
             />
             <FormField
                 label="Password"
@@ -130,7 +130,7 @@ const Login = props => {
             />
             <div className="entry button-container">
               <Button
-                  disabled={!playername || !password}
+                  disabled={!username || !password}
                   width="100%"
                   onClick={() => doLogin()}
               >

@@ -9,7 +9,7 @@ export const LoginGuard = props => {
   if (!localStorage.getItem("token")) {
     return props.children;
   }
-  // if player is already logged in, redirects to the main /app
+  // if user is already logged in, redirects to the main /app
   return <Redirect to="/startpage"/>;
 };
 

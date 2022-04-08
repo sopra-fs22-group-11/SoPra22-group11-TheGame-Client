@@ -67,14 +67,14 @@ const AppRouter = () => {
           </CheckLoggedIn>
         </Route>
 
-        <Route exact path ="/player/:playerId">
+        <Route exact path ="/user/:userId">
           <CheckLoggedIn>
             <Profile/>
           </CheckLoggedIn>
         </Route>
 
-        <Route exact path ="/player/:playerId/settings/:playerId">
-          <SettingsGuard playerId>
+        <Route exact path ="/user/:userId/settings/:userId">
+          <SettingsGuard userId>
             <ProfileSettings/>
           </SettingsGuard>
         </Route>
