@@ -9,11 +9,14 @@ import { toggleSelfVideo, toggleParticipantVideo } from "./video/video-toggler";
  */
 const initButtonClickHandlers = async (zoomClient, mediaStream) => {
     const initMicClick = () => {
+        console.log("Hello from the start of initMicClick");
         const micButton = document.getElementById('js-mic-button');
         const micIcon = document.getElementById('js-mic-icon');
 
         let isMuted = true;
         let isButtonAlreadyClicked = false;
+
+        console.log("Hello from the mid of initMicClick before toggleMicButtonStyle");
 
         const toggleMicButtonStyle = () => {
             micIcon.classList.toggle('fa-microphone');
@@ -28,14 +31,23 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
             console.log('Sanity check: is muted? ', mediaStreamIsMuted);
             console.log('Does this match button state? ', mediaStreamIsMuted === isMuted);
         }
-    
+
+
         const onClick = async (event) => {
+            console.log("we are in onCLick")
             event.preventDefault();
+
+            console.log("in onClcik function");
+
+
+
             if (!isButtonAlreadyClicked) {
                 // Blocks logic from executing again if already in progress
                 isButtonAlreadyClicked = true;
 
                 try {
+
+                    console.log("in try function of onClick Method")
                     isMuted = !isMuted;
                     await toggleMuteUnmute();
                     toggleMicButtonStyle();
@@ -49,8 +61,9 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
                 console.log('=== WARNING: already toggling mic ===');
             }
         }
-    
+        console.log("just before onClick will be run")
         micButton.addEventListener("click", onClick);
+        console.log("Hello from the end of initMicClick");
     };
 
     // Once webcam is started, the client will receive an event notifying that a video has started
@@ -107,9 +120,13 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
         leaveButton.addEventListener("click", onClick);
     }
 
+
     initMicClick();
+    console.log("initMicClick is finsihed")
     initWebcamClick();
+    console.log("initWebcamClick is finsihed")
     initLeaveSessionClick();
+    console.log("initLeaveSessionClick is finsihed")
 };
 
 export default initButtonClickHandlers;

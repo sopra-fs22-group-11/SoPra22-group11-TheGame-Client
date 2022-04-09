@@ -69,12 +69,12 @@ const joinSession = async (zmClient) => {
          * You should be able to call "zmClient.getAllUser()" after the app has reached 
          * steady state, meaning a sufficiently-long time
          */
-        console.log('======= Initializing client event handlers =======');
         initClientEventListeners(zmClient, mediaStream);
-        console.log('======= Starting audio muted =======');
+        console.log('======= Initializing client event handlers =======');
         await startAudioMuted();
-        console.log('======= Initializing button click handlers =======');
+        console.log('======= Starting audio muted =======');
         await initButtonClickHandlers(zmClient, mediaStream);
+        console.log('======= Initializing button click handlers =======');
         console.log('======= Session joined =======');
     };
 

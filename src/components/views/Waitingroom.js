@@ -69,7 +69,7 @@ const Waitingroom =  () => {
         } finally {
             console.log('Join meeting success');
         }*/
-        await joinBeginning();
+        joinBeginning();
 
         initClientEventListeners(client, mediaStream);
         console.log('======= Initializing client event handlers =======');
@@ -81,8 +81,8 @@ const Waitingroom =  () => {
         console.log('======= Session joined =======');
     }
 
-   const joinBeginning = async () => {
-        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU0Iiwicm9sZV90eXBlIjowLCJ1c2VyX2lkZW50aXR5IjoidGVzdE5hbWUiLCJzZXNzaW9uX2tleSI6IiIsImlhdCI6MTY0OTQ5MjQ5MiwiZXhwIjoxNjQ5NDk5NjkyfQ.EfydnuAodvD8g155Z0dOesjzIJSRycy_l7WIwdX8yJs"
+   const joinBeginning = () => {
+        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWUiLCJyb2xlX3R5cGUiOjEsInVzZXJfaWRlbnRpdHkiOiJ1c2VyMTIzIiwic2Vzc2lvbl9rZXkiOiIxMjMiLCJpYXQiOjE2NDk1MTAxMzcsImV4cCI6MTY0OTUxNzMzN30.1pZxCBOLgTTJYDh5dXP-1mtjoGL9ZCW6eWu-b1HgJf4"
         try{
             client.join(
                 'The Game4', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
@@ -93,6 +93,7 @@ const Waitingroom =  () => {
             state.selfId = client.getSessionInfo().userId;
         } catch (e) {
             console.error(e);
+            console.log("we got a error when joining")
         }  finally {
         console.log('Join meeting success');
     }
@@ -166,6 +167,17 @@ const Waitingroom =  () => {
             >
                 chat example
             </Button>
+
+            <button id="js-mic-button" className="meeting-control-button">
+                <i id="js-mic-button" className="fas fa-microphone-slash"></i>
+            </button>
+            <button id="js-webcam-button" className="meeting-control-button">
+                <i id="js-webcam-button" className="fas fa-video webcam__off"></i>
+            </button>
+            <button id="js-leave-button"
+                    className="meeting-control-button meeting-control-button__leave-session">
+                <i id="js-leave-session-icon" className="fas fa-phone"></i>
+            </button>
         </BaseContainer>
 
 
