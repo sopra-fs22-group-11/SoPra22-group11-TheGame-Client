@@ -128,3 +128,10 @@
 .meeting-control-button:active {
   filter: brightness(80%);
 }
+
+.video-canvas {
+  background: rgba(0, 0, 0, 1);
+  margin: 1px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 1);
+}
