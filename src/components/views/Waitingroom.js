@@ -61,10 +61,10 @@ const Waitingroom =  () => {
     const initAndJoinSession = async () => {
         //await client.init('en-US',`${window.location.origin}${videoSDKLibDir}`)
         await client.init('en-US', 'Global');
-        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU1Iiwicm9sZV90eXBlIjoxLCJ1c2VyX2lkZW50aXR5IjoidXNlcjEyNiIsInNlc3Npb25fa2V5IjoiMTI2IiwiaWF0IjoxNjQ5NjY2MzU5LCJleHAiOjE2NDk2NzM1NTl9.bHpL5ohGqG-SD5-oD0zlFM-9N1WUsLPASPLjAAltKfM"
+        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU2Iiwicm9sZV90eXBlIjoxLCJ1c2VyX2lkZW50aXR5IjoidXNlcjEyNiIsInNlc3Npb25fa2V5IjoiMTI2IiwiaWF0IjoxNjQ5Njc4MjMxLCJleHAiOjE2NDk2ODU0MzF9.85q1DmByo9YmYLHMwh2AAM5QqUppr7QFbsXcODG0ZpQ"
         try {
             await client.join(
-                'The Game5', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
+                'The Game6', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
                 signature,
                 'user126',
                 '');
@@ -102,10 +102,9 @@ const Waitingroom =  () => {
     const startAudioMuted = async () => {
 
         try{
-            console.log("we are in try from startAudioMute")
             await mediaStream.startAudio();
         } catch (e) {
-            console.log("houston we have a problem with the audio")
+            console.log("We can not start the audio.")
             console.error(e)
         }
 
@@ -156,6 +155,13 @@ const Waitingroom =  () => {
                             className="meeting-control-button meeting-control-button__leave-session">
                         <i id="js-leave-session-icon" className="fas fa-phone"></i>
                     </button>
+                </div>
+            </div>
+            <div className="chat-container">
+                <div className="chat-wrap">
+                    <h2>Chat</h2>
+                    <div className="chat-message-wrap" >
+                    </div>
                 </div>
             </div>
         </BaseContainer>

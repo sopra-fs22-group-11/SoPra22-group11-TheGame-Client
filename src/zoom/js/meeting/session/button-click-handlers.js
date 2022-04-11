@@ -38,7 +38,7 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
             console.log("we are in onCLick")
             event.preventDefault();
 
-            console.log("in onClcik function");
+            console.log("in onClick function");
 
 
 
@@ -89,7 +89,7 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
                 try {
                     isWebcamOn = !isWebcamOn;
                     console.log("we are before togglerSelfVideo")
-                    await toggleSelfVideo(ZoomVideo, isWebcamOn); //Here we have a problem (somethig with mediastream is not working //changed Mediastream to Zoom video
+                    await toggleSelfVideo(mediaStream, isWebcamOn); //Here we have a problem (somethig with mediastream is not working //changed Mediastream to Zoom video
                     console.log("we are after togglerSelfVideo")
                     toggleWebcamButtonStyle();
                 } catch (e) {
@@ -107,17 +107,19 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
     }
 
     const initLeaveSessionClick = () => {
+        console.log("we try to leave the session");
         const leaveButton = document.getElementById('js-leave-button');
 
         const onClick = async (event) => {
             event.preventDefault();
             try {
-                await Promise.all([
-                    toggleSelfVideo(mediaStream, false), 
+                console.log("in try to leave session")
+                /*await Promise.all([
+                    toggleSelfVideo(mediaStream, false),
                     toggleParticipantVideo(mediaStream, false)
-                ]);
+                ]);*/
                 await zoomClient.leave();
-                switchSessionToEndingView();
+                //switchSessionToEndingView();
             } catch (e) {
                 console.error('Error leaving session', e);
             }

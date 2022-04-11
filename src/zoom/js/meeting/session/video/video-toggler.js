@@ -38,7 +38,7 @@ let prevIsParticipantVideoOn = false;
  * dynamically adjusted based on the active number of participants! 
  */
 
-export const toggleSelfVideo = async (ZoomClient, isVideoOn) => {
+export const toggleSelfVideo = async (mediaStream, isVideoOn) => {
     console.log("hello hello from within the function toggleSelfVideo");
     if (typeof isVideoOn !== 'boolean' || prevIsSelfVideoOn === isVideoOn) {
         return;
@@ -46,13 +46,13 @@ export const toggleSelfVideo = async (ZoomClient, isVideoOn) => {
     if (isVideoOn) {
         console.log("in the isVideoOn Loop");
         try {
-            await ZoomClient.startVideo();
+            await mediaStream.startVideo();
         } catch (error) {
             console.log(error);
             console.log("start video not working!")
         }
         try {
-            await ZoomClient.renderVideo(
+            await mediaStream.renderVideo(
                 VIDEO_CANVAS,
                 state.selfId,
                 VIDEO_CANVAS_DIMS.Width / 2,
@@ -69,9 +69,9 @@ export const toggleSelfVideo = async (ZoomClient, isVideoOn) => {
         console.log("At the end of isVideoOn Loop");
     } else {
 
-        await ZoomClient.stopVideo();
-        await ZoomClient.stopRenderVideo(VIDEO_CANVAS, state.selfId);
-        await ZoomClient.clearVideoCanvas(VIDEO_CANVAS);
+        await mediaStream.stopVideo();
+        await mediaStream.stopRenderVideo(VIDEO_CANVAS, state.selfId);
+        await mediaStream.clearVideoCanvas(VIDEO_CANVAS);
     }
 
     prevIsSelfVideoOn = isVideoOn;
