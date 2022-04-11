@@ -1,5 +1,6 @@
 import { switchSessionToEndingView } from "../simple-view-switcher";
 import { toggleSelfVideo, toggleParticipantVideo } from "./video/video-toggler";
+import ZoomVideo from "@zoom/videosdk";
 
 /**
  * Initializes the mic and webcam toggle buttons
@@ -69,7 +70,9 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
     // Once webcam is started, the client will receive an event notifying that a video has started
     // At that point, video should be rendered. The reverse is true for stopping video
     const initWebcamClick = () => {
+        console.log("We are just before the webcam button");
         const webcamButton = document.getElementById('js-webcam-button');
+        console.log("We are just after the webcam button");
 
         let isWebcamOn = false;
         let isButtonAlreadyClicked = false;
@@ -77,6 +80,7 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
         const toggleWebcamButtonStyle = () => webcamButton.classList.toggle('meeting-control-button__off');
 
         const onClick = async (event) => {
+            console.log("hello from the onClick side");
             event.preventDefault();
             if (!isButtonAlreadyClicked) {
                 // Blocks logic from executing again if already in progress
@@ -84,7 +88,9 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
 
                 try {
                     isWebcamOn = !isWebcamOn;
-                    await toggleSelfVideo(mediaStream, isWebcamOn);
+                    console.log("we are before togglerSelfVideo")
+                    await toggleSelfVideo(ZoomVideo, isWebcamOn); //Here we have a problem (somethig with mediastream is not working //changed Mediastream to Zoom video
+                    console.log("we are after togglerSelfVideo")
                     toggleWebcamButtonStyle();
                 } catch (e) {
                     isWebcamOn = !isWebcamOn;

@@ -46,7 +46,7 @@ const Waitingroom =  () => {
         console.log("Let's see our client:")
         console.log(client)
 
-        await initAndJoinSession()
+        await initAndJoinSession();
 
         initClientEventListeners(client, mediaStream);
         console.log('======= Initializing client event handlers done =======');
@@ -61,15 +61,16 @@ const Waitingroom =  () => {
     const initAndJoinSession = async () => {
         //await client.init('en-US',`${window.location.origin}${videoSDKLibDir}`)
         await client.init('en-US', 'Global');
-        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU1Iiwicm9sZV90eXBlIjowLCJ1c2VyX2lkZW50aXR5IjoidGVzdE5hbWUiLCJzZXNzaW9uX2tleSI6IiIsImlhdCI6MTY0OTU3NDY3MCwiZXhwIjoxNjQ5NTgxODcwfQ.j7-bo2TUldQGZHiQqGz0s0TwCGnHnZNI-J6-nHUDmZI"
+        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU1Iiwicm9sZV90eXBlIjoxLCJ1c2VyX2lkZW50aXR5IjoidXNlcjEyNiIsInNlc3Npb25fa2V5IjoiMTI2IiwiaWF0IjoxNjQ5NjY2MzU5LCJleHAiOjE2NDk2NzM1NTl9.bHpL5ohGqG-SD5-oD0zlFM-9N1WUsLPASPLjAAltKfM"
         try {
             await client.join(
                 'The Game5', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
                 signature,
-                'testName',
+                'user126',
                 '');
             mediaStream = client.getMediaStream();
             state.selfId = client.getSessionInfo().userId;
+            console.log("client has joined successfully")
         } catch (e) {
             console.error(e);
         }
@@ -98,19 +99,21 @@ const Waitingroom =  () => {
     }
 
 
-    const startAudioMuted = () => {
-        //await mediaStream.startAudio();
+    const startAudioMuted = async () => {
+
         try{
-            mediaStream.startAudio()
+            console.log("we are in try from startAudioMute")
+            await mediaStream.startAudio();
         } catch (e) {
             console.log("houston we have a problem with the audio")
-           console.error(e)
+            console.error(e)
         }
 
         if (!mediaStream.isAudioMuted()) {
             mediaStream.muteAudio();
         }
-    };
+    }
+
 
 
     // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
@@ -139,19 +142,20 @@ const Waitingroom =  () => {
                 chat example
             </Button>
 
-            <button id="js-mic-button" className="meeting-control-button">
-                <i id="js-mic-button" className="fas fa-microphone-slash"></i>
-            </button>
-            <button id="js-webcam-button" className="meeting-control-button">
-                <i id="js-webcam-button" className="fas fa-video webcam__off"></i>
-            </button>
-            <button id="js-leave-button"
-                    className="meeting-control-button meeting-control-button__leave-session">
-                <i id="js-leave-session-icon" className="fas fa-phone"></i>
-            </button>
-            <div id="js-video-view" className="container video-app hidden">
+            <div id="js-video-view" className="container video-app">
                 <canvas id="video-canvas" className="video-canvas" width="1280" height="640"></canvas>
                 <div className="container meeting-control-layer">
+                    <button id="js-mic-button" className="meeting-control-button">
+                        <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
+                    </button>
+                    <button id="js-webcam-button" className="meeting-control-button">
+                        <i id="js-webcam-icon" className="fas fa-video webcam__off"></i>
+                    </button>
+                    <div className="vertical-divider"></div>
+                    <button id="js-leave-button"
+                            className="meeting-control-button meeting-control-button__leave-session">
+                        <i id="js-leave-session-icon" className="fas fa-phone"></i>
+                    </button>
                 </div>
             </div>
         </BaseContainer>

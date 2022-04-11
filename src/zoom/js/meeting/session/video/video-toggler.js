@@ -38,11 +38,14 @@ let prevIsParticipantVideoOn = false;
  */
 
 export const toggleSelfVideo = async (mediaStream, isVideoOn) => {
+    console.log("hello hello from within the function toggleSelfVideo");
     if (typeof isVideoOn !== 'boolean' || prevIsSelfVideoOn === isVideoOn) {
         return;
     }
     if (isVideoOn) {
+        console.log("in the of isVideoOn Loop");
         await mediaStream.startVideo();
+        console.log("in the middle of isVideoOn Loop");
         await mediaStream.renderVideo(
             VIDEO_CANVAS,
             state.selfId,
@@ -52,12 +55,16 @@ export const toggleSelfVideo = async (mediaStream, isVideoOn) => {
             0,
             VIDEO_QUALITY_360P,
         );
+        console.log("At the end of isVideoOn Loop");
     } else {
+
         await mediaStream.stopVideo();
         await mediaStream.stopRenderVideo(VIDEO_CANVAS, state.selfId);
         await mediaStream.clearVideoCanvas(VIDEO_CANVAS);
     }
+
     prevIsSelfVideoOn = isVideoOn;
+
 }
 
 export const toggleParticipantVideo = async (mediaStream, isVideoOn) => {

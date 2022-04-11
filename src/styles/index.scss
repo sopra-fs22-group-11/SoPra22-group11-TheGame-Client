@@ -31,3 +31,118 @@ button {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
+
+//for Zoom
+
+/* Generic container class to conveniently center all contents */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Styles for the video canvas to slightly improve aesthetics */
+.video-canvas {
+  background: rgba(0, 0, 0, 1);
+  margin: 1px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 1);
+}
+
+/* Container for the video-app that helps place the meeting controls at the bottom */
+.video-app {
+  flex-direction: column;
+  height: fit-content;
+  justify-content: flex-end;
+}
+
+
+/* Additional styling for the meeting control buttons' container */
+.meeting-control-layer {
+  /* `position: absolute;` places the controls above the canvas */
+  position: absolute;
+  border-radius: 14px;
+  background-color: rgba(125, 125, 125, 0.18);
+  margin-block-end: 5px;
+}
+
+/* Styles for the buttons */
+.meeting-control-button {
+  border-radius: 50%;
+  border: none;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 1);
+  background-color: rgba(255, 255, 255, 1);
+  height: 2em;
+  width: 2em;
+  margin: 0.5em;
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+}
+
+.meeting-control-button__off {
+  color: white;
+  background-color: red;
+}
+
+.meeting-control-button__leave-session {
+  color: red;
+  /* background-color: red; */
+  transform: rotate(-135deg);
+}
+
+.meeting-control-button:hover {
+  filter: brightness(90%);
+}
+
+/* The "active" pseudo-class MUST come after "hover" */
+.meeting-control-button:active {
+  filter: brightness(80%);
+}
+
+.vertical-divider {
+  border: 1px solid rgba(0, 0, 0, 1);
+  margin: 10px 5px;
+  align-self: stretch;
+}
+
+/*
+ * Classes to help show mic volume feedback for different intensities
+ * Add more styles to create smoother transitions */
+.mic-feedback__very-low {
+  background: linear-gradient(0deg, #00FFFF 20%, #FFFFFF 20%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.mic-feedback__low {
+  background: linear-gradient(0deg, #00FFFF 35%, #FFFFFF 35%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.mic-feedback__medium {
+  background: linear-gradient(0deg, #00FFFF 50%, #FFFFFF 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.mic-feedback__high {
+  background: linear-gradient(0deg, #00FFFF 65%, #FFFFFF 65%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.mic-feedback__very-high {
+  background: linear-gradient(0deg, #00FFFF 80%, #FFFFFF 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.mic-feedback__max {
+  background: #00FFFF;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
