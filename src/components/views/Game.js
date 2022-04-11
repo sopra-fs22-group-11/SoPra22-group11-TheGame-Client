@@ -6,13 +6,15 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
+import SockClient from "../utils/sockClient";
+
 
 const User = ({user}) => (
-  <div className="user container">
-    <div className="user username">{user.username}</div>
-    <div className="user name">{user.name}</div>
-    <div className="user id">id: {user.id}</div>
-  </div>
+    <div className="user container">
+        <div className="user username">{user.username}</div>
+        <div className="user name">{user.name}</div>
+        <div className="user id">id: {user.id}</div>
+    </div>
 );
 
 
@@ -85,9 +87,9 @@ const Game = () => {
         </ul>
         <Button
           width="100%"
-          onClick={() => logout()}
+          onClick={() => SockClient.connect()}
         >
-          Logout
+          connect to sockClient
         </Button>
       </div>
     );
@@ -104,5 +106,6 @@ const Game = () => {
     </BaseContainer>
   );
 }
+
 
 export default Game;

@@ -87,7 +87,7 @@ const Startpage = () => {
                 </ul>
                 <Button
                     width="100%"
-                    onClick={() => logout()}
+                    onClick={() => history.push('/game')}
                 >
                     Play
                 </Button>
