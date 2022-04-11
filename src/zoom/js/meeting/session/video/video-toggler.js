@@ -1,4 +1,5 @@
 import state from "../simple-state";
+import ZoomVideo from "@zoom/videosdk";
 import {
     VIDEO_CANVAS,
     VIDEO_CANVAS_DIMS,
@@ -37,30 +38,40 @@ let prevIsParticipantVideoOn = false;
  * dynamically adjusted based on the active number of participants! 
  */
 
-export const toggleSelfVideo = async (mediaStream, isVideoOn) => {
+export const toggleSelfVideo = async (ZoomClient, isVideoOn) => {
     console.log("hello hello from within the function toggleSelfVideo");
     if (typeof isVideoOn !== 'boolean' || prevIsSelfVideoOn === isVideoOn) {
         return;
     }
     if (isVideoOn) {
-        console.log("in the of isVideoOn Loop");
-        await mediaStream.startVideo();
-        console.log("in the middle of isVideoOn Loop");
-        await mediaStream.renderVideo(
-            VIDEO_CANVAS,
-            state.selfId,
-            VIDEO_CANVAS_DIMS.Width / 2,
-            VIDEO_CANVAS_DIMS.Height,
-            VIDEO_CANVAS_DIMS.Width / 2,
-            0,
-            VIDEO_QUALITY_360P,
-        );
+        console.log("in the isVideoOn Loop");
+        try {
+            await ZoomClient.startVideo();
+        } catch (error) {
+            console.log(error);
+            console.log("start video not working!")
+        }
+        try {
+            await ZoomClient.renderVideo(
+                VIDEO_CANVAS,
+                state.selfId,
+                VIDEO_CANVAS_DIMS.Width / 2,
+                VIDEO_CANVAS_DIMS.Height,
+                VIDEO_CANVAS_DIMS.Width / 2,
+                0,
+                VIDEO_QUALITY_360P,
+            );
+        } catch (error) {
+            console.log(error);
+            console.log("render video not working!")
+        }
+
         console.log("At the end of isVideoOn Loop");
     } else {
 
-        await mediaStream.stopVideo();
-        await mediaStream.stopRenderVideo(VIDEO_CANVAS, state.selfId);
-        await mediaStream.clearVideoCanvas(VIDEO_CANVAS);
+        await ZoomClient.stopVideo();
+        await ZoomClient.stopRenderVideo(VIDEO_CANVAS, state.selfId);
+        await ZoomClient.clearVideoCanvas(VIDEO_CANVAS);
     }
 
     prevIsSelfVideoOn = isVideoOn;
