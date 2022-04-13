@@ -61,10 +61,10 @@ const Waitingroom =  () => {
     const initAndJoinSession = async () => {
         //await client.init('en-US',`${window.location.origin}${videoSDKLibDir}`)
         await client.init('en-US', 'Global');
-        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU2Iiwicm9sZV90eXBlIjoxLCJ1c2VyX2lkZW50aXR5IjoidXNlcjEyNiIsInNlc3Npb25fa2V5IjoiMTI2IiwiaWF0IjoxNjQ5Njc4MjMxLCJleHAiOjE2NDk2ODU0MzF9.85q1DmByo9YmYLHMwh2AAM5QqUppr7QFbsXcODG0ZpQ"
+        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU4Iiwicm9sZV90eXBlIjoxLCJ1c2VyX2lkZW50aXR5IjoidXNlcjEyNiIsInNlc3Npb25fa2V5IjoiMTI2IiwiaWF0IjoxNjQ5ODQ5MjgwLCJleHAiOjE2NDk4NTY0ODB9.1m24jssFkGBYNMbmIWGTuL__DO5EUfEiWlVe9IwnDJk"
         try {
             await client.join(
-                'The Game6', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
+                'The Game8', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
                 signature,
                 'user126',
                 '');

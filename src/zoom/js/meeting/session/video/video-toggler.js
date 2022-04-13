@@ -44,14 +44,10 @@ export const toggleSelfVideo = async (mediaStream, isVideoOn) => {
         return;
     }
     if (isVideoOn) {
-        console.log("in the isVideoOn Loop");
+        console.log("we try to start the video");
         try {
             await mediaStream.startVideo();
-        } catch (error) {
-            console.log(error);
-            console.log("start video not working!")
-        }
-        try {
+            console.log("start video has worked");
             await mediaStream.renderVideo(
                 VIDEO_CANVAS,
                 state.selfId,
@@ -61,17 +57,26 @@ export const toggleSelfVideo = async (mediaStream, isVideoOn) => {
                 0,
                 VIDEO_QUALITY_360P,
             );
+            console.log("render video has worked");
         } catch (error) {
             console.log(error);
-            console.log("render video not working!")
+            console.log("start or render video not working!")
         }
 
-        console.log("At the end of isVideoOn Loop");
-    } else {
 
-        await mediaStream.stopVideo();
-        await mediaStream.stopRenderVideo(VIDEO_CANVAS, state.selfId);
-        await mediaStream.clearVideoCanvas(VIDEO_CANVAS);
+    } else {
+        try{
+            console.log("button was on and we try to close it ")
+            await mediaStream.stopVideo();
+            await mediaStream.stopRenderVideo(VIDEO_CANVAS, state.selfId);
+            await mediaStream.clearVideoCanvas(VIDEO_CANVAS);
+            console.log("close video has worked")
+
+        } catch (error){
+            console.log(error);
+            console.log("close video not working!")
+        }
+
     }
 
     prevIsSelfVideoOn = isVideoOn;
