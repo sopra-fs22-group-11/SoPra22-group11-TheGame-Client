@@ -103,6 +103,12 @@ const Startpage = () => {
                 >
                     Score
                 </Button>
+                <Button
+                    width="100%"
+                    onClick={() => logout()}
+                >
+                    Logout
+                </Button>
             </div>
         );
     }
