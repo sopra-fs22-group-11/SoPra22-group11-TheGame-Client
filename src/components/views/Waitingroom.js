@@ -6,6 +6,8 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
+import sockClient from "../utils/sockClient";
+import SockClient from "../utils/sockClient";
 
 const Waitingroom = () => {
 

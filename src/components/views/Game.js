@@ -7,6 +7,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
 import SockClient from "../utils/sockClient";
+import sockClient from "../utils/sockClient";
 
 
 const User = ({user}) => (
@@ -22,6 +23,8 @@ User.propTypes = {
   user: PropTypes.object
 };
 
+
+
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
@@ -32,11 +35,25 @@ const Game = () => {
   // a component can have as many state variables as you like.
   // more information can be found under https://reactjs.org/docs/hooks-state.html
   const [users, setUsers] = useState(null);
+  const [user, setUser] = useState(null);
 
   const logout = () => {
     localStorage.removeItem('token');
     history.push('/login');
   }
+
+    const sendName =async () => {
+
+
+        const userId = localStorage.getItem('loggedInUser');
+        const response1 = await api.get('/users/' + userId);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        setUser(response1.data);
+        console.log("vor sockClient send name");
+        sockClient.sendName(user);
+
+    }
 
   // the effect hook can be used to react to change in your component.
   // in this case, the effect hook is only run once, the first time the component is mounted
@@ -55,6 +72,8 @@ const Game = () => {
 
         // Get the returned users and update the state.
         setUsers(response.data);
+
+
 
         // This is just some data for you to see what is available.
         // Feel free to remove it.
@@ -91,9 +110,19 @@ const Game = () => {
         >
           connect to sockClient
         </Button>
+
+          <Button
+              width="100%"
+              onClick={() => sendName()}
+          >
+              send message
+          </Button>
+
       </div>
     );
   }
+
+
 
 
   return (
