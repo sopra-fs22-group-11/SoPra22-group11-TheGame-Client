@@ -17,7 +17,7 @@ class SockClient {
             this.sock.close();
         } catch {
         }
-        this.sock = new SockJS('http://localhost:8082/ws');
+        this.sock = new SockJS('http://localhost:8081/ws');
         this.stomp = Stomp.over(this.sock);
         this.stomp.connect({}, () => {
             this._connected = true;
