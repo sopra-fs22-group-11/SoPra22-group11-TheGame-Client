@@ -6,6 +6,7 @@ import {Button} from 'components/ui/Button';
 import 'styles/views/Entry.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
+import Header from "./Header";
 
 
 const FormField = props => {
@@ -49,6 +50,7 @@ FormField.propTypes = {
 };
 
 
+
 const Registration = props => {
     const history = useHistory();
     const [Password, setPassword] = useState(null);
@@ -76,7 +78,13 @@ const Registration = props => {
         }
     };
 
+    const goToLogin = () => {
+        history.push('/login');
+    }
+
     return (
+        <div>
+            <Header height="100"/>
         <BaseContainer>
             <div className="entry container">
                 <div className="entry form">
@@ -106,6 +114,7 @@ const Registration = props => {
                 </div>
             </div>
         </BaseContainer>
+        </div>
     );
 };
 

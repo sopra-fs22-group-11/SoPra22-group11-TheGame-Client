@@ -1,4 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+#Zoom Key
+Zoom_Key
 
 # dependencies
 /node_modules

@@ -12,8 +12,12 @@ import initButtonClickHandlers from "../../zoom/js/meeting/session/button-click-
 import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
+import HeaderHome from "./HeaderHome";
+
 
 const Waitingroom =  () => {
+    const history = useHistory();
+
     const client = ZoomVideo.createClient();
     const audioTrack = VideoSDK.createLocalAudioTrack();
     const videoTrack = VideoSDK.createLocalVideoTrack();
@@ -61,12 +65,12 @@ const Waitingroom =  () => {
     const initAndJoinSession = async () => {
         //await client.init('en-US',`${window.location.origin}${videoSDKLibDir}`)
         await client.init('en-US', 'Global');
-        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU4Iiwicm9sZV90eXBlIjoxLCJ1c2VyX2lkZW50aXR5IjoidXNlcjEyNiIsInNlc3Npb25fa2V5IjoiMTI2IiwiaWF0IjoxNjQ5ODQ5MjgwLCJleHAiOjE2NDk4NTY0ODB9.1m24jssFkGBYNMbmIWGTuL__DO5EUfEiWlVe9IwnDJk"
+        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWUxMiIsInJvbGVfdHlwZSI6MSwidXNlcl9pZGVudGl0eSI6InVzZXIxMiIsInNlc3Npb25fa2V5IjoiMTIiLCJpYXQiOjE2NTAxMDQzMjQsImV4cCI6MTY1MDExMTUyNH0.Y-Moa8AJCO9vp-cNR3MG-vEso2Kh3Z0oLvYdGFjcgWM";
         try {
             await client.join(
-                'The Game8', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
+                'The Game12', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
                 signature,
-                'user126',
+                'user12',
                 '');
             mediaStream = client.getMediaStream();
             state.selfId = client.getSessionInfo().userId;
@@ -113,6 +117,14 @@ const Waitingroom =  () => {
         }
     }
 
+    const goToGame = () => {
+        history.push('/game');
+    }
+
+    const goToHome = () => {
+        history.push('/startpage');
+    }
+
 
 
     // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
@@ -120,7 +132,17 @@ const Waitingroom =  () => {
 
 
     return (
+        <div>
+            <HeaderHome height="100"/>
         <BaseContainer className = "home container">
+            <h2> Hear you can find all Participants</h2>
+
+            <Button
+                width="100%"
+                onClick={() => goToGame()}
+            >
+                Start the Game!
+            </Button>
             <Button
                 width="100%"
                 onClick={() => joinMeeting()}
@@ -140,23 +162,6 @@ const Waitingroom =  () => {
             >
                 chat example
             </Button>
-
-            <div id="js-video-view" className="container video-app">
-                <canvas id="video-canvas" className="video-canvas" width="1280" height="640"></canvas>
-                <div className="container meeting-control-layer">
-                    <button id="js-mic-button" className="meeting-control-button">
-                        <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
-                    </button>
-                    <button id="js-webcam-button" className="meeting-control-button">
-                        <i id="js-webcam-icon" className="fas fa-video webcam__off"></i>
-                    </button>
-                    <div className="vertical-divider"></div>
-                    <button id="js-leave-button"
-                            className="meeting-control-button meeting-control-button__leave-session">
-                        <i id="js-leave-session-icon" className="fas fa-phone"></i>
-                    </button>
-                </div>
-            </div>
             <div className="chat-container">
                 <div className="chat-wrap">
                     <h2>Chat</h2>
@@ -164,7 +169,9 @@ const Waitingroom =  () => {
                     </div>
                 </div>
             </div>
+
         </BaseContainer>
+        </div>
 
 
     ) ;
