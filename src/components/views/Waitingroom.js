@@ -62,13 +62,58 @@ const Waitingroom =  () => {
         console.log('======= Session joined =======');
     }
 
+
+    const [signature, setSignature] = useState(null);
+    async function createSignature() {
+        try {
+
+            const response = await api.get('/signature');
+
+            // delays continuous execution of an async operation for 1 second.
+            // This is just a fake async call, so that the spinner can be displayed
+            // feel free to remove it :)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Get the returned users and update the state.
+            setSignature(response.data);
+
+            // This is just some data for you to see what is available.
+            // Feel free to remove it.
+            console.log('request to:', response.request.responseURL);
+            console.log('status code:', response.status);
+            console.log('status text:', response.statusText);
+            console.log('requested data:', response.data);
+
+            // See here to get more data.
+            console.log(response);
+            return response.data;
+
+        } catch (error) {
+            console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+            console.error("Details:", error);
+            alert("Something went wrong while fetching the Zoom signature! See the console for details.");
+        }
+    }
+
     const initAndJoinSession = async () => {
         //await client.init('en-US',`${window.location.origin}${videoSDKLibDir}`)
+        let signature = createSignature();
+        console.log("before signature");
+        console.log(signature);
+        console.log("after signature");
         await client.init('en-US', 'Global');
+<<<<<<< HEAD
         const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWUxMiIsInJvbGVfdHlwZSI6MSwidXNlcl9pZGVudGl0eSI6InVzZXIxMiIsInNlc3Npb25fa2V5IjoiMTIiLCJpYXQiOjE2NTAxMDQzMjQsImV4cCI6MTY1MDExMTUyNH0.Y-Moa8AJCO9vp-cNR3MG-vEso2Kh3Z0oLvYdGFjcgWM";
         try {
             await client.join(
                 'The Game12', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
+=======
+
+        //const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU2Iiwicm9sZV90eXBlIjoxLCJ1c2VyX2lkZW50aXR5IjoidXNlcjEyNiIsInNlc3Npb25fa2V5IjoiMTI2IiwiaWF0IjoxNjQ5Njc4MjMxLCJleHAiOjE2NDk2ODU0MzF9.85q1DmByo9YmYLHMwh2AAM5QqUppr7QFbsXcODG0ZpQ"
+        try {
+            await client.join(
+                '123', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
+>>>>>>> ae439d09ff37ba1ac0f5afa9b28b34df4b4f69e5
                 signature,
                 'user12',
                 '');
