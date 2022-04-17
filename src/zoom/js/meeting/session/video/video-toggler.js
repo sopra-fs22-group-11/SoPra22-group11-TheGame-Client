@@ -68,7 +68,9 @@ export const toggleSelfVideo = async (mediaStream, isVideoOn) => {
         try{
             console.log("button was on and we try to close it ")
             await mediaStream.stopVideo();
+            console.log("stop video has worked");
             await mediaStream.stopRenderVideo(VIDEO_CANVAS, state.selfId);
+            console.log("stop render video has worked");
             await mediaStream.clearVideoCanvas(VIDEO_CANVAS);
             console.log("close video has worked")
 
