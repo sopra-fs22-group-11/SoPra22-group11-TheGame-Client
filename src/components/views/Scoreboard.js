@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
+import HeaderHome from "./HeaderHome";
 
 // TODO: display calculated score winningCount/gameCount
 
@@ -72,6 +73,8 @@ const Scoreboard = () => {
 
 
     return (
+        <div>
+            <HeaderHome height="100"/>
         <BaseContainer className = "Home container">
             <h2>Ranking</h2>
             <p className="game paragraph">
@@ -83,7 +86,7 @@ const Scoreboard = () => {
             </p>
             {content}
         </BaseContainer>
-
+        </div>
 
     ) ;
 
