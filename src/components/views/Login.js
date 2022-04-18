@@ -6,6 +6,7 @@ import {Button} from 'components/ui/Button';
 import 'styles/views/Entry.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
+import Header from "./Header";
 
 
 const FormField = props => {
@@ -63,6 +64,7 @@ const Login = props => {
       // Store the token into the local storage.
       localStorage.setItem('token', user.token)
       localStorage.setItem('loggedInUser', user.id);
+      localStorage.setItem('username', user.username);
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/startpage`);
     } catch (error) {
@@ -100,17 +102,13 @@ const Login = props => {
   }
 
 // moves to the registration page
-  const doRegister = async () =>{
-    try{
+  const doRegister = () =>{
       history.push(`/registration`);
-    }
-    catch (error){
-      alert(`Something went wrong during the registration: \n${handleError(error)}`);
-    }
-
   }
   //  <!-- Kopie von oben -->
   return (
+      <div>
+        <Header height="100"/>
       <BaseContainer>
         <div className="entry container">
           <div className="entry form">
@@ -148,6 +146,7 @@ const Login = props => {
           </div>
         </div>
       </BaseContainer>
+      </div>
   );
 };
 

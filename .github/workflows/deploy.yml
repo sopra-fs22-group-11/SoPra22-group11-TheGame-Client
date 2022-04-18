@@ -15,7 +15,9 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # auto-generated
       HEROKU_KEY: ${{ secrets.HEROKU_API_KEY }}
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}  
+      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      ZOOM_KEY: ${{ secrets.ZOOM_API_KEY}}
+      ZOOM_SECRET: ${{ secrets.ZOOM_API_SECRET }}
 
     steps:
     # checkout repository code

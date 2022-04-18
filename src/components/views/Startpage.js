@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
+import HeaderHome from "./HeaderHome";
 
 
 // COPY FROM GAME SITE OF M1
@@ -36,6 +37,15 @@ const Startpage = () => {
     const logout = () => {
         localStorage.removeItem('token');
         history.push('/login');
+    }
+
+
+    const goTorulePage = () => {
+        history.push('/rulePage');
+    }
+
+    const goToWaitingroomOverview = () => {
+        history.push('/waitingroomOverview');
     }
 
     // the effect hook can be used to react to change in your component.
@@ -87,7 +97,7 @@ const Startpage = () => {
                 </ul>
                 <Button
                     width="100%"
-                    onClick={() => logout()}
+                    onClick={() => goToWaitingroomOverview()}
                 >
                     Play
                 </Button>
@@ -109,6 +119,8 @@ const Startpage = () => {
 
 
     return (
+        <div>
+            <HeaderHome height="100"/>
         <BaseContainer className="home container">
             <h2> Welcome to</h2>
             <div className="home form">
@@ -119,6 +131,7 @@ const Startpage = () => {
             </div>
 
         </BaseContainer>
+        </div>
     );
 }
 
