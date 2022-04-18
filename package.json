@@ -5,6 +5,7 @@
   "dependencies": {
     "@zoom/videosdk": "^1.2.3",
     "axios": "^0.24.0",
+    "jsrsasign": "^10.5.17",
     "node-gyp": "^8.4.1",
     "node-sass": "^7.0.1",
     "react": "^17.0.2",

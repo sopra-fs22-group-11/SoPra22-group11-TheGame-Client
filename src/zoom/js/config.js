@@ -1,7 +1,7 @@
 export default {
     sdkKey: '',
     sdkSecret: '',
-    topic: 'The Game',
+    topic: 'The Game196',
     password: '',
     name: 'Display Name',
     sessionKey: '123',

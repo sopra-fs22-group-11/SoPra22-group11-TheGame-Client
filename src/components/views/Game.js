@@ -13,8 +13,12 @@ import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
+import {generateSessionToken} from "../../zoom/js/tool";
+import user from "../../models/User";
 
 const Game =  () => {
+    const history = useHistory();
+
     const client = ZoomVideo.createClient();
     const audioTrack = VideoSDK.createLocalAudioTrack();
     const videoTrack = VideoSDK.createLocalVideoTrack();
@@ -62,13 +66,22 @@ const Game =  () => {
     const initAndJoinSession = async () => {
         //await client.init('en-US',`${window.location.origin}${videoSDKLibDir}`)
         await client.init('en-US', 'Global');
-        const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWUxNCIsInJvbGVfdHlwZSI6MSwidXNlcl9pZGVudGl0eSI6InVzZXIxMiIsInNlc3Npb25fa2V5IjoiMTIiLCJpYXQiOjE2NTAxNzU3NjIsImV4cCI6MTY1MDE4Mjk2Mn0.9LDb64dU9n7NXKSdKUsi8ZYD9fDy5YGWAbTnjpTtZgM";
+        //const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWUxNCIsInJvbGVfdHlwZSI6MSwidXNlcl9pZGVudGl0eSI6InVzZXIxMiIsInNlc3Npb25fa2V5IjoiMTIiLCJpYXQiOjE2NTAxNzU3NjIsImV4cCI6MTY1MDE4Mjk2Mn0.9LDb64dU9n7NXKSdKUsi8ZYD9fDy5YGWAbTnjpTtZgM";
+        const signature = generateSessionToken(
+            sessionConfig.sdkKey,
+            sessionConfig.sdkSecret,
+            sessionConfig.topic,
+            sessionConfig.password,
+            sessionConfig.sessionKey,
+            localStorage.getItem('username')
+        );
         try {
             await client.join(
-                'The Game14', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
+                sessionConfig.topic,
                 signature,
-                'user12',
-                '');
+                localStorage.getItem('username'),
+                sessionConfig.password
+            );
             mediaStream = client.getMediaStream();
             state.selfId = client.getSessionInfo().userId;
             console.log("client has joined successfully")
@@ -118,34 +131,64 @@ const Game =  () => {
 
     // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
     // siehe gameIdGuard in RouteProtectors
+    const myfun = async ()=>{
+        try{
+            await client.leave();
+        } catch (e){
+            console.log("was not in a meeting");
+        }
+        console.log('hello');
+    }
 
+    window.onbeforeunload = function(){
+       // myfun();
+        return 'Are you sure you want to leave?';
+    };
+
+    window.onunload = function() {
+        myfun();
+        alert('Bye.');
+    }
+
+    const goToHome = async () => {
+        try{
+            await client.leave();
+        }catch (e) {
+            alert("can not leave te meeting")
+        }
+        history.push('/startpage');
+    }
+    //Comment the next line, when working on the game
+    //joinMeeting();
 
     return (
         <div>
             <HeaderGame height="100"/>
-        <BaseContainer className = "home container">
-            <Button
-                width="100%"
+        <BaseContainer className = "left">
+            <Button className ="game-button"
                 onClick={() => joinMeeting()}
             >
-                Join
+                Stack 1
             </Button>
-            <Button
-                width="100%"
-                onClick={() => getClients()}
+            <Button className ="game-button"
+                    onClick={() => getClients()}
             >
-                get clients
+                Stack 2
             </Button>
-
-            <Button
-                width="100%"
-                onClick={() => doChatExample()}
+            <Button className ="game-button"
+                    onClick={() => doChatExample()}
             >
-                chat example
+                Stack 3
             </Button>
-
+            <Button className ="game-button"
+                    onClick={() => doChatExample()}
+            >
+                Stack 4
+            </Button>
+        </BaseContainer>
+            <BaseContainer className = "right">
             <div id="js-video-view" className="container video-app">
-                <canvas id="video-canvas" className="video-canvas" width="1280" height="640"></canvas>
+                <canvas id="video-canvas" className="video-canvas" width="320" height="160"></canvas>
                 <div className="container meeting-control-layer">
                     <button id="js-mic-button" className="meeting-control-button">
                         <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
@@ -158,13 +201,6 @@ const Game =  () => {
                             className="meeting-control-button meeting-control-button__leave-session">
                         <i id="js-leave-session-icon" className="fas fa-phone"></i>
                     </button>
-                </div>
-            </div>
-            <div className="chat-container">
-                <div className="chat-wrap">
-                    <h2>Chat</h2>
-                    <div className="chat-message-wrap" >
-                    </div>
                 </div>
             </div>
         </BaseContainer>

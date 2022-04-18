@@ -33,6 +33,7 @@ const Waitingroom =  () => {
         }
     });
 
+
     const captureOptions = {
         cameraId: 'cameraId',
         captureWidth: 640,
@@ -45,6 +46,13 @@ const Waitingroom =  () => {
 */
     const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
 
+    const generateSessionTopic = () => {
+      const date= new Date().toDateString();
+      const sessionTopic = "theGame"+date;
+      console.log(sessionTopic);
+      return sessionTopic;
+
+    }
 
     const joinMeeting = async () => {
         console.log("Let's see our client:")
@@ -97,23 +105,11 @@ const Waitingroom =  () => {
 
     const initAndJoinSession = async () => {
         //await client.init('en-US',`${window.location.origin}${videoSDKLibDir}`)
-        let signature = createSignature();
-        console.log("before signature");
-        console.log(signature);
-        console.log("after signature");
         await client.init('en-US', 'Global');
-<<<<<<< HEAD
         const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWUxMiIsInJvbGVfdHlwZSI6MSwidXNlcl9pZGVudGl0eSI6InVzZXIxMiIsInNlc3Npb25fa2V5IjoiMTIiLCJpYXQiOjE2NTAxMDQzMjQsImV4cCI6MTY1MDExMTUyNH0.Y-Moa8AJCO9vp-cNR3MG-vEso2Kh3Z0oLvYdGFjcgWM";
         try {
             await client.join(
                 'The Game12', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
-=======
-
-        //const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWU2Iiwicm9sZV90eXBlIjoxLCJ1c2VyX2lkZW50aXR5IjoidXNlcjEyNiIsInNlc3Npb25fa2V5IjoiMTI2IiwiaWF0IjoxNjQ5Njc4MjMxLCJleHAiOjE2NDk2ODU0MzF9.85q1DmByo9YmYLHMwh2AAM5QqUppr7QFbsXcODG0ZpQ"
-        try {
-            await client.join(
-                '123', // It is very important to always (in testing phase) use a new session name or do this: https://devforum.zoom.us/t/meeting-passcode-wrong-but-passcode-is-actual-y-correct/61479/2
->>>>>>> ae439d09ff37ba1ac0f5afa9b28b34df4b4f69e5
                 signature,
                 'user12',
                 '');
@@ -175,7 +171,6 @@ const Waitingroom =  () => {
     // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
     // siehe gameIdGuard in RouteProtectors
 
-
     return (
         <div>
             <HeaderHome height="100"/>
@@ -207,13 +202,12 @@ const Waitingroom =  () => {
             >
                 chat example
             </Button>
-            <div className="chat-container">
-                <div className="chat-wrap">
-                    <h2>Chat</h2>
-                    <div className="chat-message-wrap" >
-                    </div>
-                </div>
-            </div>
+            <Button
+                width="100%"
+                onClick={() => generateSessionTopic()}
+            >
+                chat example
+            </Button>
 
         </BaseContainer>
         </div>

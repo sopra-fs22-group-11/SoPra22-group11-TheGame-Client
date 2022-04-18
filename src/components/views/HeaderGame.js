@@ -2,7 +2,7 @@ import React from "react";
 import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
-import goToHome from "./Waitingroom";
+import goToHome from "./Game";
 import goToRulePage from "./Startpage";
 import doRegister from "./Login";
 import goToLogin from "./Registration";

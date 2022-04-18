@@ -6,6 +6,9 @@ export const VIDEO_QUALITY_720P = 3;    // not supported * yet *
 export const VIDEO_CANVAS = document.getElementById('video-canvas');
 
 export const VIDEO_CANVAS_DIMS = {
-    Width: 1280,
-    Height: 640,
+    /*Width: 1280,
+    Height: 640,*/ //original
+
+    Width: 640,
+    Height: 320,
 };

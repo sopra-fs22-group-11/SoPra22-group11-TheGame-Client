@@ -8,3 +8,23 @@
   max-width: $DESKTOP_WIDTH;
   color: $textColor;
 }
+
+.home-base-container {
+  margin-left: auto;
+  padding-left: 400px;
+  margin-right: auto;
+  padding-right: 15px;
+  max-width: $DESKTOP_WIDTH;
+  color: $textColor;
+}
+
+.right{
+  width: 30%;
+  float: right;
+
+}
+
+.left{
+  width: 70%;
+  float: left;
+}
