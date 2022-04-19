@@ -32,8 +32,9 @@ class SockClient {
             // TODO: disconnect
         };
         callback = function(responseMessage){
-            console.log("this is the response:")
-            console.log(responseMessage)
+            console.log("this is the response:");
+            console.log(responseMessage[0]['playerName'])
+
         }
     }
 
