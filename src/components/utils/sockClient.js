@@ -30,7 +30,14 @@ class SockClient {
             console.log("before subscribe");
             this.subscribe('/topic/players', this.callback)
             this.subscribe('/topic/gameObject',(message) => {
-                console.log(message.body)});
+                console.log('message  of /topic/gameObject'+message.body)
+                const obj = message
+                localStorage.setItem('Game object', obj)
+                console.log(obj.pilesList)
+                console.log(obj.playerCards)
+                console.log(obj.gameRunning)
+
+            });
 
             });
         this.sock.onclose = r => {
