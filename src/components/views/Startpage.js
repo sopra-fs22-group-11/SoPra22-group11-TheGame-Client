@@ -97,11 +97,9 @@ const Startpage = () => {
                 </ul>
                 <Button
                     width="100%"
-<<<<<<< HEAD
                     onClick={() => goToWaitingroomOverview()}
-=======
-                    onClick={() => history.push('/game')}
->>>>>>> Websocket_implementation
+
+                  //  onClick={() => history.push('/game')}
                 >
                     Play
                 </Button>
