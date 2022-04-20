@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
+<<<<<<< HEAD
 import ZoomVideo from '@zoom/videosdk';
 import initClientEventListeners from "../../zoom/js/meeting/session/client-event-listeners";
 import initButtonClickHandlers from "../../zoom/js/meeting/session/button-click-handlers";
@@ -166,6 +167,10 @@ const Waitingroom =  () => {
         history.push('/startpage');
     }
 
+=======
+import sockClient from "../utils/sockClient";
+import SockClient from "../utils/sockClient";
+>>>>>>> Websocket_implementation
 
 
     // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
