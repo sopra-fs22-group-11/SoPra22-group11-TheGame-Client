@@ -6,15 +6,18 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
+import HeaderHome from "./HeaderHome";
 
 const Profile = () => {
 
 
     return (
+        <div>
+            <HeaderHome height="100"/>
         <BaseContainer className = "Home container">
 
         </BaseContainer>
-
+        </div>
 
     ) ;
 

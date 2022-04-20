@@ -2,8 +2,7 @@ import React from "react";
 import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
-import logout from "./Startpage";
-import goToHome from "./Waitingroom";
+import goToHome from "./Game";
 import goToRulePage from "./Startpage";
 import doRegister from "./Login";
 import goToLogin from "./Registration";
@@ -41,32 +40,43 @@ const changeLocation = () =>{
     }
 }
 
+const logout = () => {
+    //get a token
+    localStorage.removeItem('token');
+    //get ID of user
+    let id = localStorage.getItem('ID');
+    localStorage.removeItem('ID')
+}
 
 
 
-const Header = props => (
+
+const HeaderGame = props => (
     <div className="header container">
         <div className="header title">
             The Game |
         </div>
         <div className="header-right">
+            <a href="/rulePage"
+               onClick={() => goToRulePage()}
+            >Rules</a>
             <a href="/login"
-               onClick={() => goToLogin()}
-            >Login </a>
-            <a href="/register"
-               onClick={() => doRegister()}
-            >Register</a>
+               onClick={() => logout()}
+            >I can not Play</a>
+            <a href="/startpage"
+               onClick={() => goToHome()}
+            >Leave Game </a>
         </div>
     </div>
 );
 
 
 
-Header.propTypes = {
+HeaderGame.propTypes = {
     height: PropTypes.string
 };
 
 /**
  * Don't forget to export your component!
  */
-export default Header;
+export default HeaderGame;
