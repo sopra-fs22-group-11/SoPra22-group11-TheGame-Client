@@ -178,12 +178,48 @@ const Game =  () => {
     SockClient.connect();
 
     //*************************************************************************
+
+
     let cards = (
+        <div>
+            <Button className ="cards-button"
+                    onClick={() => doChatExample()}
+            >
+                1
+            </Button>
+            <Button className ="cards-button"
+                    onClick={() => doChatExample()}
+            >
+                2
+            </Button>
+            <Button className ="cards-button"
+                    onClick={() => doChatExample()}
+            >
+                3
+            </Button>
+            <Button className ="cards-button"
+                    onClick={() => doChatExample()}
+            >
+                4
+            </Button>
+            <Button className ="cards-button"
+                    onClick={() => doChatExample()}
+            >
+                5
+            </Button>
+            <Button className ="cards-button"
+                    onClick={() => doChatExample()}
+            >
+                6
+            </Button>
             <Button className ="game-button"
                     onClick={() => doChatExample()}
             >
-                12
+                7
             </Button>
+        </div>
+
+
     );
 
 

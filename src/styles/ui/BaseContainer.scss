@@ -30,7 +30,9 @@
   //display: block;
   &.top{
     width: 100%;
-    display: flow;
+    height: 200px;
+    display:flex;
+    justify-content: space-between;
     margin-top: 50px;
   }
   &.middle{

@@ -14,6 +14,13 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
 
+const Player = ({user}) => (
+    <div className="player container">
+        <div className="player username">{user.username}</div>
+        <div className="player id">id: {user.id}</div>
+    </div>
+);
+
 
 const Waitingroom =  () => {
     const history = useHistory();
@@ -23,28 +30,11 @@ const Waitingroom =  () => {
     const videoTrack = VideoSDK.createLocalVideoTrack();
     let mediaStream;
     const canvas = document.querySelector('.video-canvas');
-/* Eher Experimentell - Bruche mer aber bestimmt öppis i die richtig
-    client.on('peer-video-state-change', async (payload) => {
-        const { action, userId } = payload;
-        if (action === 'Start') {
-            await mediaStream.renderVideo(canvas, userId, 1280,640, 50, 50, 2);
-        } else if (action === 'Stop') {
-            await mediaStream.stopRenderVideo(canvas);
-        }
-    });
-
-
-    const captureOptions = {
-        cameraId: 'cameraId',
-        captureWidth: 640,
-        captureHeight: 360,
-    };
-    // start capture
-    stream.startVideo();
-    // stop capture
-    stream.stopVideo();
-*/
     const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
+
+    //to show users
+    const [users, setUsers] = useState(null);
+    //setUsers(response.data);
 
     const generateSessionTopic = () => {
       const date= new Date().toDateString();
@@ -175,7 +165,11 @@ const Waitingroom =  () => {
             <HeaderHome height="100"/>
         <BaseContainer className = "home container">
             <h2> Hear you can find all Participants</h2>
-
+            <ul className="home user-list">
+                {users.map(user => (
+                    <Player user={user} key={user.id}/>
+                ))}
+            </ul>
             <Button
                 width="100%"
                 onClick={() => goToGame()}
