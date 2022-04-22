@@ -3,6 +3,7 @@
  */
 class GameObject {
     constructor(data = {}) {
+        this.noCardsOnDeck = null;
         this.whoseTurn = null;
         this.pilesList = null;
         this.playerCards= null;

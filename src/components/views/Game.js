@@ -46,18 +46,7 @@ const Game =  () => {
     const [user, setUser] = useState(null);
 
     //for websocket SendName
-    const sendName =async () => {
 
-
-        //const userId = localStorage.getItem('loggedInUser');
-        //const response1 = await api.get('/users/' + userId);
-        //await new Promise(resolve => setTimeout(resolve, 1000));
-//
-        //setUser(response1.data);
-        console.log("vor sockClient send name");
-        sockClient.sendName(localStorage.getItem('username'));
-
-    }
 
     const joinMeeting = async () => {
         console.log("Let's see our client:")
@@ -251,7 +240,7 @@ const Game =  () => {
                 </div>
                 <div className="left middle">
                     <Button className ="game-button"
-                        onClick={() => sendName()}
+                        onClick={() => doChatExample()}
                     >
                         Draw
                     </Button>

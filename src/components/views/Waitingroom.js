@@ -13,16 +13,19 @@ import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
+import SockClient from "../utils/sockClient";
+import sockClient from "../utils/sockClient";
 
 const Player = ({user}) => (
     <div className="player container">
         <div className="player username">{user.username}</div>
-        <div className="player id">id: {user.id}</div>
     </div>
 );
 
 
-const Waitingroom =  () => {
+
+
+const Waitingroom =   () => {
     const history = useHistory();
 
     const client = ZoomVideo.createClient();
@@ -31,18 +34,50 @@ const Waitingroom =  () => {
     let mediaStream;
     const canvas = document.querySelector('.video-canvas');
     const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
+    const [users, setUsers] = useState(null);
 
     //to show users
-    const [users, setUsers] = useState(null);
-    //setUsers(response.data);
 
-    const generateSessionTopic = () => {
-      const date= new Date().toDateString();
-      const sessionTopic = "theGame"+date;
-      console.log(sessionTopic);
-      return sessionTopic;
+    const sendName = () => {
+        //const userId = localStorage.getItem('loggedInUser');
+        //const response1 = await api.get('/users/' + userId);
+        //await new Promise(resolve => setTimeout(resolve, 1000));
+//
+        //setUser(response1.data);
+        console.log("vor sockClient send name");
+        sockClient.sendName(localStorage.getItem('username'));
 
     }
+    //SockClient.connect();
+    //sendName();
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                SockClient.connect();
+                console.log("HelloHere")
+                sendName();
+                console.log("Hello");
+            } catch (error) {
+                console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                console.error("Details:", error);
+                alert("Something went wrong while fetching the users! See the console for details.");
+            }
+        }
+
+        fetchData();
+    }, []);
+
+    setUsers(localStorage.getItem('playerlist'));
+
+    const generateSessionTopic = () => {
+        const date = new Date().toDateString();
+        const sessionTopic = "theGame" + date;
+        console.log(sessionTopic);
+        return sessionTopic;
+
+    }
+
 
     const joinMeeting = async () => {
         console.log("Let's see our client:")
@@ -62,6 +97,7 @@ const Waitingroom =  () => {
 
 
     const [signature, setSignature] = useState(null);
+
     async function createSignature() {
         try {
 
@@ -123,8 +159,8 @@ const Waitingroom =  () => {
         client.on('chat-on-message', (payload) => {
             const {
                 message,
-                sender: { name: senderName  },
-                receiver: { name: receiverName  },
+                sender: {name: senderName},
+                receiver: {name: receiverName},
                 timestamp,
             } = payload;
             console.log(
@@ -136,7 +172,7 @@ const Waitingroom =  () => {
 
     const startAudioMuted = async () => {
 
-        try{
+        try {
             await mediaStream.startAudio();
         } catch (e) {
             console.log("We can not start the audio.")
@@ -166,49 +202,52 @@ const Waitingroom =  () => {
         ))}
     </ul>*/
 
+
+
     return (
         <div>
             <HeaderHome height="100"/>
-        <BaseContainer className = "home container">
-            <h2> Hear you can find all Participants</h2>
+            <BaseContainer className="home container">
+                <h2> Hear you can find all Participants</h2>
 
-            <Button
-                width="100%"
-                onClick={() => goToGame()}
-            >
-                Start the Game!
-            </Button>
-            <Button
-                width="100%"
-                onClick={() => joinMeeting()}
-            >
-                Join
-            </Button>
-            <Button
-                width="100%"
-                onClick={() => getClients()}
-            >
-                get clients
-            </Button>
 
-            <Button
-                width="100%"
-                onClick={() => doChatExample()}
-            >
-                chat example
-            </Button>
-            <Button
-                width="100%"
-                onClick={() => generateSessionTopic()}
-            >
-                chat example
-            </Button>
+                <Button
+                    width="100%"
+                    onClick={() => goToGame()}
+                >
+                    Start the Game!
+                </Button>
+                <Button
+                    width="100%"
+                    onClick={() => joinMeeting()}
+                >
+                    Join
+                </Button>
+                <Button
+                    width="100%"
+                    onClick={() => sendName()}
+                >
+                    get clients
+                </Button>
 
-        </BaseContainer>
+                <Button
+                    width="100%"
+                    onClick={() => doChatExample()}
+                >
+                    chat example
+                </Button>
+                <Button
+                    width="100%"
+                    onClick={() => generateSessionTopic()}
+                >
+                    chat example
+                </Button>
+
+            </BaseContainer>
         </div>
 
 
-    ) ;
+    );
 
 }
 

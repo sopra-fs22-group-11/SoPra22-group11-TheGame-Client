@@ -28,16 +28,20 @@ class SockClient {
         this.stompClient.connect({}, () => {
             this._connected = true;
             console.log("before subscribe");
-            this.subscribe('/topic/players', this.callback);
+            this.subscribe('/topic/players', (message)=> { // The response is a list of all the players in the waiting room
+                    console.log("this is the response:");
+                    console.log(message['playerName']);
+                    localStorage.setItem('playerList', message);
+            });
 
-            this.subscribe('/topic/gameObject',(message) => { // the message is a tgo
-                console.log('message  of /topic/gameObject'+message.body);
+            this.subscribe('/topic/game',(message) => { // the message is a tgo
+                console.log('Received Message from /topic/game'+message.body);
                 const obj = message;
                 localStorage.setItem('gto', obj);
+                console.log(obj.noCardsOnDeck);
                 console.log(obj.pilesList);
                 console.log(obj.playerCards);
                 console.log(obj.gameRunning);
-
             });
 
             this.subscribe('/topic/start', (message)=>{ // the message is a tgo
@@ -52,26 +56,20 @@ class SockClient {
                 const obj = message;
                 localStorage.setItem('gto',obj);
                 // TODO Add functions which update the gui -Sandra
-
             });
-
-
 
             });
         this.sock.onclose = r => {
             console.log("Socket closed!", r);
             // TODO: disconnect
         };
-
-
-
-
     }
 
-    callback = function(responseMessage){ // The response is a list of all the players in the waiting room
-        console.log("this is the response:");
-        console.log(responseMessage[0]['playerName'])
-    }
+   // callback = function(responseMessage){ // The response is a list of all the players in the waiting room
+   //                   console.log("this is the response:");
+    //    //     console.log(responseMessage[0]['playerName'])
+    //    //     localStorage.setItem('playerlist', responseMessage)
+   // }
 
     //callback1 = function (responseMessage){
     //    console.log("In gamObject subscription response")
