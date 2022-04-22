@@ -49,11 +49,11 @@ const Game =  () => {
     const sendName =async () => {
 
 
-        const userId = localStorage.getItem('loggedInUser');
-        const response1 = await api.get('/users/' + userId);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        setUser(response1.data);
+        //const userId = localStorage.getItem('loggedInUser');
+        //const response1 = await api.get('/users/' + userId);
+        //await new Promise(resolve => setTimeout(resolve, 1000));
+//
+        //setUser(response1.data);
         console.log("vor sockClient send name");
         sockClient.sendName(localStorage.getItem('username'));
 

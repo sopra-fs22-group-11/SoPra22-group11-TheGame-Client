@@ -28,16 +28,34 @@ class SockClient {
         this.stompClient.connect({}, () => {
             this._connected = true;
             console.log("before subscribe");
-            this.subscribe('/topic/players', this.callback)
-            this.subscribe('/topic/gameObject',(message) => {
-                console.log('message  of /topic/gameObject'+message.body)
-                const obj = message
-                localStorage.setItem('Game object', obj)
-                console.log(obj.pilesList)
-                console.log(obj.playerCards)
-                console.log(obj.gameRunning)
+            this.subscribe('/topic/players', this.callback);
+
+            this.subscribe('/topic/gameObject',(message) => { // the message is a tgo
+                console.log('message  of /topic/gameObject'+message.body);
+                const obj = message;
+                localStorage.setItem('gto', obj);
+                console.log(obj.pilesList);
+                console.log(obj.playerCards);
+                console.log(obj.gameRunning);
 
             });
+
+            this.subscribe('/topic/start', (message)=>{ // the message is a tgo
+                console.log("Received Message from topic/start")
+                const obj = message;
+                localStorage.setItem('gto',obj);
+                // TODO Add functions which update the gui -Sandra
+            });
+
+            this.subscribe('/topic/status', (message)=>{ // the message is a tgo
+                console.log("Received Message from topic/status")
+                const obj = message;
+                localStorage.setItem('gto',obj);
+                // TODO Add functions which update the gui -Sandra
+
+            });
+
+
 
             });
         this.sock.onclose = r => {
@@ -50,7 +68,7 @@ class SockClient {
 
     }
 
-    callback = function(responseMessage){
+    callback = function(responseMessage){ // The response is a list of all the players in the waiting room
         console.log("this is the response:");
         console.log(responseMessage[0]['playerName'])
     }
@@ -63,7 +81,6 @@ class SockClient {
     //}
      sendName(username) {
         this.stompClient.send("/app/game", {}, JSON.stringify(username));
-        this.stompClient.send("/app/game1",{},)
         /*
         var pre = document.createElement("p");
         pre.innerHTML = stompClient.send("/app/hello", {}, JSON.stringify("Tijana")).data;
