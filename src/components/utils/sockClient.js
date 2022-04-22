@@ -30,8 +30,8 @@ class SockClient {
             console.log("before subscribe");
             this.subscribe('/topic/players', this.callback);
 
-            this.subscribe('/topic/gameObject',(message) => { // the message is a tgo
-                console.log('message  of /topic/gameObject'+message.body);
+            this.subscribe('/topic/game',(message) => { // the message is a tgo
+                console.log('message  of /topic/game'+message.body);
                 const obj = message;
                 localStorage.setItem('gto', obj);
                 console.log(obj.pilesList);
@@ -86,6 +86,10 @@ class SockClient {
         pre.innerHTML = stompClient.send("/app/hello", {}, JSON.stringify("Tijana")).data;
          */
         alert('Got the greeting');
+    }
+    startGame(){
+        this.stompClient.send("/app/start", {});
+
     }
 
 

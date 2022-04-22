@@ -16,6 +16,7 @@ import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
 import sockClient from "../utils/sockClient";
 import SockClient from "../utils/sockClient";
+import {Views} from "./simple-view-switcher";
 
 const User = ({user}) => (
     <div className="user container">
@@ -58,6 +59,7 @@ const Game =  () => {
         sockClient.sendName(localStorage.getItem('username'));
 
     }
+
 
     const joinMeeting = async () => {
         console.log("Let's see our client:")
@@ -179,40 +181,54 @@ const Game =  () => {
 
     //*************************************************************************
 
+    const [hidden, setHidden] = useState(null);
+    const [values, setValues] = useState(null);
+
+    try{
+        console.log("here wer are at the Game");
+        const obj =localStorage.getItem('tgo');
+        console.log(obj.pilesList);
+    } catch (e) {
+        console.log("balbiblub");
+    }
+
 
     let cards = (
-        <div className="left bottom">
-            <Button className ="cards-button"
-                    onClick={() => doChatExample()}
+        <div  className="left bottom">
+            <Button id="card1" className ="cards-button"
+                    hidden={hidden}
+                    onClick={() => SockClient.connect()}
             >
                 1
             </Button>
-            <Button className ="cards-button"
-                    onClick={() => doChatExample()}
+            <Button id="card2" className ="cards-button"
+                    hidden={hidden}
+                    onClick={() => sockClient.startGame()}
             >
                 2
             </Button>
-            <Button className ="cards-button"
+            <Button id="card3" className ="cards-button"
+                    hidden={true}
                     onClick={() => doChatExample()}
             >
                 3
             </Button>
-            <Button className ="cards-button"
+            <Button id="card4" className ="cards-button"
                     onClick={() => doChatExample()}
             >
                 4
             </Button>
-            <Button className ="cards-button"
+            <Button id="card5" className ="cards-button"
                     onClick={() => doChatExample()}
             >
                 5
             </Button>
-            <Button className ="cards-button"
+            <Button id="card6" className ="cards-button"
                     onClick={() => doChatExample()}
             >
                 6
             </Button>
-            <Button className ="game-button"
+            <Button id="card7" className ="cards-button"
                     onClick={() => doChatExample()}
             >
                 7
@@ -221,6 +237,8 @@ const Game =  () => {
 
 
     );
+
+    //Views.card3.className.endsWith("hidden");
 
 
     return (
