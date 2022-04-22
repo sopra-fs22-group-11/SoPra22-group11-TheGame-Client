@@ -55,7 +55,7 @@ const Game =  () => {
 
         setUser(response1.data);
         console.log("vor sockClient send name");
-        sockClient.sendName(user);
+        sockClient.sendName(localStorage.getItem('username'));
 
     }
 
@@ -175,46 +175,55 @@ const Game =  () => {
     //Comment the next line, when working on the game
 
     //joinMeeting();
+    SockClient.connect();
 
     //*************************************************************************
+    let cards = (
+            <Button className ="game-button"
+                    onClick={() => doChatExample()}
+            >
+                12
+            </Button>
+    );
+
 
     return (
         <div>
             <HeaderGame height="100"/>
             <BaseContainer className = "left">
-                <Button className ="game-button"
-                        onClick={() => joinMeeting()}
-                >
-                    Stack 1
-                </Button>
-                <Button className ="game-button"
-                        onClick={() => getClients()}
-                >
-                    Stack 2
-                </Button>
-                <Button className ="game-button"
-                        onClick={() => doChatExample()}
-                >
-                    Stack 3
-                </Button>
-                <Button className ="game-button"
-                        onClick={() => doChatExample()}
-                >
-                    Stack 4
-                </Button>
-                <Button
-                    width="100%"
-                    onClick={() => SockClient.connect()}
-                >
-                    connect to sockClient
-                </Button>
+                <div className="left top">
+                    <Button className ="game-button"
+                            onClick={() => joinMeeting()}
+                    >
+                        Stack 1
+                    </Button>
+                    <Button className ="game-button"
+                            onClick={() => getClients()}
+                    >
+                        Stack 2
+                    </Button>
+                    <Button className ="game-button"
+                            onClick={() => doChatExample()}
+                    >
+                        Stack 3
+                    </Button>
+                    <Button className ="game-button"
+                            onClick={() => doChatExample()}
+                    >
+                        Stack 4
+                    </Button>
+                </div>
+                <div className="left middle">
+                    <Button className ="game-button"
+                        onClick={() => sendName()}
+                    >
+                        Draw
+                    </Button>
+                </div>
+                <div className="left bottom">
+                    {cards}
+                </div>
 
-                <Button
-                    width="100%"
-                    onClick={() => sendName()}
-                >
-                    send message
-                </Button>
             </BaseContainer>
             <BaseContainer className = "right">
                 <div id="js-video-view" className="container video-app">
