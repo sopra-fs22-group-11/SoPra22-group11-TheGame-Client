@@ -160,16 +160,18 @@ const Waitingroom =  () => {
     // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
     // siehe gameIdGuard in RouteProtectors
 
+    /*<ul className="home user-list">
+        {users.map(user => (
+            <Player user={user} key={user.id}/>
+        ))}
+    </ul>*/
+
     return (
         <div>
             <HeaderHome height="100"/>
         <BaseContainer className = "home container">
             <h2> Hear you can find all Participants</h2>
-            <ul className="home user-list">
-                {users.map(user => (
-                    <Player user={user} key={user.id}/>
-                ))}
-            </ul>
+
             <Button
                 width="100%"
                 onClick={() => goToGame()}

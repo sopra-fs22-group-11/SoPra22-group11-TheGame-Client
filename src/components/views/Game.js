@@ -181,7 +181,7 @@ const Game =  () => {
 
 
     let cards = (
-        <div>
+        <div className="left bottom">
             <Button className ="cards-button"
                     onClick={() => doChatExample()}
             >
@@ -256,9 +256,8 @@ const Game =  () => {
                         Draw
                     </Button>
                 </div>
-                <div className="left bottom">
-                    {cards}
-                </div>
+
+                {cards}
 
             </BaseContainer>
             <BaseContainer className = "right">
