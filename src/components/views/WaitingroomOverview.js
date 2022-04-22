@@ -7,14 +7,18 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
+import SockClient from "../utils/sockClient";
+import sockClient from "../utils/sockClient";
 
 const WaitingroomOverview = () => {
 
     const history = useHistory();
 
-    const joinWaitingroom = () => {
+    const joinWaitingroom = async () => {
+        await SockClient.connect()
         history.push('/waitingroom/1'); //for the start we need the waitingroom 1
     }
+
 
     return (
         <div>

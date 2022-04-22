@@ -13,7 +13,6 @@ import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
-import SockClient from "../utils/sockClient";
 import sockClient from "../utils/sockClient";
 
 const Player = ({user}) => (
@@ -35,23 +34,29 @@ const Waitingroom =   () => {
     const canvas = document.querySelector('.video-canvas');
     const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
     const [users, setUsers] = useState(null);
+    const[registered, setRegistered]=useState(false);
 
     //to show users
 
     const sendName = () => {
+        //TODO delete if not necesary
         //const userId = localStorage.getItem('loggedInUser');
         //const response1 = await api.get('/users/' + userId);
         //await new Promise(resolve => setTimeout(resolve, 1000));
-//
+        //
         //setUser(response1.data);
-        console.log("vor sockClient send name");
-        sockClient.sendName(localStorage.getItem('username'));
+
+        if(!registered){
+            setRegistered(true);
+            console.log("vor sockClient send name");
+            sockClient.sendName(localStorage.getItem('username'));
+        }
 
     }
     //SockClient.connect();
     //sendName();
 
-    useEffect(() => {
+    /*useEffect(() => {
         async function fetchData() {
             try {
                 SockClient.connect();
@@ -66,9 +71,9 @@ const Waitingroom =   () => {
         }
 
         fetchData();
-    }, []);
+    }, []);*/
 
-    setUsers(localStorage.getItem('playerlist'));
+    //setUsers(localStorage.getItem('playerlist'));
 
     const generateSessionTopic = () => {
         const date = new Date().toDateString();
@@ -210,7 +215,6 @@ const Waitingroom =   () => {
             <BaseContainer className="home container">
                 <h2> Hear you can find all Participants</h2>
 
-
                 <Button
                     width="100%"
                     onClick={() => goToGame()}
@@ -241,6 +245,12 @@ const Waitingroom =   () => {
                     onClick={() => generateSessionTopic()}
                 >
                     chat example
+                </Button>
+                <Button
+                    width="100%"
+                    onClick={() => sendName()}
+                >
+                    Register in this WaitingRoom (do not delete)
                 </Button>
 
             </BaseContainer>
