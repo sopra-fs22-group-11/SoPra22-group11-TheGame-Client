@@ -31,19 +31,24 @@ class SockClient {
             this.subscribe('/topic/players', this.callback);
 
             this.subscribe('/topic/game',(message) => { // the message is a tgo
-                console.log('message  of /topic/game'+message.body);
+                //console.log('message  of /topic/game'+message.body);
                 const obj = message;
-                localStorage.setItem('gto', obj);
-                console.log(obj.pilesList);
+                localStorage.setItem('gto', JSON.stringify(obj));
+                console.log(localStorage.getItem('gto'));
                 console.log(obj.playerCards);
                 console.log(obj.gameRunning);
 
             });
 
             this.subscribe('/topic/start', (message)=>{ // the message is a tgo
-                console.log("Received Message from topic/start")
+                //console.log('message  of /topic/start'+message.body);
                 const obj = message;
-                localStorage.setItem('gto',obj);
+                localStorage.setItem('gto',JSON.stringify(obj));
+                /*const obj2 = JSON.parse(localStorage.getItem('gto'));
+                console.log(obj2.gameRunning);
+                console.log(obj.playerCards);
+                console.log(obj.gameRunning);*/
+                console.log("Received Message from topic/start")
                 // TODO Add functions which update the gui -Sandra
             });
 
