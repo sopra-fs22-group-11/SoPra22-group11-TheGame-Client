@@ -197,15 +197,28 @@ const Game =  () => {
 
     const [hidden, setHidden] = useState(null);
     const [values, setValues] = useState(null);
+    const name= localStorage.getItem('username');
+
+    const currentPlayer = obj2.playerCards[name];
     //values of card to be shown
-    const[valueCard1, setValueCard1]= useState(obj2.playerCards.Ben[0].value);
-    const[valueCard2, setValueCard2]= useState(obj2.playerCards.Ben[1].value);
-    const[valueCard3, setValueCard3]= useState(obj2.playerCards.Ben[2].value);
-    const[valueCard4, setValueCard4]= useState(obj2.playerCards.Ben[3].value);
-    const[valueCard5, setValueCard5]= useState(obj2.playerCards.Ben[4].value);
-    const[valueCard6, setValueCard6]= useState(obj2.playerCards.Ben[5].value);
-    const[valueCard7, setValueCard7]= useState(obj2.playerCards.Ben[6].value);
+    const[valueCard1, setValueCard1]= useState(currentPlayer[0].value);
+    const[valueCard2, setValueCard2]= useState(currentPlayer[1].value);
+    const[valueCard3, setValueCard3]= useState(currentPlayer[2].value);
+    const[valueCard4, setValueCard4]= useState(currentPlayer[3].value);
+    const[valueCard5, setValueCard5]= useState(currentPlayer[4].value);
+    const[valueCard6, setValueCard6]= useState(currentPlayer[5].value);
+    const[valueCard7, setValueCard7]= useState(currentPlayer[6].value);
     //boolian, hidden or not
+
+    // eslint-disable-next-line no-unused-expressions
+
+    const nrCards = Object.keys(currentPlayer).length;
+    console.log(nrCards);
+
+    for (let i = 0; i < nrCards; i++) {
+
+    }
+
     const[hiddenCard1, setHiddenCard1]= useState(false);
     const[hiddenCard2, setHiddenCard2]= useState(false);
     const[hiddenCard3, setHiddenCard3]= useState(false);
