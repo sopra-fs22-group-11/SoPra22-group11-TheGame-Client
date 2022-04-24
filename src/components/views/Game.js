@@ -208,24 +208,19 @@ const Game =  () => {
     const[valueCard5, setValueCard5]= useState(currentPlayer[4].value);
     const[valueCard6, setValueCard6]= useState(currentPlayer[5].value);
     const[valueCard7, setValueCard7]= useState(currentPlayer[6].value);
-    //boolian, hidden or not
 
-    // eslint-disable-next-line no-unused-expressions
 
+
+    //list how many cards need to be shown
     const nrCards = Object.keys(currentPlayer).length;
     console.log(nrCards);
+    //boolian, hidden or not
+   const listHiddenValues = [true, true, true, true, true, true, true];
 
     for (let i = 0; i < nrCards; i++) {
-
+        listHiddenValues[i] = false;
     }
 
-    const[hiddenCard1, setHiddenCard1]= useState(false);
-    const[hiddenCard2, setHiddenCard2]= useState(false);
-    const[hiddenCard3, setHiddenCard3]= useState(false);
-    const[hiddenCard4, setHiddenCard4]= useState(false);
-    const[hiddenCard5, setHiddenCard5]= useState(false);
-    const[hiddenCard6, setHiddenCard6]= useState(false);
-    const[hiddenCard7, setHiddenCard7]= useState(false);
 
 
 
@@ -233,43 +228,43 @@ const Game =  () => {
     let cards = (
         <div  className="left bottom">
             <Button id="card1" className ="cards-button"
-                    hidden={hiddenCard1}
+                    hidden={listHiddenValues[0]}
                     onClick={() => SockClient.connect()}
             >
                 {valueCard1}
             </Button>
             <Button id="card2" className ="cards-button"
-                    hidden={hiddenCard2}
+                    hidden={listHiddenValues[1]}
                     onClick={() => sockClient.startGame()}
             >
                 {valueCard2}
             </Button>
             <Button id="card3" className ="cards-button"
-                    hidden={hiddenCard3}
+                    hidden={listHiddenValues[2]}
                     onClick={() => doChatExample()}
             >
                 {valueCard3}
             </Button>
             <Button id="card4" className ="cards-button"
-                    hidden={hiddenCard4}
+                    hidden={listHiddenValues[3]}
                     onClick={() => doChatExample()}
             >
                 {valueCard4}
             </Button>
             <Button id="card5" className ="cards-button"
-                    hidden={hiddenCard5}
+                    hidden={listHiddenValues[4]}
                     onClick={() => doChatExample()}
             >
                 {valueCard5}
             </Button>
             <Button id="card6" className ="cards-button"
-                    hidden={hiddenCard6}
+                    hidden={listHiddenValues[5]}
                     onClick={() => doChatExample()}
             >
                 {valueCard6}
             </Button>
             <Button id="card7" className ="cards-button"
-                    hidden={hiddenCard7}
+                    hidden={listHiddenValues[6]}
                     onClick={() => doChatExample()}
             >
                 {valueCard7}
