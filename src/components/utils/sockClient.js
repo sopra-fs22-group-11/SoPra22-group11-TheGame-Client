@@ -94,7 +94,6 @@ class SockClient {
     }
     startGame(){
         this.stompClient.send("/app/start", {});
-
     }
 
 
