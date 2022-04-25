@@ -159,7 +159,8 @@ const Game =  () => {
     }
 
     const draw = () => {
-
+        localStorage.setItem('discardCounter', 0)
+        sockClient.sendDraw();
     }
 
 
