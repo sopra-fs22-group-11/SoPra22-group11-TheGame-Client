@@ -49,7 +49,7 @@ const Waitingroom =   () => {
         if(!registered){
             setRegistered(true);
             console.log("vor sockClient send name");
-            sockClient.sendName(localStorage.getItem('player username')); // THIS WAS A PROBLEM
+            sockClient.sendName(localStorage.getItem('username')); // THIS WAS A PROBLEM
         }
 
     }

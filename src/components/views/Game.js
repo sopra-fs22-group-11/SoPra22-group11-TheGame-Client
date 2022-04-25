@@ -39,8 +39,8 @@ const Game =  () => {
     const [user, setUser] = useState(null);
     console.log("here wer are at the Game");
     const obj2 = JSON.parse(localStorage.getItem('gto'));
-    console.log("Is the Game running:"+ obj2.gameRunning);
-    console.log("Show Players cards"+ JSON.stringify(obj2.playerCards));
+    console.log("Is the Game running: "+ obj2.gameRunning);
+    console.log("Show Players cards: "+ JSON.stringify(obj2.playerCards));
     const [running, setRunning] = useState(obj2.gameRunning);
 
     //for websocket SendName
@@ -200,6 +200,8 @@ const Game =  () => {
     const name= localStorage.getItem('username');
 
     const currentPlayer = obj2.playerCards[name];
+
+    console.log("this are the current playercards: " +currentPlayer)
     //values of card to be shown
     const[valueCard1, setValueCard1]= useState(currentPlayer[0].value);
     const[valueCard2, setValueCard2]= useState(currentPlayer[1].value);

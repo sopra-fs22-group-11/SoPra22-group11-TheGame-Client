@@ -37,7 +37,7 @@ class SockClient {
             this.subscribe('/topic/game',(message) => { // the message is a tgo
                 console.log('Received Message from /topic/game'+message.body);
                 const obj = message;
-                localStorage.setItem('gto', obj);
+                localStorage.setItem('gto', JSON.stringify(obj));
                 console.log(obj.noCardsOnDeck);
                 console.log(obj.pilesList);
                 console.log(obj.playerCards);
@@ -48,14 +48,20 @@ class SockClient {
             this.subscribe('/topic/start', (message)=>{ // the message is a tgo
                 console.log("Received Message from topic/start")
                 const obj = message;
-                localStorage.setItem('gto',obj);
+                localStorage.setItem('gto',JSON.stringify(obj));
+                console.log("dieses item wurde in den local storage getan:")
+                console.log(localStorage.getItem('gto'))
+
+                const saved = JSON.parse(localStorage.getItem('gto'));
+                console.log(saved.gameRunning);
+
                 // TODO Add functions which update the gui -Sandra
             });
 
             this.subscribe('/topic/status', (message)=>{ // the message is a tgo
                 console.log("Received Message from topic/status")
                 const obj = message;
-                localStorage.setItem('gto',obj);
+                localStorage.setItem('gto', JSON.stringify(obj));
                 // TODO Add functions which update the gui -Sandra
 
             });
