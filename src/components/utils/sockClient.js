@@ -134,6 +134,12 @@ class SockClient {
         console.log("send to start game done");
     }
 
+    sendDraw(){
+        this.stompClient.send("/app/draw", {} );
+        console.log("it was sent");
+        alert('Pinggg, it is sent ');
+    }
+
 
     _stripResponse(response) {
         return JSON.parse(response.body);
