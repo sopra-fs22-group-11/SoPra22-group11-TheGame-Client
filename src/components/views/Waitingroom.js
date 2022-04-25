@@ -39,7 +39,6 @@ const Waitingroom =   () => {
     const [users, setUsers] = useState(null);
     const [registered, setRegistered]=useState(false);
 
-    const playerList = JSON.parse(localStorage.getItem('playerList'));
 
     // for join running game button
     //let saved = JSON.parse(localStorage.getItem('gto'));
@@ -224,10 +223,8 @@ const Waitingroom =   () => {
         ))}
     </ul>*/
 
-    const players = () => {
-        const playerList = JSON.parse(localStorage.getItem('playerList'));
-    }
-
+    //const content = JSON.parse(localStorage.getItem('playerList'));
+    //const [playerList, setPlayerList] = useState(content[0].data);
 
 
     return (
@@ -235,11 +232,7 @@ const Waitingroom =   () => {
             <HeaderHome height="100"/>
             <BaseContainer className="home container">
                 <h2> Hear you can find all Participants</h2>
-                        {players.map(player => (
-                            <li>
-                                <Player player={player} key={player.id}/>
-                            </li>
-                        ))}
+                <li> {} </li>
                 <Button
                     width="100%"
                     onClick={() => goToGame()}

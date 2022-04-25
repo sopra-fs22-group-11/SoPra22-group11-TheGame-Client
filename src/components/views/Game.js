@@ -41,6 +41,7 @@ const Game =  () => {
     const obj2 = JSON.parse(localStorage.getItem('gto'));
     console.log("Is the Game running: "+ obj2.gameRunning);
     console.log("Show Players cards: "+ JSON.stringify(obj2.playerCards));
+    console.log("No of Cards on Deck: " +obj2.noCardsOnDeck);
     const [running, setRunning] = useState(obj2.gameRunning);
 
     //for websocket SendName
