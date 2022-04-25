@@ -237,7 +237,7 @@ const Waitingroom =   () => {
                     width="100%"
                     onClick={() => sendName()}
                 >
-                    get clients
+                    send Name
                 </Button>
 
                 <Button

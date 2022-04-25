@@ -17,6 +17,7 @@ import {generateSessionToken} from "../../zoom/js/tool";
 import sockClient from "../utils/sockClient";
 import SockClient from "../utils/sockClient";
 import {Views} from "./simple-view-switcher";
+import {string} from "sockjs-client/lib/utils/random";
 
 const User = ({user}) => (
     <div className="user container">
@@ -38,10 +39,10 @@ const Game =  () => {
     const [users, setUsers] = useState(null);
     const [user, setUser] = useState(null);
     console.log("here wer are at the Game");
-    const obj2 = JSON.parse(localStorage.getItem('gto'));
-    console.log("Is the Game running: "+ obj2.gameRunning);
-    console.log("Show Players cards: "+ JSON.stringify(obj2.playerCards));
-    const [running, setRunning] = useState(obj2.gameRunning);
+    const gameObj = JSON.parse(localStorage.getItem('gto'));
+    console.log("Is the Game running: "+ gameObj.gameRunning);
+    console.log("Show Players cards: "+ JSON.stringify(gameObj.playerCards));
+    const [running, setRunning] = useState(gameObj.gameRunning);
 
     //for websocket SendName
     const sendName =async () => {
@@ -62,17 +63,23 @@ const Game =  () => {
 
     //************************  GameLogic  **************************************************
     //navigate trough Pages
-    const history = useHistory();
+    const history = useHistory()
 
     //TODO add Running Game Logic
 
 
-    const checkWhosTurn =  ()=>{
-        //check whos turn it is
-        const playersTurn = false;
-        //to make UI cards clickable
-        disableCards= playersTurn;
-        return playersTurn;
+    const checkWhoseTurn =  ()=>{
+        //check whose turn it is
+        const playersTurn = gameObj.whoseTurn;
+        const name= localStorage.getItem('username');
+        if (name == playersTurn ){
+            disableCards = false;
+            
+        } else {
+            disableCards = true;
+        }
+        return disableCards;
+        
     }
 
     //TODO check if the player is allowed to draw card
@@ -85,6 +92,97 @@ const Game =  () => {
         return readyToDrawCard;
     }
 
+    const checkDiscardPossible =  (pile)=>{
+        if (localStorage.getItem('chosenCard') == null){
+            alert("You have not chosen a card, please do so.")
+        } else {
+            console.log(localStorage.getItem('chosenCard'));
+            if(validChoice(localStorage.getItem('chosenCard'), pile)){
+                //take card from hand and put card into piles list
+                //const newSpecificPlayerCards = new Map();
+                let newSpecificPlayerCards = [];
+
+                for (let i = 0; i < nrCards; i++) {
+                    if (specificPlayerCards[i].value != localStorage.getItem('chosenCard')){
+                        newSpecificPlayerCards.push(specificPlayerCards[i]);
+                    }
+                }
+                gameObj.playerCards[name] = newSpecificPlayerCards;
+
+
+                for (let i = 0; i < 4; i++) {
+                    if (gameObj.pilesList[i].topCard.value == pile.topCard.value){
+                        gameObj.pilesList[i].topCard.value = localStorage.getItem('chosenCard')
+                    }
+                }
+
+                localStorage.setItem('gto', JSON.stringify(gameObj));
+                console.log(localStorage.getItem('gto'));
+                specificPlayerCards = newSpecificPlayerCards;
+
+                localStorage.setItem('discardCounter',JSON.stringify(parseInt(localStorage.getItem('discardCounter'))+1))
+                console.log("the Discard counter is: " + localStorage.getItem('discardCounter'));
+
+
+                localStorage.setItem('chosenCard', null);
+                console.log("just before sending to server")
+                checkForDraw(); //TODO Please change this to below sendDiscard, when sending is working
+                //sockClient.sendDiscard();
+
+
+            } else{
+                alert("you can't play this card, on that pile, sooorryyyyy :(")
+            }
+            }
+
+        }
+
+        let drawLabel = "Draw";
+
+    const checkForDraw = () =>{
+        if (parseInt(gameObj.noCardsOnDeck)==0) {
+            drawLabel = "End Term";
+            if (parseInt(localStorage.getItem('discardCounter'))>=1) {
+                disableDrawCard = false;
+            }
+        } else {
+            if (parseInt(localStorage.getItem('discardCounter'))>=2) {
+                disableDrawCard = false;
+            }
+
+
+        }
+
+
+
+
+    }
+
+    const draw = () => {
+
+    }
+
+
+    const validChoice = (val, pile) => {
+        if (pile.direction == "TOPDOWN"){
+            if(parseInt(val) < parseInt(pile.topCard.value) || parseInt(val) - 10  == parseInt(pile.topCard.val))
+            {return true;}
+            else {return false;}
+        }
+        if (pile.direction == "DOWNUP") {
+            if (parseInt(val) > parseInt(pile.topCard.value) || parseInt(val) + 10 == parseInt(pile.topCard.val)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+    }
+
+    const chooseCard = (val) => {
+        localStorage.setItem('chosenCard', JSON.stringify(val));
+    }
 
 
 
@@ -94,8 +192,9 @@ const Game =  () => {
 
 
 
-    //add in this function all methods which need to be called when leaving the page/game
-    //TODO add close game method and tell server to close the game
+
+    //add in this function all methods which need to be called when leaving the page/gameObj
+    //TODO add close gameObj method and tell server to close the gameObj
     const myfun = async ()=>{
         try{
             await client.leave();
@@ -124,6 +223,10 @@ const Game =  () => {
             alert("can not leave te meeting")
         }
         history.push('/startpage');
+    }
+
+    const showGameObject = () => {
+        console.log(gameObj);
     }
 
     //************************  GameLogic  **************************************************
@@ -226,34 +329,28 @@ const Game =  () => {
 
     //************************  HTML  *******************************************************
 
-    let disableCards = true;
+    let disableCards = false;
     let disableDrawCard = true;
     const name= localStorage.getItem('username');
+    console.log(name);
 
-    const currentPlayer = obj2.playerCards[name];
-    //values of card to be shown
-    const[valueCard1, setValueCard1]= useState(currentPlayer[0].value);
-    const[valueCard2, setValueCard2]= useState(currentPlayer[1].value);
-    const[valueCard3, setValueCard3]= useState(currentPlayer[2].value);
-    const[valueCard4, setValueCard4]= useState(currentPlayer[3].value);
-    const[valueCard5, setValueCard5]= useState(currentPlayer[4].value);
-    const[valueCard6, setValueCard6]= useState(currentPlayer[5].value);
-    const[valueCard7, setValueCard7]= useState(null); // TODO solve this problem with too many cards
-
-
+    //Todo this must be called differently
+    let specificPlayerCards = gameObj.playerCards[name];
 
     //list how many cards need to be shown
-    const nrCards = Object.keys(currentPlayer).length;
+    const nrCards = Object.keys(specificPlayerCards).length;
     console.log(nrCards);
     //boolian, hidden or not
     const listHiddenValues = [true, true, true, true, true, true, true];
+
 
     for (let i = 0; i < nrCards; i++) {
         listHiddenValues[i] = false;
     }
 
+
     //checkwheter it is players turn and cards should be shown
-    checkWhosTurn();
+    checkWhoseTurn();
     allowedToDrawCard();
 
 
@@ -266,51 +363,51 @@ const Game =  () => {
             <Button id="card1" className ="cards-button"
                     hidden={listHiddenValues[0]}
                     disabled = {disableCards}
-                    onClick={() => SockClient.connect()}
+                    onClick={() => chooseCard(specificPlayerCards[0].value)}
             >
-                {valueCard1}
+                {specificPlayerCards[0].value}
             </Button>
             <Button id="card2" className ="cards-button"
                     hidden={listHiddenValues[1]}
                     disabled = {disableCards}
-                    onClick={() => sockClient.startGame()}
+                    onClick={() => showGameObject()}
             >
-                {valueCard2}
+                {specificPlayerCards[1].value}
             </Button>
             <Button id="card3" className ="cards-button"
                     hidden={listHiddenValues[2]}
                     disabled = {disableCards}
-                    onClick={() => doChatExample()}
+                    onClick={() => chooseCard(specificPlayerCards[2].value)}
             >
-                {valueCard3}
+                {specificPlayerCards[2].value}
             </Button>
             <Button id="card4" className ="cards-button"
                     hidden={listHiddenValues[3]}
                     disabled = {disableCards}
-                    onClick={() => doChatExample()}
+                    onClick={() => chooseCard(specificPlayerCards[3].value)}
             >
-                {valueCard4}
+                {specificPlayerCards[3].value}
             </Button>
             <Button id="card5" className ="cards-button"
                     hidden={listHiddenValues[4]}
                     disabled = {disableCards}
-                    onClick={() => doChatExample()}
+                    onClick={() => chooseCard(specificPlayerCards[4].value)}
             >
-                {valueCard5}
+                {specificPlayerCards[4].value}
             </Button>
             <Button id="card6" className ="cards-button"
                     hidden={listHiddenValues[5]}
                     disabled = {disableCards}
-                    onClick={() => doChatExample()}
+                    onClick={() => chooseCard(specificPlayerCards[5].value)}
             >
-                {valueCard6}
+                {true ? null :  ":)"}
             </Button>
             <Button id="card7" className ="cards-button"
                     hidden={listHiddenValues[6]}
                     disabled = {disableCards}
-                    onClick={() => doChatExample()}
+                    onClick={() => chooseCard( specificPlayerCards[6].value)}
             >
-                {valueCard7}
+                {true ? null :  ":)"}
             </Button>
         </div>
 
@@ -325,10 +422,10 @@ const Game =  () => {
 
     //*************************************************************************
     //TODO
-    //Comment the next line, when working on the game
+    //Comment the next line, when working on the gameObj
 
     //joinMeeting();
-    SockClient.connect();
+    //SockClient.connect();
     //sockClient.startGame()
 
     //*************************************************************************
@@ -336,31 +433,32 @@ const Game =  () => {
     return (
         <div>
             <HeaderGame height="100"/>
+            <div> {localStorage.getItem('username')}</div>
             <BaseContainer className = "left">
                 <div className="left top">
                     <Button className ="game-button"
                             disabled = {disableCards}
-                            onClick={() => joinMeeting()}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[0])}
                     >
-                        Stack 1
+                        {gameObj.pilesList[0].topCard.value + "▼"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {disableCards}
-                            onClick={() => getClients()}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[1])}
                     >
-                        Stack 2
+                        {gameObj.pilesList[1].topCard.value + "▼"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {disableCards}
-                            onClick={() => doChatExample()}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[2])}
                     >
-                        Stack 3
+                        {gameObj.pilesList[2].topCard.value +"▲"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {disableCards}
-                            onClick={() => doChatExample()}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[3])}
                     >
-                        Stack 4
+                        {gameObj.pilesList[3].topCard.value +"▲"}
                     </Button>
                 </div>
                 <div className="left middle">

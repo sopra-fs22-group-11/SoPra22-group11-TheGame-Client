@@ -52,9 +52,13 @@ class SockClient {
             this.subscribe('/topic/start', (message)=>{ // the message is a tgo
                 console.log("Received Message from topic/start")
                 console.log("clicked start value: " +localStorage.getItem('clickedStart'))
+                console.log(JSON.stringify(message));
                 if (JSON.parse(localStorage.getItem('clickedStart')) === false){
                 localStorage.setItem('clickedStart', JSON.stringify(true));
+                localStorage.setItem('discardCounter', JSON.stringify(0));
+
                 goToGame();
+                console.log(JSON.stringify(message));
                 //const history = useHistory();
                 //history.push('/game');
                 }
@@ -84,10 +88,6 @@ class SockClient {
             console.log("Socket closed!", r);
             // TODO: disconnect
         };
-        const history = useHistory();
-        const changePage= () => {
-            history.push('/game')
-    }
 
 
 
@@ -112,6 +112,14 @@ class SockClient {
         pre.innerHTML = stompClient.send("/app/hello", {}, JSON.stringify("Tijana")).data;
          */
         alert('Got the greeting');
+    }
+
+    sendDiscard() {
+        console.log("it will be sent any minute");
+        this.stompClient.send("/app/discard", {}, localStorage.getItem('gto'));
+        console.log("it was sent");
+        //
+        alert('Pinggg, it is sent ');
     }
 
     startGame() {
