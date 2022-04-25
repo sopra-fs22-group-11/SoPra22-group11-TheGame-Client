@@ -5,6 +5,20 @@ import {useHistory} from "react-router-dom";
 import Game from "../views/Game";
 import Waitingroom from "../views/Waitingroom";
 import goToGame from "../views/Waitingroom"
+import doRegister from "../views/Login";
+import goToLogin from "../views/Registration";
+
+
+
+
+//const history = useHistory();
+//const changePage= () => {
+//    const history = useHistory();
+//    history.
+//    push('/game')
+//}
+
+
 
 class SockClient {
     callback;
@@ -54,9 +68,11 @@ class SockClient {
                 console.log("clicked start value: " +localStorage.getItem('clickedStart'))
                 if (JSON.parse(localStorage.getItem('clickedStart')) === false){
                 localStorage.setItem('clickedStart', JSON.stringify(true));
-                goToGame();
+                //goToGame();
                 //const history = useHistory();
                 //history.push('/game');
+                  //  changePage();
+                    goToLogin();
                 }
                 const obj = message;
                 localStorage.setItem('gto',JSON.stringify(obj));
@@ -84,10 +100,7 @@ class SockClient {
             console.log("Socket closed!", r);
             // TODO: disconnect
         };
-        const history = useHistory();
-        const changePage= () => {
-            history.push('/game')
-    }
+
 
 
 

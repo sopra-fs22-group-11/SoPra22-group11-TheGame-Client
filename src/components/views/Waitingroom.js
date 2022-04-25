@@ -192,6 +192,7 @@ const Waitingroom =   () => {
     const goToGame = () => {
 
         sockClient.startGame();
+        localStorage.setItem('clickedStart', JSON.stringify(true));
 
         //if (localStorage.getItem('clickedStart') == true) {
         history.push('/game');
@@ -229,9 +230,10 @@ const Waitingroom =   () => {
                 </Button>
                 <Button
                     width="100%"
-                    onClick={() => joinMeeting()}
+                    disabled={localStorage.getItem('gto') === null}
+                    onClick={() => history.push('/game')}
                 >
-                    Join
+                    Join Game
                 </Button>
                 <Button
                     width="100%"
