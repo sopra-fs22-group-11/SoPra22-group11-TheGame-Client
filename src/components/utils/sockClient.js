@@ -67,12 +67,12 @@ class SockClient {
                 console.log("Received Message from topic/start")
                 console.log("clicked start value: " +localStorage.getItem('clickedStart'))
                 if (JSON.parse(localStorage.getItem('clickedStart')) === false){
-                localStorage.setItem('clickedStart', JSON.stringify(true));
-                //goToGame();
-                //const history = useHistory();
-                //history.push('/game');
-                  //  changePage();
-                    goToLogin();
+                    localStorage.setItem('clickedStart', JSON.stringify(true));
+                    goToGame();
+                //    //const history = useHistory();
+                //    //history.push('/game');
+                //      //  changePage();
+               //       //  goToLogin();
                 }
                 const obj = message;
                 localStorage.setItem('gto',JSON.stringify(obj));
@@ -80,7 +80,7 @@ class SockClient {
                 console.log(localStorage.getItem('gto'))
 
                 const saved = JSON.parse(localStorage.getItem('gto'));
-                console.log(saved.gameRunning);
+                console.log('Is game running: '+saved.gameRunning);
 
                 // TODO Add functions which update the gui -Sandra
             });
@@ -124,7 +124,6 @@ class SockClient {
         var pre = document.createElement("p");
         pre.innerHTML = stompClient.send("/app/hello", {}, JSON.stringify("Tijana")).data;
          */
-        alert('Got the greeting');
     }
 
     startGame() {

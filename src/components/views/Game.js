@@ -86,14 +86,6 @@ const Game =  () => {
     }
 
 
-
-
-
-
-
-
-
-
     //add in this function all methods which need to be called when leaving the page/game
     //TODO add close game method and tell server to close the game
     const myfun = async ()=>{
@@ -328,7 +320,7 @@ const Game =  () => {
     //Comment the next line, when working on the game
 
     //joinMeeting();
-    SockClient.connect();
+    //SockClient.connect();
     //sockClient.startGame()
 
     //*************************************************************************
