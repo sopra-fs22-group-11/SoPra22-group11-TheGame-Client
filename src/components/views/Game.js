@@ -64,7 +64,6 @@ const Game =  () => {
     //navigate trough Pages
     const history = useHistory();
 
-
     //TODO add Running Game Logic
 
 
@@ -79,15 +78,24 @@ const Game =  () => {
     //TODO check if the player is allowed to draw card
     const allowedToDrawCard =  ()=>{
         //check whos turn it is
-        const notreadyToDrawCard = true;
+        const readyToDrawCard = true;
         //to make UI darwCard clickable
-        disableDrawCard=notreadyToDrawCard;
+        disableDrawCard=readyToDrawCard;
 
-        return notreadyToDrawCard;
+        return readyToDrawCard;
     }
 
 
 
+
+
+
+
+
+
+
+    //add in this function all methods which need to be called when leaving the page/game
+    //TODO add close game method and tell server to close the game
     const myfun = async ()=>{
         try{
             await client.leave();
@@ -230,7 +238,7 @@ const Game =  () => {
     const[valueCard4, setValueCard4]= useState(currentPlayer[3].value);
     const[valueCard5, setValueCard5]= useState(currentPlayer[4].value);
     const[valueCard6, setValueCard6]= useState(currentPlayer[5].value);
-    const[valueCard7, setValueCard7]= useState(null);
+    const[valueCard7, setValueCard7]= useState(null); // TODO solve this problem with too many cards
 
 
 
@@ -308,7 +316,6 @@ const Game =  () => {
 
 
     );
-
 
     //************************  HTML  *******************************************************
 

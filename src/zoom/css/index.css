@@ -24,7 +24,7 @@ html, body {
   background: rgba(0, 0, 0, 1);
   margin: 1px;
   border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 1);
+  border: 5px solid rgba(0, 0, 0, 1);
 }
 
 /* Helper class to conveniently toggle hide/unhide */
