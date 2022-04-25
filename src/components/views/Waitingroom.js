@@ -49,7 +49,7 @@ const Waitingroom =   () => {
         if(!registered){
             setRegistered(true);
             console.log("vor sockClient send name");
-            sockClient.sendName(localStorage.getItem('username'));
+            sockClient.sendName(localStorage.getItem('player username')); // THIS WAS A PROBLEM
         }
 
     }
@@ -190,6 +190,7 @@ const Waitingroom =   () => {
     }
 
     const goToGame = () => {
+        sockClient.startGame();
         history.push('/game');
     }
 

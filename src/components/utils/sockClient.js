@@ -86,6 +86,11 @@ class SockClient {
         alert('Got the greeting');
     }
 
+    startGame() {
+        console.log("at sockclient startGame");
+        this.stompClient.send("/app/start", {});
+        console.log("done");
+    }
 
 
     _stripResponse(response) {
