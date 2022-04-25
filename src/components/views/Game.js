@@ -16,6 +16,7 @@ import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
 import sockClient from "../utils/sockClient";
 import SockClient from "../utils/sockClient";
+import {Views} from "./simple-view-switcher";
 
 const User = ({user}) => (
     <div className="user container">
@@ -64,88 +65,6 @@ const Game =  () => {
     const history = useHistory();
 
 
-    const myfun = async ()=>{
-        try{
-            await client.leave();
-        } catch (e){
-            console.log("was not in a meeting");
-        }
-        console.log('hello');
-    }
-
-    //show popup before leaving
-    window.onbeforeunload = function(){
-        return 'Are you sure you want to leave?';
-    };
-
-    //do when leaving page
-    window.onunload = function() {
-        myfun();
-        alert('Bye.');
-    }
-
-    //change location
-    const goToHome = async () => {
-        try{
-            await client.leave();
-        }catch (e) {
-            alert("can not leave te meeting")
-        }
-        history.push('/startpage');
-    }
-
-    //************************  GameLogic  **************************************************
-
-    //************************  Zoom  *******************************************************
-
-    //for Zoom setup
-    const client = ZoomVideo.createClient();
-    //const audioTrack = VideoSDK.createLocalAudioTrack();
-    //const videoTrack = VideoSDK.createLocalVideoTrack();
-    let mediaStream;
-    //const canvas = document.querySelector('.video-canvas');
-
-    //const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
-
-
-    //************************  Websocket  **************************************************
-
-    //************************  GameLogic  **************************************************
-    //navigate trough Pages
-    const history = useHistory();
-
-    //TODO add Running Game Logic
-
-
-    const checkWhosTurn =  ()=>{
-        //check whos turn it is
-        const playersTurn = false;
-        //to make UI cards clickable
-        disableCards= playersTurn;
-        return playersTurn;
-    }
-
-    //TODO check if the player is allowed to draw card
-    const allowedToDrawCard =  ()=>{
-        //check whos turn it is
-        const readyToDrawCard = true;
-        //to make UI darwCard clickable
-        disableDrawCard=readyToDrawCard;
-
-        return readyToDrawCard;
-    }
-
-
-
-
-
-
-
-
-
-
-    //add in this function all methods which need to be called when leaving the page/game
-    //TODO add close game method and tell server to close the game
     const myfun = async ()=>{
         try{
             await client.leave();
@@ -269,8 +188,6 @@ const Game =  () => {
         }
     }
 
-
-
     // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
     // siehe gameIdGuard in RouteProtectors
 
@@ -278,8 +195,8 @@ const Game =  () => {
 
     //************************  HTML  *******************************************************
 
-    let disableCards = true;
-    let disableDrawCard = true;
+    const [hidden, setHidden] = useState(null);
+    const [values, setValues] = useState(null);
     const name= localStorage.getItem('username');
 
     const currentPlayer = obj2.playerCards[name];
@@ -298,16 +215,11 @@ const Game =  () => {
     const nrCards = Object.keys(currentPlayer).length;
     console.log(nrCards);
     //boolian, hidden or not
-   const listHiddenValues = [true, true, true, true, true, true, true];
+    const listHiddenValues = [true, true, true, true, true, true, true];
 
     for (let i = 0; i < nrCards; i++) {
         listHiddenValues[i] = false;
     }
-
-    //checkwheter it is players turn and cards should be shown
-    checkWhosTurn();
-    allowedToDrawCard();
-
 
 
 
@@ -317,49 +229,42 @@ const Game =  () => {
         <div  className="left bottom">
             <Button id="card1" className ="cards-button"
                     hidden={listHiddenValues[0]}
-                    disabled = {disableCards}
                     onClick={() => SockClient.connect()}
             >
                 {valueCard1}
             </Button>
             <Button id="card2" className ="cards-button"
                     hidden={listHiddenValues[1]}
-                    disabled = {disableCards}
                     onClick={() => sockClient.startGame()}
             >
                 {valueCard2}
             </Button>
             <Button id="card3" className ="cards-button"
                     hidden={listHiddenValues[2]}
-                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard3}
             </Button>
             <Button id="card4" className ="cards-button"
                     hidden={listHiddenValues[3]}
-                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard4}
             </Button>
             <Button id="card5" className ="cards-button"
                     hidden={listHiddenValues[4]}
-                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard5}
             </Button>
             <Button id="card6" className ="cards-button"
                     hidden={listHiddenValues[5]}
-                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
-                6
+                {valueCard6}
             </Button>
             <Button id="card7" className ="cards-button"
                     hidden={listHiddenValues[6]}
-                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard7}
@@ -391,25 +296,21 @@ const Game =  () => {
             <BaseContainer className = "left">
                 <div className="left top">
                     <Button className ="game-button"
-                            disabled = {disableCards}
                             onClick={() => joinMeeting()}
                     >
                         Stack 1
                     </Button>
                     <Button className ="game-button"
-                            disabled = {disableCards}
                             onClick={() => getClients()}
                     >
                         Stack 2
                     </Button>
                     <Button className ="game-button"
-                            disabled = {disableCards}
                             onClick={() => doChatExample()}
                     >
                         Stack 3
                     </Button>
                     <Button className ="game-button"
-                            disabled = {disableCards}
                             onClick={() => doChatExample()}
                     >
                         Stack 4
@@ -417,7 +318,6 @@ const Game =  () => {
                 </div>
                 <div className="left middle">
                     <Button className ="game-button"
-                            disabled = {disableDrawCard}
                             onClick={() => sendName()}
                     >
                         Draw
