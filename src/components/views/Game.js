@@ -65,6 +65,29 @@ const Game =  () => {
     const history = useHistory();
 
 
+    //TODO add Running Game Logic
+
+
+    const checkWhosTurn =  ()=>{
+        //check whos turn it is
+        const playersTurn = false;
+        //to make UI cards clickable
+        disableCards= playersTurn;
+        return playersTurn;
+    }
+
+    //TODO check if the player is allowed to draw card
+    const allowedToDrawCard =  ()=>{
+        //check whos turn it is
+        const notreadyToDrawCard = true;
+        //to make UI darwCard clickable
+        disableDrawCard=notreadyToDrawCard;
+
+        return notreadyToDrawCard;
+    }
+
+
+
     const myfun = async ()=>{
         try{
             await client.leave();
@@ -195,13 +218,11 @@ const Game =  () => {
 
     //************************  HTML  *******************************************************
 
-    const [hidden, setHidden] = useState(null);
-    const [values, setValues] = useState(null);
+    let disableCards = true;
+    let disableDrawCard = true;
     const name= localStorage.getItem('username');
 
     const currentPlayer = obj2.playerCards[name];
-
-    console.log("this are the current playercards: " +currentPlayer)
     //values of card to be shown
     const[valueCard1, setValueCard1]= useState(currentPlayer[0].value);
     const[valueCard2, setValueCard2]= useState(currentPlayer[1].value);
@@ -209,7 +230,7 @@ const Game =  () => {
     const[valueCard4, setValueCard4]= useState(currentPlayer[3].value);
     const[valueCard5, setValueCard5]= useState(currentPlayer[4].value);
     const[valueCard6, setValueCard6]= useState(currentPlayer[5].value);
-    const[valueCard7, setValueCard7]= useState(currentPlayer[6].value);
+    const[valueCard7, setValueCard7]= useState(null);
 
 
 
@@ -223,6 +244,11 @@ const Game =  () => {
         listHiddenValues[i] = false;
     }
 
+    //checkwheter it is players turn and cards should be shown
+    checkWhosTurn();
+    allowedToDrawCard();
+
+
 
 
 
@@ -231,42 +257,49 @@ const Game =  () => {
         <div  className="left bottom">
             <Button id="card1" className ="cards-button"
                     hidden={listHiddenValues[0]}
+                    disabled = {disableCards}
                     onClick={() => SockClient.connect()}
             >
                 {valueCard1}
             </Button>
             <Button id="card2" className ="cards-button"
                     hidden={listHiddenValues[1]}
+                    disabled = {disableCards}
                     onClick={() => sockClient.startGame()}
             >
                 {valueCard2}
             </Button>
             <Button id="card3" className ="cards-button"
                     hidden={listHiddenValues[2]}
+                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard3}
             </Button>
             <Button id="card4" className ="cards-button"
                     hidden={listHiddenValues[3]}
+                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard4}
             </Button>
             <Button id="card5" className ="cards-button"
                     hidden={listHiddenValues[4]}
+                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard5}
             </Button>
             <Button id="card6" className ="cards-button"
                     hidden={listHiddenValues[5]}
+                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard6}
             </Button>
             <Button id="card7" className ="cards-button"
                     hidden={listHiddenValues[6]}
+                    disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
                 {valueCard7}
@@ -275,6 +308,7 @@ const Game =  () => {
 
 
     );
+
 
     //************************  HTML  *******************************************************
 
@@ -298,21 +332,25 @@ const Game =  () => {
             <BaseContainer className = "left">
                 <div className="left top">
                     <Button className ="game-button"
+                            disabled = {disableCards}
                             onClick={() => joinMeeting()}
                     >
                         Stack 1
                     </Button>
                     <Button className ="game-button"
+                            disabled = {disableCards}
                             onClick={() => getClients()}
                     >
                         Stack 2
                     </Button>
                     <Button className ="game-button"
+                            disabled = {disableCards}
                             onClick={() => doChatExample()}
                     >
                         Stack 3
                     </Button>
                     <Button className ="game-button"
+                            disabled = {disableCards}
                             onClick={() => doChatExample()}
                     >
                         Stack 4
@@ -320,6 +358,7 @@ const Game =  () => {
                 </div>
                 <div className="left middle">
                     <Button className ="game-button"
+                            disabled = {disableDrawCard}
                             onClick={() => sendName()}
                     >
                         Draw
