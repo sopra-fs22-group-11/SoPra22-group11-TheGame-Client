@@ -42,6 +42,7 @@ class SockClient {
                 console.log(obj.pilesList);
                 console.log(obj.playerCards);
                 console.log(obj.gameRunning);
+
             });
 
             this.subscribe('/topic/start', (message)=>{ // the message is a tgo
@@ -56,13 +57,20 @@ class SockClient {
                 const obj = message;
                 localStorage.setItem('gto',obj);
                 // TODO Add functions which update the gui -Sandra
+
             });
+
+
 
             });
         this.sock.onclose = r => {
             console.log("Socket closed!", r);
             // TODO: disconnect
         };
+
+
+
+
     }
 
    // callback = function(responseMessage){ // The response is a list of all the players in the waiting room

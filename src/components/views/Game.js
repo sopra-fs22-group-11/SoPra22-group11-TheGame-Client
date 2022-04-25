@@ -17,7 +17,6 @@ import {generateSessionToken} from "../../zoom/js/tool";
 import sockClient from "../utils/sockClient";
 import SockClient from "../utils/sockClient";
 
-
 const User = ({user}) => (
     <div className="user container">
         <div className="user username">{user.username}</div>
@@ -38,7 +37,6 @@ const Game =  () => {
     const [users, setUsers] = useState(null);
     const [user, setUser] = useState(null);
     console.log("here wer are at the Game");
-    //SockClient.connect();
     const obj2 = JSON.parse(localStorage.getItem('gto'));
     console.log("Is the Game running:"+ obj2.gameRunning);
     console.log("Show Players cards"+ JSON.stringify(obj2.playerCards));
@@ -57,6 +55,57 @@ const Game =  () => {
         sockClient.sendName(localStorage.getItem('username'));
 
     }
+
+
+    //************************  Websocket  **************************************************
+
+    //************************  GameLogic  **************************************************
+    //navigate trough Pages
+    const history = useHistory();
+
+
+    const myfun = async ()=>{
+        try{
+            await client.leave();
+        } catch (e){
+            console.log("was not in a meeting");
+        }
+        console.log('hello');
+    }
+
+    //show popup before leaving
+    window.onbeforeunload = function(){
+        return 'Are you sure you want to leave?';
+    };
+
+    //do when leaving page
+    window.onunload = function() {
+        myfun();
+        alert('Bye.');
+    }
+
+    //change location
+    const goToHome = async () => {
+        try{
+            await client.leave();
+        }catch (e) {
+            alert("can not leave te meeting")
+        }
+        history.push('/startpage');
+    }
+
+    //************************  GameLogic  **************************************************
+
+    //************************  Zoom  *******************************************************
+
+    //for Zoom setup
+    const client = ZoomVideo.createClient();
+    //const audioTrack = VideoSDK.createLocalAudioTrack();
+    //const videoTrack = VideoSDK.createLocalVideoTrack();
+    let mediaStream;
+    //const canvas = document.querySelector('.video-canvas');
+
+    //const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
 
 
     //************************  Websocket  **************************************************
@@ -220,6 +269,8 @@ const Game =  () => {
         }
     }
 
+
+
     // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
     // siehe gameIdGuard in RouteProtectors
 
@@ -304,7 +355,7 @@ const Game =  () => {
                     disabled = {disableCards}
                     onClick={() => doChatExample()}
             >
-                {valueCard6}
+                6
             </Button>
             <Button id="card7" className ="cards-button"
                     hidden={listHiddenValues[6]}

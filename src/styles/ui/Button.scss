@@ -104,18 +104,20 @@
     }
   }
   position: relative;
-  //display: flow;
+  //display: flex;
+  justify-content: space-between;
+  //display: grid;
   padding: 0px;
-  margin-right: 25px;
-  margin-left: 25px;
-  margin-top: 10px;
+  //margin-right: 50px;
+  //margin-left: 50px;
+  //margin-top: 10px;
+  margin: auto;
   font-weight: 300;
   text-transform: uppercase;
   font-size: 20px;
   text-align: center;
   height: 150px;
   width: 100px;
-  //display: flow;
   border: none;
   border-radius: $borderRadius;
   cursor: pointer;
