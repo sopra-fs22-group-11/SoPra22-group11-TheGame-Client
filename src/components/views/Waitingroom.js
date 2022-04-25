@@ -190,8 +190,13 @@ const Waitingroom =   () => {
     }
 
     const goToGame = () => {
+
         sockClient.startGame();
+
+        //if (localStorage.getItem('clickedStart') == true) {
         history.push('/game');
+        //}
+
     }
 
     const goToHome = () => {

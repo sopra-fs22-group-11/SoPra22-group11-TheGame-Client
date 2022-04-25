@@ -1,10 +1,15 @@
 
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import {useHistory} from "react-router-dom";
+import Game from "../views/Game";
+import Waitingroom from "../views/Waitingroom";
+import goToGame from "../views/Waitingroom"
 
 class SockClient {
     callback;
     callback1;
+
 
 
     constructor() {
@@ -47,6 +52,13 @@ class SockClient {
 
             this.subscribe('/topic/start', (message)=>{ // the message is a tgo
                 console.log("Received Message from topic/start")
+                console.log("clicked start value: " +localStorage.getItem('clickedStart'))
+                if (JSON.parse(localStorage.getItem('clickedStart')) === false){
+                localStorage.setItem('clickedStart', JSON.stringify(true));
+                goToGame();
+                //const history = useHistory();
+                //history.push('/game');
+                }
                 const obj = message;
                 localStorage.setItem('gto',JSON.stringify(obj));
                 console.log("dieses item wurde in den local storage getan:")
@@ -103,7 +115,7 @@ class SockClient {
     startGame() {
         console.log("at sockclient startGame");
         this.stompClient.send("/app/start", {});
-        console.log("done");
+        console.log("send to start game done");
     }
 
 
