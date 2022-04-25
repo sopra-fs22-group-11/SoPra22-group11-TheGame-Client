@@ -11,7 +11,6 @@ class SockClient {
     callback1;
 
 
-
     constructor() {
         this._connected = false;
 
@@ -85,7 +84,10 @@ class SockClient {
             console.log("Socket closed!", r);
             // TODO: disconnect
         };
-
+        const history = useHistory();
+        const changePage= () => {
+            history.push('/game')
+    }
 
 
 
