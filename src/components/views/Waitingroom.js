@@ -13,7 +13,7 @@ import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
-import sockClient from "../utils/sockClient";
+import SockClient from "../utils/sockClient";
 
 const Player = ({user}) => (
     <div className="player container">
@@ -25,6 +25,9 @@ const Player = ({user}) => (
 
 
 const Waitingroom =   () => {
+
+    SockClient.connect();
+
     const history = useHistory();
 
     const client = ZoomVideo.createClient();
@@ -34,7 +37,13 @@ const Waitingroom =   () => {
     const canvas = document.querySelector('.video-canvas');
     const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
     const [users, setUsers] = useState(null);
-    const[registered, setRegistered]=useState(false);
+    const [registered, setRegistered]=useState(false);
+
+
+    // for join running game button
+    //let saved = JSON.parse(localStorage.getItem('gto'));
+    //let isGameRunning = saved.gameRunning;
+
 
     //to show users
 
@@ -49,11 +58,10 @@ const Waitingroom =   () => {
         if(!registered){
             setRegistered(true);
             console.log("vor sockClient send name");
-            sockClient.sendName(localStorage.getItem('username')); // THIS WAS A PROBLEM
+            SockClient.sendName(localStorage.getItem('username'));
         }
 
     }
-    //SockClient.connect();
     //sendName();
 
     /*useEffect(() => {
@@ -189,11 +197,13 @@ const Waitingroom =   () => {
         }
     }
 
-    const goToGame = () => {
+    const goToGame = async () => {
 
-        sockClient.startGame();
+        SockClient.startGame();
+        localStorage.setItem('clickedStart', JSON.stringify(true));
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        //if (localStorage.getItem('clickedStart') == true) {
+        //if (localStorage.getItem('clickedStart') === true) {
         history.push('/game');
         //}
 
@@ -213,6 +223,8 @@ const Waitingroom =   () => {
         ))}
     </ul>*/
 
+    //const content = JSON.parse(localStorage.getItem('playerList'));
+    //const [playerList, setPlayerList] = useState(content[0].data);
 
 
     return (
@@ -220,7 +232,7 @@ const Waitingroom =   () => {
             <HeaderHome height="100"/>
             <BaseContainer className="home container">
                 <h2> Hear you can find all Participants</h2>
-
+                <li> {} </li>
                 <Button
                     width="100%"
                     onClick={() => goToGame()}
@@ -229,9 +241,10 @@ const Waitingroom =   () => {
                 </Button>
                 <Button
                     width="100%"
-                    onClick={() => joinMeeting()}
+                    disabled={!localStorage.getItem('clickedStart')}
+                    onClick={() => history.push('/game')}
                 >
-                    Join
+                    Join Game (disabled until one client clicks start game)
                 </Button>
                 <Button
                     width="100%"

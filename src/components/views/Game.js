@@ -42,6 +42,7 @@ const Game =  () => {
     const gameObj = JSON.parse(localStorage.getItem('gto'));
     console.log("Is the Game running: "+ gameObj.gameRunning);
     console.log("Show Players cards: "+ JSON.stringify(gameObj.playerCards));
+    console.log("No of Cards on Deck: " +gameObj.noCardsOnDeck);
     const [running, setRunning] = useState(gameObj.gameRunning);
 
     //for websocket SendName
@@ -63,7 +64,7 @@ const Game =  () => {
 
     //************************  GameLogic  **************************************************
     //navigate trough Pages
-    const history = useHistory()
+    const history = useHistory();
 
     //TODO add Running Game Logic
 
@@ -74,12 +75,12 @@ const Game =  () => {
         const name= localStorage.getItem('username');
         if (name == playersTurn ){
             disableCards = false;
-            
+
         } else {
             disableCards = true;
         }
         return disableCards;
-        
+
     }
 
     //TODO check if the player is allowed to draw card
@@ -343,11 +344,9 @@ const Game =  () => {
     //boolian, hidden or not
     const listHiddenValues = [true, true, true, true, true, true, true];
 
-
     for (let i = 0; i < nrCards; i++) {
         listHiddenValues[i] = false;
     }
-
 
     //checkwheter it is players turn and cards should be shown
     checkWhoseTurn();

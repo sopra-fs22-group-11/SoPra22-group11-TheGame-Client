@@ -61,6 +61,12 @@ class SockClient {
                 console.log(JSON.stringify(message));
                 //const history = useHistory();
                 //history.push('/game');
+                    localStorage.setItem('clickedStart', JSON.stringify(true));
+                    goToGame();
+                //    //const history = useHistory();
+                //    //history.push('/game');
+                //      //  changePage();
+               //       //  goToLogin();
                 }
                 const obj = message;
                 localStorage.setItem('gto',JSON.stringify(obj));
@@ -68,7 +74,7 @@ class SockClient {
                 console.log(localStorage.getItem('gto'))
 
                 const saved = JSON.parse(localStorage.getItem('gto'));
-                console.log(saved.gameRunning);
+                console.log('Is game running: '+saved.gameRunning);
 
                 // TODO Add functions which update the gui -Sandra
             });
@@ -88,6 +94,7 @@ class SockClient {
             console.log("Socket closed!", r);
             // TODO: disconnect
         };
+
 
 
 
@@ -111,7 +118,6 @@ class SockClient {
         var pre = document.createElement("p");
         pre.innerHTML = stompClient.send("/app/hello", {}, JSON.stringify("Tijana")).data;
          */
-        alert('Got the greeting');
     }
 
     sendDiscard() {
