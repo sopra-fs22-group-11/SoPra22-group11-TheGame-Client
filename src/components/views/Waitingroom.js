@@ -14,6 +14,7 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
 import SockClient from "../utils/sockClient";
+import config from "../../zoom/js/config";
 
 const Player = ({user}) => (
     <div className="player container">
@@ -26,6 +27,7 @@ const Player = ({user}) => (
 
 const Waitingroom =   () => {
 
+    //console.log("here you can find the sdkkey: " + JSON.stringify(config.sdkKey));
     SockClient.connect();
 
     const history = useHistory();
@@ -232,7 +234,7 @@ const Waitingroom =   () => {
             <HeaderHome height="100"/>
             <BaseContainer className="home container">
                 <h2> Hear you can find all Participants</h2>
-                <li> {} </li>
+                <li> random text</li>
                 <Button
                     width="100%"
                     onClick={() => goToGame()}

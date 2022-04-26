@@ -5,6 +5,7 @@ import {useHistory} from "react-router-dom";
 import Game from "../views/Game";
 import Waitingroom from "../views/Waitingroom";
 import goToGame from "../views/Waitingroom"
+import {getDomain} from "../../helpers/getDomain";
 
 class SockClient {
     callback;
@@ -27,7 +28,9 @@ class SockClient {
             this.sock.close();
         } catch {
         }
-        this.sock = new SockJS('https://sopra-fs22-11-thegame-server.herokuapp.com/ws'); // http://localhost:8081/ws
+        const url=getDomain();
+        //this.sock = new SockJS('https://sopra-fs22-11-thegame-server.herokuapp.com/ws'); // http://localhost:8081/ws
+        this.sock = new SockJS(url+ '/ws');
         this.stompClient = Stomp.over(this.sock);
         this.stompClient.connect({}, () => {
             this._connected = true;

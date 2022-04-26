@@ -113,7 +113,7 @@ const Login = props => {
       <BaseContainer>
         <div className="entry container">
           <div className="entry form">
-            <div h1 className="entry title">
+            <div className="entry title">
               Login
             </div>
             <FormField2
