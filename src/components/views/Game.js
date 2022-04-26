@@ -131,6 +131,7 @@ const Game =  () => {
                 //sockClient.sendDiscard();
 
 
+
             } else{
                 alert("you can't play this card, on that pile, sooorryyyyy :(")
             }
