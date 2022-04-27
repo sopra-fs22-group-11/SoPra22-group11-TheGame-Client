@@ -18,6 +18,7 @@ import sockClient from "../utils/sockClient";
 import SockClient from "../utils/sockClient";
 import {Views} from "./simple-view-switcher";
 import {string} from "sockjs-client/lib/utils/random";
+import GameParent from "./GameParent";
 
 const User = ({user}) => (
     <div className="user container">
@@ -33,6 +34,7 @@ User.propTypes = {
 };
 
 const Game =  () => {
+
     //************************  Websocket  **************************************************
 
     //for Websocket setup
@@ -523,6 +525,7 @@ const Game =  () => {
 
 
 
+    console.log(GameParent().test);
 
 
 
@@ -533,7 +536,7 @@ const Game =  () => {
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[0])}
             >
-                {cardValues[0]}
+                {"1, 2, 3, " + GameParent().test}
             </Button>
             <Button id="card2" className ="cards-button"
                     hidden={listHiddenValues[1]}
