@@ -6,6 +6,8 @@ import Game from "../views/Game";
 import Waitingroom from "../views/Waitingroom";
 import goToGame from "../views/Waitingroom"
 import {getDomain} from "../../helpers/getDomain";
+import updateUI from "../views/Game";
+import forceUpdate from "../views/Game";
 
 class SockClient {
     callback;
@@ -49,6 +51,10 @@ class SockClient {
                 console.log('Received Message from /topic/game'+message.body);
                 const obj = message;
                 localStorage.setItem('gto', JSON.stringify(obj));
+                console.log('Received Message from /topic/game'+ localStorage.getItem('gto'));
+
+                updateUI();
+                //forceUpdate(JSON.stringify(obj));
                 console.log(obj.noCardsOnDeck);
                 console.log(obj.pilesList);
                 console.log(obj.playerCards);

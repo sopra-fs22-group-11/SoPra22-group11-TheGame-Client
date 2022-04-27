@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
 import {Button} from 'components/ui/Button';
@@ -40,7 +40,38 @@ const Game =  () => {
     /*const [users, setUsers] = useState(null);
     const [user, setUser] = useState(null);
     const [running, setRunning] = useState(gameObj.gameRunning);*/
-    const gameObj =  JSON.parse(localStorage.getItem('gto'))
+    const [gameObj2, setGameObj2] = useState(JSON.parse(localStorage.getItem('gto')));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //const forceUpdate = useCallback((a) => setGameObj2(a));
+   // let gameObj =  JSON.parse(localStorage.getItem('gto'))
+
+   /* useEffect(() => {
+        // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
+        async function fetchData() {
+            try {
+                const response = JSON.parse(localStorage.getItem('gto'));
+
+                // delays continuous execution of an async operation for 1 second.
+                // This is just a fake async call, so that the spinner can be displayed
+                // feel free to remove it :)
+
+                // Get the returned users and update the state.
+                setGameObj2(response);
+
+                // This is just some data for you to see what is available.
+                // Feel free to remove it
+
+                // See here to get more data.
+                console.log(response);
+            } catch (error) {
+                console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                console.error("Details:", error);
+                alert("Something went wrong while fetching the users! See the console for details.");
+            }
+        }
+
+        fetchData();
+    }, []);*/
 
     console.log("here wer are at the Game");
 
@@ -76,7 +107,16 @@ const Game =  () => {
     let  disableDrawCards = false;
     const [counter, setCounter] = useState(0);
     let chosenCard=null;
+    const name= localStorage.getItem('username');
     console.log("just before the draw option")
+    /*if (name == playersTurn ){
+        alert("IT IS YOUR TURN :)");
+        //setDisableCards(false);
+
+    } else {
+        alert("IT IS YOUR NOT YOUR TURN :(");
+        //setDisableCards(true);
+    }*/
 
     /*useEffect( () =>{
         if (name == playersTurn ){
@@ -101,7 +141,7 @@ const Game =  () => {
     console.log(disableDrawCards);
     localStorage.setItem('disableDraw',true);
     let drawLabel = "Draw";
-    const playersTurn = gameObj.whoseTurn;
+    let playersTurn = gameObj2.whoseTurn;
     //const name= localStorage.getItem('username');
 
     //const [disableCards, setDisableCards] = useState(false)
@@ -111,8 +151,8 @@ const Game =  () => {
 
     const checkWhoseTurn =  ()=>{
         //check whose turn it is
-        const playersTurn = gameObj.whoseTurn;
-        const name= localStorage.getItem('username');
+        playersTurn = gameObj2.whoseTurn;
+
         if (name == playersTurn ){
             disableCards = false;
             //setDisableCards(false);
@@ -121,7 +161,7 @@ const Game =  () => {
             disableCards = true;
             //setDisableCards(true);
         }
-        return !disableCards;
+        return disableCards;
 
     }
 
@@ -177,9 +217,10 @@ const Game =  () => {
                 alert("you can't play this card, on that pile, sooorryyyyy :(")
             }
             }*/
-        if (checkWhoseTurn()== true){
-            alert("Sorry but is not your turn")
+        if (checkWhoseTurn()=== true){
+            alert("Sorry but is not your turn");
         }
+
 
         if (chosenCard == null){
             alert("You have not chosen a card, please do so.")
@@ -191,26 +232,22 @@ const Game =  () => {
                 let newSpecificPlayerCards = [];
 
 
-                for (let i = 0; i < nrCards; i++) {
-                    if (specificPlayerCards[i].value != chosenCard){
-                        newSpecificPlayerCards.push(specificPlayerCards[i]);
+                for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
+                    if (gameObj2.playerCards[name][i].value != chosenCard){
+                        newSpecificPlayerCards.push(gameObj2.playerCards[name][i]);
                     }
                 }
-                gameObj.playerCards[name] = newSpecificPlayerCards;
+                gameObj2.playerCards[name] = newSpecificPlayerCards;
 
 
-                /*for (let i = 0; i < 4; i++) {
-                    if (gameObj.pilesList[i].topCard.value == pile.topCard.value ){
-                        gameObj.pilesList[i].topCard.value = chosenCard
-                    }
-                }*/
-                gameObj.pilesList[index].topCard.value = chosenCard;
+                gameObj2.pilesList[index].topCard.value = chosenCard;
 
                 //actually update
-                localStorage.setItem('gto', JSON.stringify(gameObj));
-                //setGameObj(gameObj);
-                console.log(localStorage.getItem('gto'));
-                specificPlayerCards = newSpecificPlayerCards;
+
+                //setGameObj(gameObj2);
+                console.log("LocalStorage gto: " + localStorage.getItem('gto'));
+                console.log(" hook gto: " + gameObj2);
+                gameObj2.playerCards[name] = newSpecificPlayerCards;
 
                 //localStorage.setItem('discardCounter',JSON.stringify(parseInt(localStorage.getItem('discardCounter'))+1))
                 //console.log("the Discard counter is: " + localStorage.getItem('discardCounter'));
@@ -220,7 +257,8 @@ const Game =  () => {
 
                 chosenCard = null;
                 console.log("just before sending to server")
-                //checkForDraw(); //TODO Please change this to below sendDiscard, when sending is working
+
+                localStorage.setItem('gto', JSON.stringify(gameObj2));
                 sockClient.sendDiscard();
 
 
@@ -290,6 +328,14 @@ const Game =  () => {
         chosenCard = JSON.stringify(val);
     }
 
+    const updateUI = () =>{
+        console.log("we are in the update function")
+        console.log("show game Obj in update: " + JSON.stringify(gameObj2));
+        setGameObj2(JSON.parse(localStorage.getItem('gto')));
+        showGameObject();
+        console.log(gameObj2);
+    }
+
 
 
 
@@ -307,14 +353,16 @@ const Game =  () => {
     //TODO add close gameObj method and tell server to close the gameObj
     const myfun = async ()=>{
         try{
-            await client.leave();
-            this.sock.close();
+            //await client.leave();
+            //this.sock.close();
 
         } catch (e){
             console.log("was not in a meeting");
         }
-        localStorage.removeItem('gto');
+        //localStorage.removeItem('gto');
     }
+
+
 
     //show popup before leaving
     window.onbeforeunload = function(){
@@ -331,14 +379,15 @@ const Game =  () => {
     const goToHome = async () => {
         try{
             await client.leave();
+            localStorage.removeItem('gto');
         }catch (e) {
-            alert("can not leave te meeting")
+            alert("Problems when leave the meeting")
         }
         history.push('/startpage');
     }
 
     const showGameObject = () => {
-        console.log(gameObj);
+        console.log(gameObj2);
     }
 
     //************************  GameLogic  **************************************************
@@ -442,28 +491,29 @@ const Game =  () => {
     //************************  HTML  *******************************************************
 
 
-    const name= localStorage.getItem('username');
-    console.log(name);
+    //const name= localStorage.getItem('username');
+    //console.log(name);
 
     //Todo this must be called differently
-    let specificPlayerCards = gameObj.playerCards[name];
+    //let specificPlayerCards = gameObj2.playerCards[name];
 
     //list how many cards need to be shown
-    const nrCards = Object.keys(specificPlayerCards).length;
-    console.log(nrCards);
+    //const nrCards = Object.keys(gameObj2.playerCards[name]).length;
+    //const nrCards = gameObj2.playerCards[name].length
+    console.log(gameObj2.playerCards[name].length);
     //boolian, hidden or not
     const listHiddenValues = [true, true, true, true, true, true, true];
     //by default we enter 0 so that there is no null value at the start
     const cardValues= [0, 0, 0, 0, 0, 0, 0];
 
     //here we fill the cards with the right value
-    for (let i = 0; i < nrCards; i++) {
-        cardValues[i] = specificPlayerCards[i].value;
+    for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
+        cardValues[i] = gameObj2.playerCards[name][i].value;
         console.log(cardValues[i]);
     }
 
 
-    for (let i = 0; i < nrCards; i++) {
+    for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
         listHiddenValues[i] = false;
     }
 
@@ -557,27 +607,33 @@ const Game =  () => {
                 <div className="left top">
                     <Button className ="game-button"
                             disabled = {false}
+                            onClick={() => updateUI()}
+                    >
+                        update
+                    </Button>
+                    <Button className ="game-button"
+                            disabled = {false}
                             onClick={() => showGameObject()}
                     >
-                        {gameObj.pilesList[0].topCard.value + "▼"}
+                        {gameObj2.pilesList[0].topCard.value + "▼"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj.pilesList[1], 1)}
+                            onClick={() => checkDiscardPossible(gameObj2.pilesList[1], 1)}
                     >
-                        {gameObj.pilesList[1].topCard.value + "▼"}
+                        {gameObj2.pilesList[1].topCard.value + "▼"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj.pilesList[2], 2)}
+                            onClick={() => checkDiscardPossible(gameObj2.pilesList[2], 2)}
                     >
-                        {gameObj.pilesList[2].topCard.value +"▲"}
+                        {gameObj2.pilesList[2].topCard.value +"▲"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj.pilesList[3], 3)}
+                            onClick={() => checkDiscardPossible(gameObj2.pilesList[3], 3)}
                     >
-                        {gameObj.pilesList[3].topCard.value +"▲"}
+                        {gameObj2.pilesList[3].topCard.value +"▲"}
                     </Button>
                 </div>
                 <div className="left middle">
