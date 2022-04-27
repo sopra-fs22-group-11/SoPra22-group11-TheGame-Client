@@ -13,3 +13,12 @@ export default {
 };
 /*sdkKey: isProduction() ? process.env.ZOOM_KEY : Zoom_Key,
     sdkSecret: isProduction()? process.env.ZOOM_SECRET: Zoom_Secret,*/
+
+//to generateSessionTopic above
+const generateSessionTopic = () => {
+    const date = new Date().toDateString();
+    const sessionTopic = "theGame" + date;
+    console.log(sessionTopic);
+    return sessionTopic;
+
+}

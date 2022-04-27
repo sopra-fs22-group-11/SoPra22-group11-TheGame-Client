@@ -27,18 +27,17 @@ const Player = ({user}) => (
 
 const Waitingroom =   () => {
 
-    //console.log("here you can find the sdkkey: " + JSON.stringify(config.sdkKey));
     SockClient.connect();
 
     const history = useHistory();
 
-    const client = ZoomVideo.createClient();
+    /*const client = ZoomVideo.createClient();
     const audioTrack = VideoSDK.createLocalAudioTrack();
     const videoTrack = VideoSDK.createLocalVideoTrack();
     let mediaStream;
     const canvas = document.querySelector('.video-canvas');
     const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
-    const [users, setUsers] = useState(null);
+    const [users, setUsers] = useState(null);*/
     const [registered, setRegistered]=useState(false);
 
 
@@ -93,8 +92,8 @@ const Waitingroom =   () => {
 
     }
 
-
-    const joinMeeting = async () => {
+    //TODO delete Zoom stuff, when sure we don't want it in waitingroom
+    /*const joinMeeting = async () => {
         console.log("Let's see our client:")
         console.log(client)
 
@@ -197,7 +196,7 @@ const Waitingroom =   () => {
         if (!mediaStream.isAudioMuted()) {
             mediaStream.muteAudio();
         }
-    }
+    }*/
 
     const goToGame = async () => {
 
@@ -234,39 +233,13 @@ const Waitingroom =   () => {
             <HeaderHome height="100"/>
             <BaseContainer className="home container">
                 <h2> Hear you can find all Participants</h2>
-                <li> random text</li>
                 <Button
                     width="100%"
                     onClick={() => goToGame()}
                 >
                     Start the Game!
                 </Button>
-                <Button
-                    width="100%"
-                    disabled={!localStorage.getItem('clickedStart')}
-                    onClick={() => history.push('/game')}
-                >
-                    Join Game (disabled until one client clicks start game)
-                </Button>
-                <Button
-                    width="100%"
-                    onClick={() => sendName()}
-                >
-                    send Name
-                </Button>
 
-                <Button
-                    width="100%"
-                    onClick={() => doChatExample()}
-                >
-                    chat example
-                </Button>
-                <Button
-                    width="100%"
-                    onClick={() => generateSessionTopic()}
-                >
-                    chat example
-                </Button>
                 <Button
                     width="100%"
                     onClick={() => sendName()}

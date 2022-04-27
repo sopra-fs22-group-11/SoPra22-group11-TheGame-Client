@@ -21,9 +21,13 @@ class SockClient {
         return this._connected;
     }
 
-
+    //random idee vode Marinja: (damit mer LocalStorage weg bechömed)
+    // chönd mer nöd meh klasse mit klasse variable mache und denn etweder direkt uf die klassevariable (wie bim user) zue griffe
+    // ODER mir dünd alli variable dete definiere womers bruched --> sprich im game und sie de funktione mitgeh und bechömed
+    //als return die neu variable zrug
 
     connect() {
+        //das isch zimlich hässlich :/
         try {
             this.sock.close();
         } catch {
@@ -34,7 +38,7 @@ class SockClient {
         this.stompClient = Stomp.over(this.sock);
         this.stompClient.connect({}, () => {
             this._connected = true;
-            console.log("before subscribe");
+            //console.log("before subscribe");
             this.subscribe('/topic/players', (message)=> { // The response is a list of all the players in the waiting room
                     console.log("this is the response:");
                     console.log(message['playerName']);

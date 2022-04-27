@@ -202,11 +202,13 @@ const Game =  () => {
 
 
 
+
     //add in this function all methods which need to be called when leaving the page/gameObj
     //TODO add close gameObj method and tell server to close the gameObj
     const myfun = async ()=>{
         try{
             await client.leave();
+            this.sock.close();
 
         } catch (e){
             console.log("was not in a meeting");
