@@ -67,8 +67,10 @@ const Game =  () => {
     const history = useHistory();
     let disableCards = false;
     let  disableDrawCards = false;
+    const [counter, setCounter] = useState(0);
+    let chosenCard=null;
     console.log("just before the draw option")
-    if (parseInt(localStorage.getItem('discardCounter'))<2){
+    if (counter<2){
         disableDrawCards =true;
         console.log("we are changing the value" + JSON.stringify(disableCards));}
     console.log(disableDrawCards);
@@ -92,14 +94,14 @@ const Game =  () => {
 
     }
 
-    //TODO check if the player is allowed to draw card
+
     const allowedToDrawCard =  ()=>{
 
         return localStorage.getItem('draw');
     }
 
-    const checkDiscardPossible =  (pile)=>{
-        if (localStorage.getItem('chosenCard') == null){
+    const checkDiscardPossible =  (pile, index)=>{
+        /*if (localStorage.getItem('chosenCard') == null){
             alert("You have not chosen a card, please do so.")
         } else {
             console.log(localStorage.getItem('chosenCard'));
@@ -127,8 +129,10 @@ const Game =  () => {
                 console.log(localStorage.getItem('gto'));
                 specificPlayerCards = newSpecificPlayerCards;
 
-                localStorage.setItem('discardCounter',JSON.stringify(parseInt(localStorage.getItem('discardCounter'))+1))
-                console.log("the Discard counter is: " + localStorage.getItem('discardCounter'));
+                //localStorage.setItem('discardCounter',JSON.stringify(parseInt(localStorage.getItem('discardCounter'))+1))
+                //console.log("the Discard counter is: " + localStorage.getItem('discardCounter'));
+                setCounter(counter+1);
+                console.log("the Discard counter is: " + counter);
 
 
                 localStorage.setItem('chosenCard', null);
@@ -141,7 +145,55 @@ const Game =  () => {
             } else{
                 alert("you can't play this card, on that pile, sooorryyyyy :(")
             }
+            }*/
+
+        if (chosenCard == null){
+            alert("You have not chosen a card, please do so.")
+        } else {
+            console.log(chosenCard);
+            if(validChoice(chosenCard, pile)){
+                //take card from hand and put card into piles list
+                //we do all the stuff below to update the gto object
+                let newSpecificPlayerCards = [];
+
+
+                for (let i = 0; i < nrCards; i++) {
+                    if (specificPlayerCards[i].value != chosenCard){
+                        newSpecificPlayerCards.push(specificPlayerCards[i]);
+                    }
+                }
+                gameObj.playerCards[name] = newSpecificPlayerCards;
+
+
+                /*for (let i = 0; i < 4; i++) {
+                    if (gameObj.pilesList[i].topCard.value == pile.topCard.value ){
+                        gameObj.pilesList[i].topCard.value = chosenCard
+                    }
+                }*/
+                gameObj.pilesList[index].topCard.value = chosenCard;
+
+                //actually update
+                localStorage.setItem('gto', JSON.stringify(gameObj));
+                console.log(localStorage.getItem('gto'));
+                specificPlayerCards = newSpecificPlayerCards;
+
+                //localStorage.setItem('discardCounter',JSON.stringify(parseInt(localStorage.getItem('discardCounter'))+1))
+                //console.log("the Discard counter is: " + localStorage.getItem('discardCounter'));
+                setCounter(counter+1);
+                console.log("the Discard counter is: " + counter);
+
+
+                chosenCard = null;
+                console.log("just before sending to server")
+                //checkForDraw(); //TODO Please change this to below sendDiscard, when sending is working
+                //sockClient.sendDiscard();
+
+
+
+            } else{
+                alert("you can't play this card, on that pile, sooorryyyyy :(")
             }
+        }
 
         }
 
@@ -167,7 +219,9 @@ const Game =  () => {
     }*/
 
     const draw = () => {
-        localStorage.setItem('discardCounter', 0)
+        //localStorage.setItem('discardCounter', 0)
+        showGameObject();
+        setCounter(0);
         //sockClient.sendDraw();
     }
 
@@ -190,8 +244,11 @@ const Game =  () => {
     }
 
     const chooseCard = (val) => {
-        localStorage.setItem('chosenCard', JSON.stringify(val));
+        //localStorage.setItem('chosenCard', JSON.stringify(val));
+        chosenCard = JSON.stringify(val);
     }
+
+
 
 
 
@@ -213,7 +270,7 @@ const Game =  () => {
         } catch (e){
             console.log("was not in a meeting");
         }
-        //localStorage.removeItem('gto');
+        localStorage.removeItem('gto');
     }
 
     //show popup before leaving
@@ -388,7 +445,7 @@ const Game =  () => {
             <Button id="card2" className ="cards-button"
                     hidden={listHiddenValues[1]}
                     disabled = {disableCards}
-                    onClick={() => showGameObject()}
+                    onClick={() => chooseCard(cardValues[1])}
             >
                 {cardValues[1]}
             </Button>
@@ -452,29 +509,30 @@ const Game =  () => {
         <div>
             <HeaderGame height="100"/>
             <div> {localStorage.getItem('username')}</div>
+            <div> {"You have played "+counter + " cards"}</div>
             <BaseContainer className = "left">
                 <div className="left top">
                     <Button className ="game-button"
                             disabled = {disableCards}
-                            onClick={() => checkDiscardPossible(gameObj.pilesList[0])}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[0], 0)}
                     >
                         {gameObj.pilesList[0].topCard.value + "▼"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {disableCards}
-                            onClick={() => checkDiscardPossible(gameObj.pilesList[1])}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[1], 1)}
                     >
                         {gameObj.pilesList[1].topCard.value + "▼"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {disableCards}
-                            onClick={() => checkDiscardPossible(gameObj.pilesList[2])}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[2], 2)}
                     >
                         {gameObj.pilesList[2].topCard.value +"▲"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {disableCards}
-                            onClick={() => checkDiscardPossible(gameObj.pilesList[3])}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[3], 3)}
                     >
                         {gameObj.pilesList[3].topCard.value +"▲"}
                     </Button>
