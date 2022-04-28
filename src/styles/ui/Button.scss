@@ -116,8 +116,6 @@
   text-transform: uppercase;
   font-size: 20px;
   text-align: center;
-  height: 150px;
-  width: 100px;
   border: none;
   border-radius: $borderRadius;
   cursor: pointer;
@@ -129,4 +127,14 @@
   &.hidden {
     display: none;
   }
+  &.selected{
+    height: 180px;
+    width: 120px;
+  }
+  &.unselected{
+    height: 150px;
+    width: 100px;
+
+  }
+
 }

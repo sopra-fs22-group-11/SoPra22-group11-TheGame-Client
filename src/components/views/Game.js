@@ -99,6 +99,7 @@ const Game =  () => {
     let  disableDrawCards = false;
     const [counter, setCounter] = useState(0);
     let chosenCard=null;
+    //const [cardSelected, setCardSelected] =useState(false);
     const name= localStorage.getItem('username');
     console.log("just before the draw option")
     /*if (name == playersTurn ){
@@ -167,6 +168,7 @@ const Game =  () => {
 
     const checkDiscardPossible =  (pile, index)=>{
 
+
         //setGameObj2(localStorage.getItem('gto'));
 
         /*if (localStorage.getItem('chosenCard') == null){
@@ -216,6 +218,7 @@ const Game =  () => {
             if(validChoice(chosenCard, pile)){
                 //take card from hand and put card into piles list
                 //we do all the stuff below to update the gto object
+
                 let newSpecificPlayerCards = [];
 
 
@@ -247,6 +250,7 @@ const Game =  () => {
 
                 localStorage.setItem('gto', JSON.stringify(gameObj2));
                 sockClient.sendDiscard();
+                //setCardSelected(false);
 
 
 
@@ -274,6 +278,8 @@ const Game =  () => {
 
     const draw = () => {
         //localStorage.setItem('discardCounter', 0)
+
+        //setCardSelected(false);
         showGameObject();
         setCounter(0);
         disableCards = true;
@@ -307,6 +313,8 @@ const Game =  () => {
         }
         //localStorage.setItem('chosenCard', JSON.stringify(val));
         chosenCard = JSON.stringify(val);
+        //setCardSelected(true);
+        document.getElementById("card3").className.replace( "cards-button unselected" , "cards-button selected" );
     }
 
     const updateUI = () =>{
@@ -504,54 +512,54 @@ const Game =  () => {
 
 
 
-
+    //idee um zu zeigen das ein button ausgewählt wurde: { cardSelected?"cards-button selected": "cards-button unselected"}
 
 
     let cards = (
         <div  className="left bottom">
-            <Button id="card1" className ="cards-button"
+            <Button id="card1" className ="cards-button unselected"
                     hidden={listHiddenValues[0]}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[0])}
             >
                 {cardValues[0]}
             </Button>
-            <Button id="card2" className ="cards-button"
+            <Button id="card2" className ="cards-button unselected"
                     hidden={listHiddenValues[1]}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[1])}
             >
                 {cardValues[1]}
             </Button>
-            <Button id="card3" className ="cards-button"
+            <Button id="card3" className ="cards-button unselected"
                     hidden={listHiddenValues[2]}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[2])}
             >
                 {cardValues[2]}
             </Button>
-            <Button id="card4" className ="cards-button"
+            <Button id="card4" className ="cards-button unselected"
                     hidden={listHiddenValues[3]}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[3])}
             >
                 {cardValues[3]}
             </Button>
-            <Button id="card5" className ="cards-button"
+            <Button id="card5" className ="cards-button unselected"
                     hidden={listHiddenValues[4]}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[4])}
             >
                 {cardValues[4]}
             </Button>
-            <Button id="card6" className ="cards-button"
+            <Button id="card6" className ="cards-button unselected"
                     hidden={listHiddenValues[5]}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[5])}
             >
                 {cardValues[5]}
             </Button>
-            <Button id="card7" className ="cards-button"
+            <Button id="card7" className ="cards-button unselected"
                     hidden={listHiddenValues[6]}
                     disabled = {false}
                     onClick={() => chooseCard( cardValues[6])}
@@ -582,9 +590,10 @@ const Game =  () => {
     return (
         <div>
             <HeaderGame height="100"/>
-            <div> {localStorage.getItem('username')}</div>
-            <div> {"You have played "+counter + " cards"}</div>
             <BaseContainer className = "left">
+            <h2 align="center">  Hei {localStorage.getItem('username')} ʕ•́ᴥ•̀ʔっ♡</h2>
+                <div> {gameObj2.whoseTurn} needs to play</div>
+            <div> {"You have played "+counter + " cards"}</div>
                 <div className="left top">
                     <Button className ="game-button"
                             disabled = {false}
