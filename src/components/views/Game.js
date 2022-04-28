@@ -77,6 +77,7 @@ const Game =  () => {
     const [counter, setCounter] = useState(0);
     let chosenCard=null;
     console.log("just before the draw option")
+    const [gameRunning, setGameRunning] = useState(true);
 
     /*useEffect( () =>{
         if (name == playersTurn ){
@@ -291,9 +292,20 @@ const Game =  () => {
     }
 
 
+    const leaveGame = async () => {
+        sockClient.leaveGame();
+        alert("someone left the game");
+        localStorage.removeItem('gto');
+        history.push('/startpage');
+    }
 
-
-
+    const endGame = async () => {
+        sockClient.endGame();
+        alert("the game has been ended, you lost (atm)");
+        // TODO sprint 2
+        localStorage.removeItem('gto');
+        history.push('/startpage');
+    }
 
 
 
@@ -332,7 +344,7 @@ const Game =  () => {
         try{
             await client.leave();
         }catch (e) {
-            alert("can not leave te meeting")
+            alert("can not leave the meeting")
         }
         history.push('/startpage');
     }
@@ -609,6 +621,16 @@ const Game =  () => {
                         </button>
                     </div>
                 </div>
+            </BaseContainer>
+            <BaseContainer>
+                <Button className = "primary-button"
+                        onClick={() => leaveGame()}>
+                    leave this game
+                </Button>
+                <Button className = "primary-button"
+                        onClick={() => endGame()}>
+                    cannot play anymore
+                </Button>
             </BaseContainer>
         </div>
 

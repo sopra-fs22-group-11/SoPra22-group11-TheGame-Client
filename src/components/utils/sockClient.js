@@ -8,9 +8,6 @@ import goToGame from "../views/Waitingroom"
 import {getDomain} from "../../helpers/getDomain";
 
 class SockClient {
-    callback;
-    callback1;
-
 
     constructor() {
         this._connected = false;
@@ -86,10 +83,10 @@ class SockClient {
                 // TODO Add functions which update the gui -Sandra
             });
 
-            this.subscribe('/topic/status', (message)=>{ // the message is a tgo
+            this.subscribe('/topic/status', (message)=>{ // the message is a string
                 console.log("Received Message from topic/status")
-                const obj = message;
-                localStorage.setItem('gto', JSON.stringify(obj));
+                const str = message;
+                localStorage.setItem('status', JSON.stringify(str));
                 // TODO Add functions which update the gui -Sandra
 
             });
@@ -145,6 +142,15 @@ class SockClient {
         this.stompClient.send("/app/draw", {} );
         console.log("it was sent");
         alert('Pinggg, it is sent ');
+    }
+
+    endGame() {
+        console.log("at sockClient endGame");
+        this.stompClient.send("/app/gameStatus", {});
+    }
+
+    leaveGame() {
+        this.stompClient.send("/app/gameLeft", {});
     }
 
 

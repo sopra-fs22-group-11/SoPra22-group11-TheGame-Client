@@ -14,7 +14,7 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
 import SockClient from "../utils/sockClient";
-import config from "../../zoom/js/config";
+import SockJsClient from 'react-stomp';
 
 const Player = ({user}) => (
     <div className="player container">
@@ -23,11 +23,11 @@ const Player = ({user}) => (
 );
 
 
-
+const SOCKET_URL = 'http://localhost:8081/ws';
 
 const Waitingroom =   () => {
 
-    SockClient.connect();
+    let socket
 
     const history = useHistory();
 
@@ -40,10 +40,9 @@ const Waitingroom =   () => {
     const [users, setUsers] = useState(null);*/
     const [registered, setRegistered]=useState(false);
 
+    const [users, setUsers] = useState([]);
+    const [gameRunning, setGameRunning] = useState(false);
 
-    // for join running game button
-    //let saved = JSON.parse(localStorage.getItem('gto'));
-    //let isGameRunning = saved.gameRunning;
 
 
     //to show users
@@ -82,7 +81,6 @@ const Waitingroom =   () => {
         fetchData();
     }, []);*/
 
-    //setUsers(localStorage.getItem('playerlist'));
 
     const generateSessionTopic = () => {
         const date = new Date().toDateString();
@@ -198,16 +196,39 @@ const Waitingroom =   () => {
         }
     }*/
 
-    const goToGame = async () => {
 
-        SockClient.startGame();
-        localStorage.setItem('clickedStart', JSON.stringify(true));
-        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        //if (localStorage.getItem('clickedStart') === true) {
-        history.push('/game');
-        //}
+    const goToGame = () => {
+        try {
+            let isGameRunning = JSON.parse(localStorage.getItem('gto')).gameRunning;
+            alert('Please click join running game');
+        } catch (e) {
+            SockClient.startGame();
+            //localStorage.setItem('clickedStart', JSON.stringify(true));
 
+            //if (localStorage.getItem('clickedStart') === true) {
+            history.push('/game');
+            //}
+        }
+    }
+
+
+    const goToRunningGame = () => {
+        // for join running game button
+        let isGameRunning;
+        let saved = JSON.parse(localStorage.getItem('gto'));
+        console.log(saved);
+        if (saved == null) {
+             isGameRunning = false;
+        } else {
+             isGameRunning = saved.gameRunning;
+        }
+
+        if (isGameRunning) {
+            history.push('/game')
+        } else {
+            alert('Sorry the game has not started yet')
+        }
     }
 
     const goToHome = () => {
@@ -224,9 +245,6 @@ const Waitingroom =   () => {
         ))}
     </ul>*/
 
-    //const content = JSON.parse(localStorage.getItem('playerList'));
-    //const [playerList, setPlayerList] = useState(content[0].data);
-
 
     return (
         <div>
@@ -238,6 +256,13 @@ const Waitingroom =   () => {
                     onClick={() => goToGame()}
                 >
                     Start the Game!
+                </Button>
+
+                <Button
+                    width="100%"
+                    onClick={() => goToRunningGame()}
+                >
+                    Join Running Game
                 </Button>
 
                 <Button
