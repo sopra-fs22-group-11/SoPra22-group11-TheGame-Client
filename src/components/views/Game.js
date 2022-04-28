@@ -18,7 +18,6 @@ import sockClient from "../utils/sockClient";
 import SockClient from "../utils/sockClient";
 import {Views} from "./simple-view-switcher";
 import {string} from "sockjs-client/lib/utils/random";
-import GameParent from "./GameParent";
 
 const User = ({user}) => (
     <div className="user container">
@@ -34,7 +33,6 @@ User.propTypes = {
 };
 
 const Game =  () => {
-
     //************************  Websocket  **************************************************
 
     //for Websocket setup
@@ -45,49 +43,42 @@ const Game =  () => {
     const [gameObj2, setGameObj2] = useState(JSON.parse(localStorage.getItem('gto')));
     // eslint-disable-next-line react-hooks/exhaustive-deps
     //const forceUpdate = useCallback((a) => setGameObj2(a));
-   // let gameObj =  JSON.parse(localStorage.getItem('gto'))
+    // let gameObj =  JSON.parse(localStorage.getItem('gto'))
 
-   /* useEffect(() => {
-        // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
-        async function fetchData() {
-            try {
-                const response = JSON.parse(localStorage.getItem('gto'));
-
-                // delays continuous execution of an async operation for 1 second.
-                // This is just a fake async call, so that the spinner can be displayed
-                // feel free to remove it :)
-
-                // Get the returned users and update the state.
-                setGameObj2(response);
-
-                // This is just some data for you to see what is available.
-                // Feel free to remove it
-
-                // See here to get more data.
-                console.log(response);
-            } catch (error) {
-                console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
-                console.error("Details:", error);
-                alert("Something went wrong while fetching the users! See the console for details.");
-            }
-        }
-
-        fetchData();
-    }, []);*/
+    /* useEffect(() => {
+         // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
+         async function fetchData() {
+             try {
+                 const response = JSON.parse(localStorage.getItem('gto'));
+                 // delays continuous execution of an async operation for 1 second.
+                 // This is just a fake async call, so that the spinner can be displayed
+                 // feel free to remove it :)
+                 // Get the returned users and update the state.
+                 setGameObj2(response);
+                 // This is just some data for you to see what is available.
+                 // Feel free to remove it
+                 // See here to get more data.
+                 console.log(response);
+             } catch (error) {
+                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                 console.error("Details:", error);
+                 alert("Something went wrong while fetching the users! See the console for details.");
+             }
+         }
+         fetchData();
+     }, []);*/
 
     console.log("here wer are at the Game");
 
-   /* useEffect(() =>{
-        console.log("Is the Game running: "+ gameObj.gameRunning);
-        console.log("Show Players cards: "+ JSON.stringify(gameObj.playerCards));
-        console.log("No of Cards on Deck: " +gameObj.noCardsOnDeck);
-    })*/
+    /* useEffect(() =>{
+         console.log("Is the Game running: "+ gameObj.gameRunning);
+         console.log("Show Players cards: "+ JSON.stringify(gameObj.playerCards));
+         console.log("No of Cards on Deck: " +gameObj.noCardsOnDeck);
+     })*/
 
     //TODO is this stille used?!
     //for websocket SendName
     /*const sendName =async () => {
-
-
         //const userId = localStorage.getItem('loggedInUser');
         //const response1 = await api.get('/users/' + userId);
         //await new Promise(resolve => setTimeout(resolve, 1000));
@@ -95,7 +86,6 @@ const Game =  () => {
         //setUser(response1.data);
         console.log("vor sockClient send name");
         sockClient.sendName(localStorage.getItem('username'));
-
     }*/
 
 
@@ -114,7 +104,6 @@ const Game =  () => {
     /*if (name == playersTurn ){
         alert("IT IS YOUR TURN :)");
         //setDisableCards(false);
-
     } else {
         alert("IT IS YOUR NOT YOUR TURN :(");
         //setDisableCards(true);
@@ -143,7 +132,7 @@ const Game =  () => {
     console.log(disableDrawCards);
     localStorage.setItem('disableDraw',true);
     let drawLabel = "Draw";
-    let playersTurn = gameObj2.whoseTurn;
+    //let playersTurn = gameObj2.whoseTurn;
     //const name= localStorage.getItem('username');
 
     //const [disableCards, setDisableCards] = useState(false)
@@ -153,9 +142,12 @@ const Game =  () => {
 
     const checkWhoseTurn =  ()=>{
         //check whose turn it is
-        playersTurn = gameObj2.whoseTurn;
+        //playersTurn = gameObj2.whoseTurn;
+        console.log("It is the turn of " + gameObj2.whoseTurn);
+        const gameTemp = JSON.parse(localStorage.getItem('gto'));
+        const whoseTurn = gameTemp.whoseTurn;
 
-        if (name == playersTurn ){
+        if (name == whoseTurn ){
             disableCards = false;
             //setDisableCards(false);
 
@@ -174,6 +166,9 @@ const Game =  () => {
     }
 
     const checkDiscardPossible =  (pile, index)=>{
+
+        //setGameObj2(localStorage.getItem('gto'));
+
         /*if (localStorage.getItem('chosenCard') == null){
             alert("You have not chosen a card, please do so.")
         } else {
@@ -182,16 +177,12 @@ const Game =  () => {
                 //take card from hand and put card into piles list
                 //we do all the stuff below to update the gto object
                 let newSpecificPlayerCards = [];
-
-
                 for (let i = 0; i < nrCards; i++) {
                     if (specificPlayerCards[i].value != localStorage.getItem('chosenCard')){
                         newSpecificPlayerCards.push(specificPlayerCards[i]);
                     }
                 }
                 gameObj.playerCards[name] = newSpecificPlayerCards;
-
-
                 for (let i = 0; i < 4; i++) {
                     if (gameObj.pilesList[i].topCard.value == pile.topCard.value){
                         gameObj.pilesList[i].topCard.value = localStorage.getItem('chosenCard')
@@ -201,20 +192,14 @@ const Game =  () => {
                 localStorage.setItem('gto', JSON.stringify(gameObj));
                 console.log(localStorage.getItem('gto'));
                 specificPlayerCards = newSpecificPlayerCards;
-
                 //localStorage.setItem('discardCounter',JSON.stringify(parseInt(localStorage.getItem('discardCounter'))+1))
                 //console.log("the Discard counter is: " + localStorage.getItem('discardCounter'));
                 setCounter(counter+1);
                 console.log("the Discard counter is: " + counter);
-
-
                 localStorage.setItem('chosenCard', null);
                 console.log("just before sending to server")
                 //checkForDraw(); //TODO Please change this to below sendDiscard, when sending is working
                 //sockClient.sendDiscard();
-
-
-
             } else{
                 alert("you can't play this card, on that pile, sooorryyyyy :(")
             }
@@ -270,28 +255,22 @@ const Game =  () => {
             }
         }
 
-        }
+    }
 
 
 
-   /* const checkForDraw = () =>{
-        if (parseInt(gameObj.noCardsOnDeck)==0) {
-            drawLabel = "End Term";
-            if (parseInt(localStorage.getItem('discardCounter'))>=1) {
-                localStorage.setItem('disableDraw',false);
-            }
-        } else {
-            if (parseInt(localStorage.getItem('discardCounter'))>=2) {
-                localStorage.setItem('disableDraw',false);
-            }
-
-
-        }
-
-
-
-
-    }*/
+    /* const checkForDraw = () =>{
+         if (parseInt(gameObj.noCardsOnDeck)==0) {
+             drawLabel = "End Term";
+             if (parseInt(localStorage.getItem('discardCounter'))>=1) {
+                 localStorage.setItem('disableDraw',false);
+             }
+         } else {
+             if (parseInt(localStorage.getItem('discardCounter'))>=2) {
+                 localStorage.setItem('disableDraw',false);
+             }
+         }
+     }*/
 
     const draw = () => {
         //localStorage.setItem('discardCounter', 0)
@@ -525,7 +504,6 @@ const Game =  () => {
 
 
 
-    console.log(GameParent().test);
 
 
 
@@ -536,7 +514,7 @@ const Game =  () => {
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[0])}
             >
-                {"1, 2, 3, " + GameParent().test}
+                {cardValues[0]}
             </Button>
             <Button id="card2" className ="cards-button"
                     hidden={listHiddenValues[1]}

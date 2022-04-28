@@ -53,7 +53,7 @@ class SockClient {
                 localStorage.setItem('gto', JSON.stringify(obj));
                 console.log('Received Message from /topic/game'+ localStorage.getItem('gto'));
 
-                updateUI();
+                //updateUI();
                 //forceUpdate(JSON.stringify(obj));
                 console.log(obj.noCardsOnDeck);
                 console.log(obj.pilesList);
