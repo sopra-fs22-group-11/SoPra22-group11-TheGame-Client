@@ -70,12 +70,11 @@ class SockClient {
                 localStorage.setItem('clickedStart', JSON.stringify(true));
                 localStorage.setItem('discardCounter', JSON.stringify(0));
 
-                goToGame();
+                //goToGame();
                 console.log(JSON.stringify(message));
                 //const history = useHistory();
                 //history.push('/game');
                     localStorage.setItem('clickedStart', JSON.stringify(true));
-                    goToGame();
                 //    //const history = useHistory();
                 //    //history.push('/game');
                 //      //  changePage();
@@ -138,7 +137,7 @@ class SockClient {
         this.stompClient.send("/app/discard", {}, localStorage.getItem('gto'));
         console.log("it was sent");
         //
-        alert('Pinggg, it is sent ');
+        //alert('Pinggg, it is sent ');
     }
 
     startGame() {
@@ -150,7 +149,12 @@ class SockClient {
     sendDraw(){
         this.stompClient.send("/app/draw", {} );
         console.log("it was sent");
-        alert('Pinggg, it is sent ');
+        //alert('Pinggg, it is sent ');
+    }
+
+    terminate(){
+        this.stompClient.send("app/gameTerminated", {})
+        alert("We sent this")
     }
 
 

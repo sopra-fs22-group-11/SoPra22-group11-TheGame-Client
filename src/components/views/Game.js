@@ -98,7 +98,7 @@ const Game =  () => {
     //const [disableCards, setDisableCards] = useState({disableCardsnull);
     let  disableDrawCards = false;
     const [counter, setCounter] = useState(0);
-    let chosenCard=null;
+    const [chosenCard, setChosenCard] = useState(null);
     //const [cardSelected, setCardSelected] =useState(false);
     const name= localStorage.getItem('username');
     console.log("just before the draw option")
@@ -245,7 +245,7 @@ const Game =  () => {
                 console.log("the Discard counter is: " + counter);
 
 
-                chosenCard = null;
+                setChosenCard(null);
                 console.log("just before sending to server")
 
                 localStorage.setItem('gto', JSON.stringify(gameObj2));
@@ -286,7 +286,7 @@ const Game =  () => {
         //etDisableCards(true);
         //TODO change local storage turn;
         sockClient.sendDraw();
-
+        updateUI() // This somehow does not work
     }
 
 
@@ -312,7 +312,7 @@ const Game =  () => {
             alert("Sorry but is not your turn")
         }
         //localStorage.setItem('chosenCard', JSON.stringify(val));
-        chosenCard = JSON.stringify(val);
+        setChosenCard(JSON.stringify(val));
         //setCardSelected(true);
         document.getElementById("card3").className.replace( "cards-button unselected" , "cards-button selected" );
     }
@@ -366,9 +366,11 @@ const Game =  () => {
 
     //change location
     const goToHome = async () => {
+        setGameObj2(null)
+        sockClient.terminate()
+
         try{
             await client.leave();
-            localStorage.removeItem('gto');
         }catch (e) {
             alert("Problems when leave the meeting")
         }
@@ -594,6 +596,7 @@ const Game =  () => {
             <h2 align="center">  Hei {localStorage.getItem('username')} ʕ•́ᴥ•̀ʔっ♡</h2>
                 <div> {gameObj2.whoseTurn} needs to play</div>
             <div> {"You have played "+counter + " cards"}</div>
+                <div> {"You have chosen the card "+chosenCard }</div>
                 <div className="left top">
                     <Button className ="game-button"
                             disabled = {false}
@@ -603,7 +606,8 @@ const Game =  () => {
                     </Button>
                     <Button className ="game-button"
                             disabled = {false}
-                            onClick={() => showGameObject()}
+                            //onClick={() => showGameObject()}
+                            onClick ={() => checkDiscardPossible(gameObj2.pilesList[1], 0)}
                     >
                         {gameObj2.pilesList[0].topCard.value + "▼"}
                     </Button>
@@ -631,7 +635,7 @@ const Game =  () => {
                             disabled = {disableDrawCards}
                             onClick={() => draw()}
                     >
-                        {drawLabel}
+                        {drawLabel + gameObj2.noCardsOnDeck}
                     </Button>
                 </div>
 

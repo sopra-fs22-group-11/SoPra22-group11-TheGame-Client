@@ -209,6 +209,9 @@ const Waitingroom =   () => {
         //}
 
     }
+    const redirectToGame = async () => {
+        history.push('/game');
+    }
 
     const goToHome = () => {
         history.push('/startpage');
@@ -245,6 +248,13 @@ const Waitingroom =   () => {
                     onClick={() => sendName()}
                 >
                     Register in this WaitingRoom (do not delete)
+                </Button>
+
+                <Button
+                    width="100%"
+                    onClick={() => redirectToGame()}
+                >
+                    Redirect to Game (Game must be started already, better solution from Tijana and Najma)
                 </Button>
 
             </BaseContainer>

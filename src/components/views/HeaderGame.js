@@ -49,7 +49,10 @@ const logout = () => {
 }
 
 
-
+const leaveGame = () => {
+    localStorage.removeItem('gto');
+    goToHome()
+}
 
 const HeaderGame = props => (
     <div className="header container">
@@ -64,7 +67,7 @@ const HeaderGame = props => (
                onClick={() => logout()}
             >I can not Play</a>
             <a href="/startpage"
-               onClick={() => goToHome()}
+               onClick={() => leaveGame() }
             >Leave Game </a>
         </div>
     </div>
