@@ -6,6 +6,7 @@ import goToHome from "./Game";
 import goToRulePage from "./Startpage";
 import doRegister from "./Login";
 import goToLogin from "./Registration";
+import sockClient from "../utils/sockClient";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -50,8 +51,9 @@ const logout = () => {
 
 
 const leaveGame = () => {
+    sockClient.terminate();
     localStorage.removeItem('gto');
-    goToHome()
+    goToHome();
 }
 
 const HeaderGame = props => (

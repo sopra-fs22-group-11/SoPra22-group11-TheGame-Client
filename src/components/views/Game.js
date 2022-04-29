@@ -319,9 +319,15 @@ const Game =  () => {
 
     const updateUI = () =>{
         console.log("we are in the update function")
-        console.log("show game Obj in update: " + JSON.stringify(gameObj2));
+        //console.log("show game Obj in update: " + JSON.stringify(gameObj2));
         setGameObj2(JSON.parse(localStorage.getItem('gto')));
+        // if (gameObj2 == null) {alert("someone left!");}
+        //if (gameObj2.gameRunning == false)  {
+        //    alert('Sorry, someone left and the game has been terminated!:( ' +
+        //        'Please leave.')
+        //}
         showGameObject();
+
         console.log(gameObj2);
     }
 
@@ -366,8 +372,9 @@ const Game =  () => {
 
     //change location
     const goToHome = async () => {
-        setGameObj2(null)
-        sockClient.terminate()
+        setGameObj2(null);
+        //sockClient.terminate()
+        console.log(gameObj2);
 
         try{
             await client.leave();

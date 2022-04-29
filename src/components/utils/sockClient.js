@@ -67,7 +67,7 @@ class SockClient {
                 console.log("clicked start value: " +localStorage.getItem('clickedStart'))
                 console.log(JSON.stringify(message));
                 if (JSON.parse(localStorage.getItem('clickedStart')) === false){
-                localStorage.setItem('clickedStart', JSON.stringify(true));
+                //localStorage.setItem('clickedStart', JSON.stringify(true));
                 localStorage.setItem('discardCounter', JSON.stringify(0));
 
                 //goToGame();
@@ -95,6 +95,15 @@ class SockClient {
                 console.log("Received Message from topic/status")
                 const obj = message;
                 localStorage.setItem('gto', JSON.stringify(obj));
+                // TODO Add functions which update the gui -Sandra
+
+            });
+
+            this.subscribe('/topic/terminated', (message)=>{ // the message is a tgo
+                let obj = message;
+                localStorage.setItem('gto', JSON.stringify(obj));
+                const saved = JSON.parse(localStorage.getItem('gto'));
+                console.log('obj after game terminated ' +saved);
                 // TODO Add functions which update the gui -Sandra
 
             });
@@ -153,7 +162,7 @@ class SockClient {
     }
 
     terminate(){
-        this.stompClient.send("app/gameTerminated", {})
+        this.stompClient.send("/app/gameTerminated", {})
         alert("We sent this")
     }
 
@@ -165,9 +174,6 @@ class SockClient {
     subscribe(channel, callback) {
         this.stompClient.subscribe(channel, r => callback(this._stripResponse(r)));
     }
-
-
-
 
 
 }
