@@ -3,9 +3,9 @@ import Zoom_Key from "./zoom_key";
 import Zoom_Secret from "./zoom_key";
 
 export default {
-    sdkKey: false ? process.env.ZOOM_KEY : Zoom_Key,
-    sdkSecret: false? process.env.ZOOM_SECRET: Zoom_Secret,
-    topic: 'Marinja ist cool',
+    sdkKey: process.env.ZOOM_KEY,
+    sdkSecret: process.env.ZOOM_SECRET,
+    topic: 'generateSessionTopic',
     password: '',
     name: 'Display Name',
     sessionKey: '123',
@@ -22,3 +22,5 @@ const generateSessionTopic = () => {
     return sessionTopic;
 
 }
+/*sdkKey: false ? process.env.ZOOM_KEY : Zoom_Key,
+    sdkSecret: false? process.env.ZOOM_SECRET: Zoom_Secret,*/

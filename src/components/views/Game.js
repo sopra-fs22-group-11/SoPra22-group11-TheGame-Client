@@ -286,7 +286,8 @@ const Game =  () => {
         //etDisableCards(true);
         //TODO change local storage turn;
         sockClient.sendDraw();
-        updateUI() // This somehow does not work
+        setGameObj2(localStorage.getItem('gto'));
+        //updateUI() // This somehow does not work
     }
 
 
@@ -318,6 +319,8 @@ const Game =  () => {
     }
 
     const updateUI = () =>{
+        getClients();
+
         console.log("we are in the update function")
         //console.log("show game Obj in update: " + JSON.stringify(gameObj2));
         setGameObj2(JSON.parse(localStorage.getItem('gto')));
@@ -348,8 +351,9 @@ const Game =  () => {
     //TODO add close gameObj method and tell server to close the gameObj
     const myfun = async ()=>{
         try{
-            //await client.leave();
+            await client.leave();
             //this.sock.close();
+
 
         } catch (e){
             console.log("was not in a meeting");
@@ -373,7 +377,7 @@ const Game =  () => {
     //change location
     const goToHome = async () => {
         setGameObj2(null);
-        //sockClient.terminate()
+        //sockClient.terminate();
         console.log(gameObj2);
 
         try{
@@ -446,6 +450,7 @@ const Game =  () => {
 
     const getClients = () => {
         let participants = client.getAllUser();
+        console.log("Below you see the active Zoom clients:")
         console.log(participants)
     }
 
@@ -498,7 +503,7 @@ const Game =  () => {
     //list how many cards need to be shown
     //const nrCards = Object.keys(gameObj2.playerCards[name]).length;
     //const nrCards = gameObj2.playerCards[name].length
-    console.log(gameObj2.playerCards[name].length);
+   //console.log(gameObj2.playerCards[name].length);
     //boolian, hidden or not
     const listHiddenValues = [true, true, true, true, true, true, true];
     //by default we enter 0 so that there is no null value at the start
@@ -590,7 +595,7 @@ const Game =  () => {
     //TODO
     //Comment the next line, when working on the gameObj
 
-    //joinMeeting();
+    joinMeeting();
     //SockClient.connect();
     //sockClient.startGame()
 
@@ -614,7 +619,7 @@ const Game =  () => {
                     <Button className ="game-button"
                             disabled = {false}
                             //onClick={() => showGameObject()}
-                            onClick ={() => checkDiscardPossible(gameObj2.pilesList[1], 0)}
+                            onClick ={() => checkDiscardPossible(gameObj2.pilesList[0], 0)}
                     >
                         {gameObj2.pilesList[0].topCard.value + "▼"}
                     </Button>
@@ -642,7 +647,7 @@ const Game =  () => {
                             disabled = {disableDrawCards}
                             onClick={() => draw()}
                     >
-                        {drawLabel + gameObj2.noCardsOnDeck}
+                        {drawLabel + "\n (cards on deck: " +  gameObj2.noCardsOnDeck + ")"}
                     </Button>
                 </div>
 
