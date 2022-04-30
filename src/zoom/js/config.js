@@ -1,6 +1,5 @@
 import {isProduction} from "../../helpers/isProduction";
-import Zoom_Key from "./zoom_key";
-import Zoom_Secret from "./zoom_key";
+
 
 export default {
     sdkKey: process.env.ZOOM_KEY,

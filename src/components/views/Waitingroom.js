@@ -14,7 +14,6 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
 import SockClient from "../utils/sockClient";
-import config from "../../zoom/js/config";
 
 const Player = ({user}) => (
     <div className="player container">
