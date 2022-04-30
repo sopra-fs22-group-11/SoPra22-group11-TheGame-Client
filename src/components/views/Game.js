@@ -424,18 +424,21 @@ const Game =  () => {
     const initAndJoinSession = async () => {
         //await client.init('en-US',`${window.location.origin}${videoSDKLibDir}`)
         await client.init('en-US', 'Global');
-        //const signature = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZldXbm1JV1hUTHZtc2plV1lFTzViT3JsRVl0dXRHVEtSRDRjIiwidHBjIjoiVGhlIEdhbWUxNCIsInJvbGVfdHlwZSI6MSwidXNlcl9pZGVudGl0eSI6InVzZXIxMiIsInNlc3Npb25fa2V5IjoiMTIiLCJpYXQiOjE2NTAxNzU3NjIsImV4cCI6MTY1MDE4Mjk2Mn0.9LDb64dU9n7NXKSdKUsi8ZYD9fDy5YGWAbTnjpTtZgM";
+        const date = new Date().toDateString();
+        const sessionTopic = "theGame" + date;
+        console.log(sessionTopic);
+
         const signature = generateSessionToken(
             sessionConfig.sdkKey,
             sessionConfig.sdkSecret,
-            sessionConfig.topic,
+            sessionTopic,
             sessionConfig.password,
             sessionConfig.sessionKey,
             localStorage.getItem('username')
         );
         try {
             await client.join(
-                sessionConfig.topic,
+                sessionTopic,
                 signature,
                 localStorage.getItem('username'),
                 sessionConfig.password
