@@ -2,8 +2,8 @@ import {isProduction} from "../../helpers/isProduction";
 //import sessionKey from "../../zoom/js/zoom_key";
 
 export default {
-    sdkKey: process.env.ZOOM_Key,
-    sdkSecret: process.env.ZOOM_Secret,
+    sdkKey: JSON.stringify(process.env.ZOOM_Key),
+    sdkSecret: JSON.stringify(process.env.ZOOM_Secret),
     topic: "marinja at keine lust mehr",
     password: '',
     name: 'Display Name',
