@@ -65,10 +65,10 @@ const HeaderGame = props => (
             <a //href="/rulePage"
                onClick={() => {alert("This does not yet exist")}} /*gotoRulesPage()}*/
             >Rules</a>
-            <a href = "/startpage"
+            <a //href = "/startpage"
                 //href="/login"
-               onClick={() => leaveGame()}
-            >I can not Play</a>
+               onClick={() => {alert("This does not yet exist")}}
+            >I cannot play</a>
             <a href="/startpage"
                onClick={() => leaveGame() }
             >Leave Game </a>

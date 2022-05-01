@@ -586,6 +586,25 @@ const Game =  () => {
         </div>
 
 
+
+
+    );
+   /*let cards=(
+    <section className="wrapper">
+        <figure className="card">Card1</figure>
+        <figure className="card">Card2</figure>
+        <figure className="card">Card3</figure>
+        <figure className="card">Card4</figure>
+        <figure className="card">Card5</figure>
+    </section>)*/
+
+    let informationBox =(
+        <div>
+            <h3> Information for {localStorage.getItem('username')}</h3>
+            <div> Whose Turn: {gameObj2.whoseTurn}</div>
+            <div> {"Played cards: "+counter }</div>
+            <div> {"Chosen card:"+ chosenCard }</div>
+        </div>
     );
 
     //************************  HTML  *******************************************************
@@ -608,19 +627,10 @@ const Game =  () => {
         <div>
             <HeaderGame height="100"/>
             <BaseContainer className = "left">
-                After a reload of the game it will no longer work, don't do it
-                After you press draw, you need to press update, to see the cards you have drawn
-            <h2 align="center">  Hei {localStorage.getItem('username')} ʕ•́ᴥ•̀ʔっ♡</h2>
-                <div> {gameObj2.whoseTurn} needs to play</div>
-            <div> {"You have played "+counter + " cards"}</div>
-                <div> {"You have chosen the card "+chosenCard }</div>
+                <h2> </h2>
+                <div className="home form">
                 <div className="left top">
-                    <Button className ="game-button"
-                            disabled = {false}
-                            onClick={() => updateUI()}
-                    >
-                        update
-                    </Button>
+
                     <Button className ="game-button"
                             disabled = {false}
                             //onClick={() => showGameObject()}
@@ -657,9 +667,12 @@ const Game =  () => {
                 </div>
 
                 {cards}
+                    <h2> </h2>
+                </div>
 
             </BaseContainer>
             <BaseContainer className = "right">
+                <h2> </h2>
                 <div id="js-video-view" className="container video-app">
                     <canvas id="video-canvas" className="video-canvas" width="320" height="160"></canvas>
                     <div className="container meeting-control-layer">
@@ -676,6 +689,17 @@ const Game =  () => {
                         </button>
                     </div>
                 </div>
+                {informationBox}
+                <h2> </h2>
+                <Button className ="user-button"
+                        disabled = {false}
+                        onClick={() => updateUI()}
+                >
+                    update
+                </Button>
+                <h2> </h2>
+                <div className="home important" > IMPORTANT:</div>
+                <h3> Please leave the game only via Leave Game, otherwise the game can not be restarted again!</h3>
             </BaseContainer>
         </div>
 
