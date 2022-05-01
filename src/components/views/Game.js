@@ -511,7 +511,8 @@ const Game =  () => {
     const listHiddenValues = [true, true, true, true, true, true, true];
     //by default we enter 0 so that there is no null value at the start
     const cardValues= [0, 0, 0, 0, 0, 0, 0];
-    
+
+
 
     //here we fill the cards with the right value
     for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
