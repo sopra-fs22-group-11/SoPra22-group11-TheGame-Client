@@ -525,6 +525,7 @@ const Game =  () => {
         listHiddenValues[i] = false;
     }
 
+
     //checkwheter it is players turn and cards should be shown
     checkWhoseTurn();
     allowedToDrawCard();
