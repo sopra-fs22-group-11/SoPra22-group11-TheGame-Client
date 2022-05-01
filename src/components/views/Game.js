@@ -286,19 +286,19 @@ const Game =  () => {
         //etDisableCards(true);
         //TODO change local storage turn;
         sockClient.sendDraw();
-        setGameObj2(localStorage.getItem('gto'));
+        //setGameObj2(localStorage.getItem('gto'));
         //updateUI() // This somehow does not work
     }
 
 
     const validChoice = (val, pile) => {
         if (pile.direction == "TOPDOWN"){
-            if(parseInt(val) < parseInt(pile.topCard.value) || parseInt(val) - 10  == parseInt(pile.topCard.val))
+            if(parseInt(val) < parseInt(pile.topCard.value) || (parseInt(val) - 10)  === parseInt(pile.topCard.value))
             {return true;}
             else {return false;}
         }
         if (pile.direction == "DOWNUP") {
-            if (parseInt(val) > parseInt(pile.topCard.value) || parseInt(val) + 10 == parseInt(pile.topCard.val)) {
+            if (parseInt(val) > parseInt(pile.topCard.value) || parseInt(val) + 10 === parseInt(pile.topCard.value)) {
                 return true;
             } else {
                 return false;
@@ -315,7 +315,7 @@ const Game =  () => {
         //localStorage.setItem('chosenCard', JSON.stringify(val));
         setChosenCard(JSON.stringify(val));
         //setCardSelected(true);
-        document.getElementById("card3").className.replace( "cards-button unselected" , "cards-button selected" );
+        //document.getElementById("card3").className.replace( "cards-button unselected" , "cards-button selected" );
     }
 
     const updateUI = () =>{
@@ -598,7 +598,7 @@ const Game =  () => {
     //TODO
     //Comment the next line, when working on the gameObj
 
-    joinMeeting();
+    //joinMeeting(); // The Secrets do not work at the moments
     //SockClient.connect();
     //sockClient.startGame()
 
@@ -608,6 +608,8 @@ const Game =  () => {
         <div>
             <HeaderGame height="100"/>
             <BaseContainer className = "left">
+                After a reload of the game it will no longer work, don't do it
+                After you press draw, you need to press update, to see the cards you have drawn
             <h2 align="center">  Hei {localStorage.getItem('username')} ʕ•́ᴥ•̀ʔっ♡</h2>
                 <div> {gameObj2.whoseTurn} needs to play</div>
             <div> {"You have played "+counter + " cards"}</div>

@@ -84,7 +84,7 @@ const onPeerVideoStateChangedListener = (zoomClient, mediaStream) => {
 
 const initClientEventListeners = (zoomClient, mediaStream) => {
     onUserAddedListener(zoomClient);
-    onUserRemovedListener(zoomClient, mediaStream);
+    onUserRemovedListener(zoomClient);
     onPeerVideoStateChangedListener(zoomClient, mediaStream);
 };
 

@@ -233,7 +233,7 @@ const Waitingroom =   () => {
     let startGameUI = (
         <div>
             <div className="home title"> How to start THE GAME</div>
-            <p> 1. You need to enroll for this Game clicking on the 1. button <br/>
+            <p> 1. You need to enroll for this Game clicking on the 1. button (maybe give it a second) <br/>
                 2. You decide within your Team, who is the Team Leader.<br/>
                 3. The Team Leader clicks on 2.1 and the Team Member click on 2.2.<br/>
                 4. Enjoy THE GAME :D </p>
