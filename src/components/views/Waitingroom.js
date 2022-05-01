@@ -237,6 +237,8 @@ const Waitingroom =   () => {
                 2. You decide within your Team, who is the Team Leader.<br/>
                 3. The Team Leader clicks on 2.1 and the Team Member click on 2.2.<br/>
                 4. Enjoy THE GAME :D </p>
+
+            <div className="home important" > IMPORTANT: Please leave the game only via Leave Game, otherwise the game can not be restarted again!</div>
             <Button
                 width="100%"
                 onClick={() => sendName()}
@@ -257,6 +259,14 @@ const Waitingroom =   () => {
             >
                 2.2 Start The Game as a Team Member
             </Button>
+            <h2>How to play this Game</h2>
+            <p> You will see at the top of the page, which player needs to play. <br/>
+                You can play a card, with clicking on your hand card and than clicking on the pile. If you want to change your selected card, you can just click on a other card. <br/>
+                With clicking on the draw pile you can get your new cards.<br/>
+                2 REMARKS: <br/>
+                1. Until we have solved the Hook issue, you need to click update to render your page and see what the other player has played.<br/>
+                2. Zoom ins unfortunately not yet working, due to deployment difficulties</p>
+
 
         </div>)
 
