@@ -61,6 +61,9 @@ const Waitingroom =   () => {
             SockClient.sendName(localStorage.getItem('username'));
             alert("You have successfully enrolled in this game.")
         }
+        else{
+            alert("You are already enrolled")
+        }
 
     }
     //sendName();
