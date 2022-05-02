@@ -26,23 +26,13 @@ const Player = ({user}) => (
 
 const Waitingroom =   () => {
     //************************  Websocket  **************************************************
+    //hello sandra:)
     SockClient.connect();
 
     const history = useHistory();
 
-    /*const client = ZoomVideo.createClient();
-    const audioTrack = VideoSDK.createLocalAudioTrack();
-    const videoTrack = VideoSDK.createLocalVideoTrack();
-    let mediaStream;
-    const canvas = document.querySelector('.video-canvas');
-    const videoSDKLibDir = '/node_modules/@zoom/videosdk/dist/lib';
-    const [users, setUsers] = useState(null);*/
+
     const [registered, setRegistered]=useState(false);
-
-
-    // for join running game button
-    //let saved = JSON.parse(localStorage.getItem('gto'));
-    //let isGameRunning = saved.gameRunning;
 
 
     //to show users
