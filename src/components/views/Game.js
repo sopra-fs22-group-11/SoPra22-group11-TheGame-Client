@@ -18,6 +18,8 @@ import sockClient from "../utils/sockClient";
 import SockClient from "../utils/sockClient";
 import {Views} from "./simple-view-switcher";
 import {string} from "sockjs-client/lib/utils/random";
+import React from "react";
+import tableBackground from '../../tableBackground.png';
 
 const User = ({user}) => (
     <div className="user container">
@@ -359,7 +361,7 @@ const Game =  () => {
     //idee um zu zeigen das ein button ausgewählt wurde: { cardSelected?"cards-button selected": "cards-button unselected"}
 
 
-    let cards = (
+    /*let cards = (
         <div  className="left bottom">
             <Button id="card1" className ="cards-button unselected"
                     hidden={listHiddenValues[0]}
@@ -415,17 +417,56 @@ const Game =  () => {
 
 
 
-    );
+    );*/
 
     //show cards nicely
-   /*let cards=(
+   let cards=(
     <section className="wrapper">
-        <figure className="card">Card1</figure>
-        <figure className="card">Card2</figure>
-        <figure className="card">Card3</figure>
-        <figure className="card">Card4</figure>
-        <figure className="card">Card5</figure>
-    </section>)*/
+        <button className="card" hidden={listHiddenValues[0]}
+                disabled = {false}
+                onClick={() => chooseCard(cardValues[0])}
+        >
+            {cardValues[0]}
+        </button>
+        <button className="card"hidden={listHiddenValues[1]}
+                disabled = {false}
+                onClick={() => chooseCard(cardValues[1])}
+        >
+            {cardValues[1]}</button>
+        <button className="card" hidden={listHiddenValues[2]}
+                disabled = {false}
+                onClick={() => chooseCard(cardValues[2])}
+        >
+            {cardValues[2]}
+        </button>
+        <button className="card"hidden={listHiddenValues[3]}
+                disabled = {false}
+                onClick={() => chooseCard(cardValues[3])}
+        >
+            {cardValues[3]}
+        </button>
+        <button className="card"
+                hidden={listHiddenValues[4]}
+                disabled = {false}
+                onClick={() => chooseCard(cardValues[4])}
+        >
+            {cardValues[4]}
+        </button>
+        <button className="card"
+                hidden={listHiddenValues[5]}
+                disabled = {false}
+                onClick={() => chooseCard(cardValues[5])}
+        >
+            {cardValues[5]}
+        </button>
+        <button className="card"
+                hidden={listHiddenValues[6]}
+                disabled = {false}
+                onClick={() => chooseCard(cardValues[6])}
+        >
+            {cardValues[6]}
+        </button>
+    </section>)
 
     let informationBox =(
         <div>
@@ -457,6 +498,7 @@ const Game =  () => {
             <BaseContainer className = "left">
                 <h2> </h2>
                 <div className="home form">
+                    <img src={tableBackground} alt="Game Logo" />;
                 <div className="left top">
 
                     <Button className ="game-button"
