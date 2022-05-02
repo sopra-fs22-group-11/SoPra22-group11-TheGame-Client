@@ -18,6 +18,11 @@ import sockClient from "../utils/sockClient";
 import SockClient from "../utils/sockClient";
 import {Views} from "./simple-view-switcher";
 import {string} from "sockjs-client/lib/utils/random";
+import Modal from 'components/ui/Modal';
+import Backdrop from 'components/ui/Backdrop';
+import "styles/views/Game.scss"
+
+
 
 const User = ({user}) => (
     <div className="user container">
@@ -453,12 +458,31 @@ const Game =  () => {
 
     return (
         <div>
+
+
+
+
+
+        <div>
             <HeaderGame height="100"/>
+
+
+            <div>
+
+                <BaseContainer className = "overlay">
+            <Modal/>
+            <Backdrop/>
+
+                </BaseContainer>
+
+
+
+
             <BaseContainer className = "left">
                 <h2> </h2>
                 <div className="home form">
-                <div className="left top">
 
+                <div className="left top">
                     <Button className ="game-button"
                             disabled = {false}
                             onClick ={() => checkDiscardPossible(gameObj2.pilesList[0], 0)}
@@ -484,6 +508,7 @@ const Game =  () => {
                         {gameObj2.pilesList[3].topCard.value +"▲"}
                     </Button>
                 </div>
+
                 <div className="left middle">
                     <Button className ="game-button"
                             disabled = {disableDrawCards}
@@ -494,10 +519,17 @@ const Game =  () => {
                 </div>
 
                 {cards}
+
                     <h2> </h2>
                 </div>
-
             </BaseContainer>
+
+
+
+
+
+
+
             <BaseContainer className = "right">
                 <h2> </h2>
                 <div id="js-video-view" className="container video-app">
@@ -528,7 +560,20 @@ const Game =  () => {
                 <div className="home important" > IMPORTANT:</div>
                 <h3> Please leave the game only via Leave Game, otherwise the game can not be restarted again!</h3>
             </BaseContainer>
+
+
+
+
+
+            </div>
+
         </div>
+
+
+
+
+        </div>
+
 
     ) ;
 

@@ -22,6 +22,7 @@
     padding-left: 37px;
     padding-right: 37px;
     border-radius: 0.75em;
+    z-index: 1;
     background-color: $accentDark;
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
