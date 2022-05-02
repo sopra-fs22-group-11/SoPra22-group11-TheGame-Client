@@ -67,4 +67,8 @@
     text-align: center;
     text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
   }
+  ::placeholder {
+    color: #323232;
+    font-size: 16px;
+  }
 }
