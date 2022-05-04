@@ -54,7 +54,7 @@ const Game =  () => {
     let  disableDrawCards = false;
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
- 
+
     const name= localStorage.getItem('username');
     console.log("just before the draw option")
 
