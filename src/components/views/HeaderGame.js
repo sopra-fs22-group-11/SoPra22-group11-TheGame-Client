@@ -10,6 +10,9 @@ import sockClient from "../utils/sockClient";
 import BaseContainer from "../ui/BaseContainer";
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
+import SockClient from "../utils/sockClient";
+import {Button} from "../ui/Button";
+import {useHistory} from "react-router-dom";
 
 
 
@@ -64,6 +67,8 @@ const leaveGame = () => {
 const HeaderGame = props => {
 
 const [modalIsOpen, setModalIsOpen]= useState(false);
+const [textToDisplay, setTextToDisplay]= useState();
+const history = useHistory();
 
 function openModal(){
         setModalIsOpen(true);
@@ -72,6 +77,48 @@ function openModal(){
 function closeModal(){
     setModalIsOpen(false);
 }
+
+function clickRules(){
+    setTextToDisplay(rulesText);
+    openModal()
+}
+const rulesText = (
+    <ul>
+        <li>Saying numbers is not allowed! But you can say for example: " Don't put a card on that pile."</li>
+        <li>The upwards triangle means that the pile goes from 1 to 100.</li>
+        <li>The downwards triangle means that the pile goes from 100 to 1.</li>
+        <li>You can only go down in an upwards pile, if you lay down a card that is exactly 10 less than the top card.</li>
+        <li>You can only go up in an downwards pile, if you lay down a card that is exactly 10 more than the top card.</li>
+        <li>You can do the backwards trick as often as you like during your turn.</li>
+        <li>As long as the draw pile has cards you have to lay down at least two cards.</li>
+        <li>When the draw pile is empty you only have to lay down at least one card.</li>
+        <li>The game is over if you laid down all cards or a player can't play the minimum amount of cards.</li>
+
+    </ul>
+
+
+)
+
+function cannotPlay(){ // TODO notify websocket that gamerunning: lost
+    setTextToDisplay(lostText);
+    openModal();
+}
+const lostText =(
+    <div>
+    <p>You have lost the game. Click "OK" to see your results</p>
+
+    <Button className ="player-button"
+            disabled = {false}
+            width = "10%"
+            onClick={() => history.push('/gameResults')}
+    >
+        OK
+    </Button>
+    </div>
+
+
+
+)
 return(
     <div className="header container">
         <div className="header title">
@@ -80,19 +127,19 @@ return(
 
         <div className="header-right">
             <a //href="/rulePage"
-               onClick={() => openModal()} /*gotoRulesPage()}*/
+               onClick={() => clickRules()} /*gotoRulesPage()}*/
             >Rules</a>
             <a //href = "/startpage"
                 //href="/login"
-               onClick={() => {alert("This does not yet exist")}}
+               onClick={() =>cannotPlay()}
             >I cannot play</a>
             <a href="/startpage"
-               onClick={() => leaveGame() }
+               onClick={() => leaveGame()}
             >Leave Game </a>
         </div>
         <div>
             <BaseContainer className = "overlay">
-                {modalIsOpen && <Modal/>}
+                {modalIsOpen && <Modal text ={textToDisplay}/>}
                 {modalIsOpen &&<Backdrop clicked ={closeModal}/>}
 
             </BaseContainer>

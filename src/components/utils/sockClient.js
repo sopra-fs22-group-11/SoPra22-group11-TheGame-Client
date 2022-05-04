@@ -166,6 +166,12 @@ class SockClient {
         alert("We sent this")
     }
 
+    playerLost(){
+        localStorage.getItem('gto');
+
+        this.stompClient.send("app/gameStatus")
+    }
+
 
     _stripResponse(response) {
         return JSON.parse(response.body);
