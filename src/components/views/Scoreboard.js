@@ -12,8 +12,9 @@ import HeaderHome from "./HeaderHome";
 
 const User = ({user}) => (
     <div className="user container">
-        <div className="username">{user.username}</div>
-        <div className="status">{user.status}</div>
+        <div className="user username">{user.username}</div>
+        <div className="user status"> {user.status}</div>
+        <div className="user score">{user.score }</div>
     </div>
 );
 
@@ -78,10 +79,10 @@ const Scoreboard = () => {
         <BaseContainer className = "Home container">
             <h2>Ranking</h2>
             <p className="game paragraph">
-                User ranking with their percentage of won games and status:
+                User ranking with their game scores and status:
                 <p></p>
                 <button className="user-button">
-                    Username, Score, Status
+                    Username, Status, Score
                 </button>
             </p>
             {content}
