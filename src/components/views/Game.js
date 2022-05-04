@@ -49,6 +49,8 @@ const Game =  () => {
     let  disableDrawCards = false;
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
+    //const [playerList, setPlayerList] = useState([]);
+    const playerList = [];
     const name= localStorage.getItem('username');
     console.log("just before the draw option")
 
@@ -159,9 +161,7 @@ const Game =  () => {
             } else {
                 return false;
             }
-
         }
-
     }
 
     const chooseCard = (val) => {
@@ -183,6 +183,17 @@ const Game =  () => {
 
 
 
+    // Create list of players
+    //const getPlayers = () => {
+        for (const [player, noOfCards] of Object.entries(gameObj2.playerCards)) {
+            console.log(player, noOfCards.length);
+            var data = [player, noOfCards.length];
+            playerList.push(data);
+            console.log(playerList);
+        }
+        //setPlayerList(playerList);
+      //  return playerList;
+    //}
 
 
 
@@ -517,6 +528,19 @@ const Game =  () => {
                     </div>
                 </div>
                 {informationBox}
+                <h2> </h2>
+                <h3> List of Players: </h3>
+                <ul>
+                    {playerList.map(item => (
+                        <li>
+                            <Button className ="primary-button">
+                        <div key={item}>{item[0]} {"has"} {item[1]} {"cards"}</div>
+                            </Button>
+                            </li>
+                    ))}
+                </ul>
+
+
                 <h2> </h2>
                 <Button className ="user-button"
                         disabled = {false}

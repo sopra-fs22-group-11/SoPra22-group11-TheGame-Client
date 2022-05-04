@@ -10,9 +10,6 @@ import updateUI from "../views/Game";
 import forceUpdate from "../views/Game";
 
 class SockClient {
-    callback;
-    callback1;
-
 
     constructor() {
         this._connected = false;
@@ -28,12 +25,11 @@ class SockClient {
     // ODER mir dünd alli variable dete definiere womers bruched --> sprich im game und sie de funktione mitgeh und bechömed
     //als return die neu variable zrug
 
-    connect() {
+    connect(state, setState) {
         //das isch zimlich hässlich :/
         try {
             this.sock.close();
-        } catch {
-        }
+        } catch {}
         const url=getDomain();
         //this.sock = new SockJS('https://sopra-fs22-11-thegame-server.herokuapp.com/ws'); // http://localhost:8081/ws
         this.sock = new SockJS(url+ '/ws');
@@ -42,23 +38,29 @@ class SockClient {
             this._connected = true;
             //console.log("before subscribe");
             this.subscribe('/topic/players', (message)=> { // The response is a list of all the players in the waiting room
+                    //const data = JSON.parse(message.body);
                     console.log("this is the response:");
                     console.log(message['playerName']);
                     localStorage.setItem('playerList', message);
             });
 
             this.subscribe('/topic/game',(message) => { // the message is a tgo
-                console.log('Received Message from /topic/game'+message.body);
-                const obj = message;
-                localStorage.setItem('gto', JSON.stringify(obj));
-                console.log('Received Message from /topic/game'+ localStorage.getItem('gto'));
+                try {
+                    console.log('Received Message from /topic/game'+message.body);
+                    const obj = message;
+                    localStorage.setItem('gto', JSON.stringify(obj));
+                    console.log('Received Message from /topic/game'+ localStorage.getItem('gto'));
 
-                //updateUI();
-                //forceUpdate(JSON.stringify(obj));
-                console.log(obj.noCardsOnDeck);
-                console.log(obj.pilesList);
-                console.log(obj.playerCards);
-                console.log(obj.gameRunning);
+                    //updateUI();
+                    //forceUpdate(JSON.stringify(obj));
+                    console.log(obj.noCardsOnDeck);
+                    console.log(obj.pilesList);
+                    console.log(obj.playerCards);
+                    console.log(obj.gameRunning);
+                } catch (error) {
+                    console.log(error)
+                }
+
 
             });
 
@@ -67,18 +69,9 @@ class SockClient {
                 console.log("clicked start value: " +localStorage.getItem('clickedStart'))
                 console.log(JSON.stringify(message));
                 if (JSON.parse(localStorage.getItem('clickedStart')) === false){
-                //localStorage.setItem('clickedStart', JSON.stringify(true));
                 localStorage.setItem('discardCounter', JSON.stringify(0));
-
-                //goToGame();
                 console.log(JSON.stringify(message));
-                //const history = useHistory();
-                //history.push('/game');
                     localStorage.setItem('clickedStart', JSON.stringify(true));
-                //    //const history = useHistory();
-                //    //history.push('/game');
-                //      //  changePage();
-               //       //  goToLogin();
                 }
                 const obj = message;
                 localStorage.setItem('gto',JSON.stringify(obj));
@@ -121,32 +114,14 @@ class SockClient {
 
     }
 
-   // callback = function(responseMessage){ // The response is a list of all the players in the waiting room
-   //                   console.log("this is the response:");
-    //    //     console.log(responseMessage[0]['playerName'])
-    //    //     localStorage.setItem('playerlist', responseMessage)
-   // }
-
-    //callback1 = function (responseMessage){
-    //    console.log("In gamObject subscription response")
-    //    console.log(responseMessage)
-//
-//
-    //}
      sendName(username) {
         this.stompClient.send("/app/game", {}, JSON.stringify(username));
-        /*
-        var pre = document.createElement("p");
-        pre.innerHTML = stompClient.send("/app/hello", {}, JSON.stringify("Tijana")).data;
-         */
     }
 
     sendDiscard() {
         console.log("it will be sent any minute");
         this.stompClient.send("/app/discard", {}, localStorage.getItem('gto'));
         console.log("it was sent");
-        //
-        //alert('Pinggg, it is sent ');
     }
 
     startGame() {
@@ -158,7 +133,6 @@ class SockClient {
     sendDraw(){
         this.stompClient.send("/app/draw", {} );
         console.log("it was sent");
-        //alert('Pinggg, it is sent ');
     }
 
     terminate(){

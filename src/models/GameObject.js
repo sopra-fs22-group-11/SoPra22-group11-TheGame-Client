@@ -7,6 +7,7 @@ class GameObject {
         this.whoseTurn = null;
         this.pilesList = null;
         this.playerCards= null;
+        this.playerList = null;
         this.gameRunning = null;
         Object.assign(this, data); // target, source, checks if key is there and updates the new value, if its not there, it adds the new key value pair
         // it doesn't have to be in the correct order

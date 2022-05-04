@@ -27,12 +27,14 @@ const Player = ({user}) => (
 const Waitingroom =   () => {
     //************************  Websocket  **************************************************
     //hello sandra:)
-    SockClient.connect();
+    SockClient.connect(state, setState);
 
     const history = useHistory();
 
 
     const [registered, setRegistered]=useState(false);
+
+    const [state, setState] = useState(true);
 
 
     //to show users
@@ -59,6 +61,11 @@ const Waitingroom =   () => {
     //************************  Websocket  **************************************************
 
     //************************  Waiting Room Logic  **************************************************
+
+    useEffect(() => {
+        SockClient.connect();
+    }, []);
+
 
     const goToGame = async () => {
 
