@@ -14,10 +14,16 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
-import {sendDiscard} from "../utils/sockClient";
-import { connect, sendDraw} from "../utils/sockClient";
+import {sendDiscard, sendName} from "../utils/sockClient";
+import { connect, sendDraw, startGame} from "../utils/sockClient";
 import {Views} from "./simple-view-switcher";
 import {string} from "sockjs-client/lib/utils/random";
+import "../views/Waitingroom";
+import Waitingroom from "./Waitingroom";
+//import {getGameObj} from "./Waitingroom";
+import dummy from "./Waitingroom";
+
+
 
 const User = ({user}) => (
     <div className="user container">
@@ -37,9 +43,21 @@ const Game =  () => {
 
     //for Websocket setup
     //TODO is this stille used?!
-    //const [gameObj2, setGameObj2] = useState(JSON.parse(localStorage.getItem('gto')));
-    const [gameObj2, setGameObj2] = useState()
-    connect(gameObj2, setGameObj2());
+    //const [gameObj, setGameObj2] = useState(JSON.parse(localStorage.getItem('gto')));
+    const [gameObj, setGameObj] = useState(null);
+
+    setGameObj(dummy);
+
+    useEffect(() => {
+        console.log("basic board rendering");
+        connect(gameObj, setGameObj);
+
+        sendName(localStorage.getItem('username'));
+    }, []);
+
+
+    //startGame(gameObj, setGameObj2);
+    // await new Promise(resolve => setTimeout(resolve, 1000));
 
     //************************  Websocket  **************************************************
 
@@ -65,7 +83,7 @@ const Game =  () => {
 
 
     const checkWhoseTurn =  ()=>{
-        console.log("It is the turn of " + gameObj2.whoseTurn);
+        console.log("It is the turn of " + gameObj.whoseTurn);
         const gameTemp = JSON.parse(localStorage.getItem('gto'));
         const whoseTurn = gameTemp.whoseTurn;
 
@@ -103,21 +121,21 @@ const Game =  () => {
                 let newSpecificPlayerCards = [];
 
 
-                for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
-                    if (gameObj2.playerCards[name][i].value != chosenCard){
-                        newSpecificPlayerCards.push(gameObj2.playerCards[name][i]);
+                for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+                    if (gameObj.playerCards[name][i].value != chosenCard){
+                        newSpecificPlayerCards.push(gameObj.playerCards[name][i]);
                     }
                 }
-                gameObj2.playerCards[name] = newSpecificPlayerCards;
+                gameObj.playerCards[name] = newSpecificPlayerCards;
 
 
-                gameObj2.pilesList[index].topCard.value = chosenCard;
+                gameObj.pilesList[index].topCard.value = chosenCard;
 
                 //actually update
 
                 console.log("LocalStorage gto: " + localStorage.getItem('gto'));
-                console.log(" hook gto: " + gameObj2);
-                gameObj2.playerCards[name] = newSpecificPlayerCards;
+                console.log(" hook gto: " + gameObj);
+                gameObj.playerCards[name] = newSpecificPlayerCards;
 
                 setCounter(counter+1);
                 console.log("the Discard counter is: " + counter);
@@ -126,7 +144,7 @@ const Game =  () => {
                 setChosenCard(null);
                 console.log("just before sending to server")
 
-                localStorage.setItem('gto', JSON.stringify(gameObj2));
+                localStorage.setItem('gto', JSON.stringify(gameObj));
                 sendDiscard();
 
 
@@ -176,10 +194,10 @@ const Game =  () => {
         getClients();
 
         console.log("we are in the update function")
-        setGameObj2(JSON.parse(localStorage.getItem('gto')));
+        setGameObj(JSON.parse(localStorage.getItem('gto')));
         showGameObject();
 
-        console.log(gameObj2);
+        console.log(gameObj);
     }
 
 
@@ -215,8 +233,8 @@ const Game =  () => {
 
     //change location
     const goToHome = async () => {
-        setGameObj2(null);
-        console.log(gameObj2);
+        setGameObj(null);
+        console.log(gameObj);
 
         try{
             await client.leave();
@@ -227,7 +245,7 @@ const Game =  () => {
     }
 
     const showGameObject = () => {
-        console.log(gameObj2);
+        console.log(gameObj);
     }
 
     //************************  GameLogic  **************************************************
@@ -340,13 +358,13 @@ const Game =  () => {
 
 
     //here we fill the cards with the right value
-    for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
-        cardValues[i] = gameObj2.playerCards[name][i].value;
+    for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+        cardValues[i] = gameObj.playerCards[name][i].value;
         console.log(cardValues[i]);
     }
 
 
-    for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
+    for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         listHiddenValues[i] = false;
     }
 
@@ -431,7 +449,7 @@ const Game =  () => {
     let informationBox =(
         <div>
             <h3> Information for {localStorage.getItem('username')}</h3>
-            <div> Whose Turn: {gameObj2.whoseTurn}</div>
+            <div> Whose Turn: {gameObj.whoseTurn}</div>
             <div> {"Played cards: "+counter }</div>
             <div> {"Chosen card:"+ chosenCard }</div>
         </div>
@@ -462,27 +480,27 @@ const Game =  () => {
 
                     <Button className ="game-button"
                             disabled = {false}
-                            onClick ={() => checkDiscardPossible(gameObj2.pilesList[0], 0)}
+                            onClick ={() => checkDiscardPossible(gameObj.pilesList[0], 0)}
                     >
-                        {gameObj2.pilesList[0].topCard.value + "▼"}
+                        {gameObj.pilesList[0].topCard.value + "▼"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj2.pilesList[1], 1)}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[1], 1)}
                     >
-                        {gameObj2.pilesList[1].topCard.value + "▼"}
+                        {gameObj.pilesList[1].topCard.value + "▼"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj2.pilesList[2], 2)}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[2], 2)}
                     >
-                        {gameObj2.pilesList[2].topCard.value +"▲"}
+                        {gameObj.pilesList[2].topCard.value +"▲"}
                     </Button>
                     <Button className ="game-button"
                             disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj2.pilesList[3], 3)}
+                            onClick={() => checkDiscardPossible(gameObj.pilesList[3], 3)}
                     >
-                        {gameObj2.pilesList[3].topCard.value +"▲"}
+                        {gameObj.pilesList[3].topCard.value +"▲"}
                     </Button>
                 </div>
                 <div className="left middle">
@@ -490,7 +508,7 @@ const Game =  () => {
                             disabled = {disableDrawCards}
                             onClick={() => draw()}
                     >
-                        {drawLabel + "\n (cards on deck: " +  gameObj2.noCardsOnDeck + ")"}
+                        {drawLabel + "\n (cards on deck: " +  gameObj.noCardsOnDeck + ")"}
                     </Button>
                 </div>
 

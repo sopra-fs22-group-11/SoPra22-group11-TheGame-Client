@@ -13,7 +13,8 @@ import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
-import {connect, sendName, startGame} from "../utils/sockClient";
+import {connect, sendName, startGame, PlayerList} from "../utils/sockClient";
+
 
 
 const Player = ({user}) => (
@@ -22,17 +23,88 @@ const Player = ({user}) => (
     </div>
 );
 
+Player.propTypes = {
+    user: PropTypes.object
+};
 
+const Member = ({member}) => {
+    return(
+        <div className="lobby member-container">
+            <div className="lobby circle">
+            </div>
+            <label className="lobby member"> {member.username} </label>
+        </div>
+    );
+};
 
+Member.propTypes = {
+    member: PropTypes.object
+};
+
+export var dummy =null;
 
 const Waitingroom =   () => {
     //************************  Websocket  **************************************************
+    const [users, setUsers] = useState(null);
+    const [players, setPlayers] = useState(null);
+    const [gameObjDummy, setGameObjDummy] = useState(null);
 
-    useEffect( () =>{
-    })
+
+    useEffect(() => {
+        //fetches all members in the lobby
+        async function fetchDataWaitingroom() {
+            try {
+                console.log("we are trying to connect");
+                await connect(gameObjDummy, setGameObjDummy);
+                console.log("connection is done");
+                //TODO mir bruched en endpoint wo eus e liste git
+                //await sendName(localStorage.getItem('username'));
+                //console.log("name is sent");
+                //await setPlayers(PlayerList);
+                //alert("Your are registered");
+                //
+            } catch (error) {
+                console.error("Details:", error);
+            }
+        }
+        /*function startUpdateListener(event)
+        {
+            let gametoken = event.detail.gameToken;
+            if(gametoken)
+            {
+                localStorage.setItem("gametoken", gametoken);
+                history.push("/game");
+            }
+        }
+        //only add the listener on initial render, otherwise we have multiple
+        //check if the game gets started
+        document.addEventListener("startUpdate", startUpdateListener);
+
+        function lobbyUpdateListener(e)
+        {
+            fetchDataLobby();
+        }
+
+        document.addEventListener("lobbyUpdate", lobbyUpdateListener);
+
+        fetchDataLobby();
+        fetchDataSearch();
+
+        return () => { // This code runs when component is unmounted
+            document.removeEventListener("lobbyUpdate", lobbyUpdateListener);
+            document.removeEventListener("startUpdate", startUpdateListener); // (4) set it to false when we leave the page
+
+        }*/
+        fetchDataWaitingroom();
+    }, []);
 
 
-    connect();
+    /*const suscribePlayer= () =>{
+        setPlayers([localStorage.getItem('username')]);
+    }*/
+
+
+
 
     const history = useHistory();
 
@@ -42,7 +114,7 @@ const Waitingroom =   () => {
 
     //to show users
 
-    const sendNameToWS = () => {
+    const sendNameToWS = async () => {
         //TODO delete if not necesary
         //const userId = localStorage.getItem('loggedInUser');
         //const response1 = await api.get('/users/' + userId);
@@ -53,22 +125,26 @@ const Waitingroom =   () => {
         if(!registered){
             setRegistered(true);
             console.log("vor sockClient send name");
-            sendName(localStorage.getItem('username'));
-            alert("You have successfully enrolled in this game.")
+            await sendName(localStorage.getItem('username'));
+            alert("You have successfully enrolled in this game.");
+            console.log("gameObjDummy: " +gameObjDummy);
+            dummy = gameObjDummy;
+            console.log("Dummy: " +dummy);
+
         }
         else{
             alert("You are already enrolled")
         }
 
     }
+
     //************************  Websocket  **************************************************
 
     //************************  Waiting Room Logic  **************************************************
 
     const goToGame = async () => {
 
-        startGame();
-        localStorage.setItem('clickedStart', JSON.stringify(true));
+        startGame(gameObjDummy, setGameObjDummy);
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         //if (localStorage.getItem('clickedStart') === true) {

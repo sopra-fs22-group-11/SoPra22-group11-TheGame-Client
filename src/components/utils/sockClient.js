@@ -17,6 +17,7 @@ import { over } from "stompjs";
 export var stompClient = null;
 export var sessionId ="";
 export var gameL=null;
+export var PlayerList=[];
 //var currentUser ="";
 var connected = false;
 
@@ -31,15 +32,23 @@ export const connect = async ( gameObj, setGameObj) => {
     var sock = new SockJS(url+ '/ws');
     stompClient = over(sock);
     await stompClient.connect({}, () => {
+        for (let i=0; i<PlayerList.length; i++) {
+            if (localStorage.getItem('username')==PlayerList[i]){
+                return;
+            }
+        }
+
        connected = true;
         //console.log("before subscribe");
-        this.subscribe('/topic/players', (message)=> { // The response is a list of all the players in the waiting room
+        subscribe('/topic/players', (message)=> { // The response is a list of all the players in the waiting room
             console.log("this is the response:");
             console.log(message['playerName']);
+            PlayerList= message;
+            console.log(PlayerList);
             //localStorage.setItem('playerList', message);
         });
 
-        this.subscribe('/topic/game',(message) => { // the message is a tgo
+        subscribe('/topic/game',(message) => { // the message is a tgo
             console.log('Received Message from /topic/game'+message.body);
             const obj = message;
             setGameObj(obj);
@@ -58,7 +67,7 @@ export const connect = async ( gameObj, setGameObj) => {
 
         });
 
-        this.subscribe('/topic/start', (message)=>{ // the message is a tgo
+        subscribe('/topic/start', (message)=>{ // the message is a tgo
             console.log("Received Message from topic/start")
             console.log("clicked start value: " +localStorage.getItem('clickedStart'))
             console.log(JSON.stringify(message));
@@ -87,7 +96,7 @@ export const connect = async ( gameObj, setGameObj) => {
             // TODO Add functions which update the gui -Sandra
         });
 
-        this.subscribe('/topic/status', (message)=>{ // the message is a tgo
+        subscribe('/topic/status', (message)=>{ // the message is a tgo
             console.log("Received Message from topic/status")
             const obj = message;
             setGameObj(obj);
@@ -96,7 +105,7 @@ export const connect = async ( gameObj, setGameObj) => {
 
         });
 
-        this.subscribe('/topic/terminated', (message)=>{ // the message is a tgo
+        subscribe('/topic/terminated', (message)=>{ // the message is a tgo
             let obj = message;
             setGameObj(obj);
             //localStorage.setItem('gto', JSON.stringify(obj));
@@ -114,7 +123,14 @@ export const connect = async ( gameObj, setGameObj) => {
 }
 
 export const sendName = (username) => {
-    this.stompClient.send("/app/game", {}, JSON.stringify(username));}
+    for (let i=0; i<PlayerList.length; i++) {
+        if (localStorage.getItem('username')==PlayerList[i]){
+            return;
+        }
+    }
+    console.log("before send name")
+    stompClient.send("/app/game", {}, JSON.stringify(username));
+    console.log("after send name")}
 /*
 var pre = document.createElement("p");
 pre.innerHTML = stompClient.send("/app/hello", {}, JSON.stringify("Tijana")).data;
@@ -130,7 +146,7 @@ export const sendDiscard = (gameObj) => {
     //alert('Pinggg, it is sent ');
 }
 
-export const startGame = () => {
+export const startGame = (gameObj, setGameObj) => {
     console.log("at sockclient startGame");
     stompClient.send("/app/start", {});
     console.log("send to start game done");
@@ -153,7 +169,7 @@ export const terminate = () =>{
 }
 
 export const subscribe = (channel, callback) => {
-    this.stompClient.subscribe(channel, r => callback(stripResponse(r)));
+    stompClient.subscribe(channel, r => callback(stripResponse(r)));
 }
 
 
