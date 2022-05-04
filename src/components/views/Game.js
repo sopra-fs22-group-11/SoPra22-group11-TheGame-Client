@@ -14,8 +14,8 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
-import sockClient from "../utils/sockClient";
-import SockClient from "../utils/sockClient";
+import {sendDiscard} from "../utils/sockClient";
+import { connect, sendDraw} from "../utils/sockClient";
 import {Views} from "./simple-view-switcher";
 import {string} from "sockjs-client/lib/utils/random";
 
@@ -37,8 +37,9 @@ const Game =  () => {
 
     //for Websocket setup
     //TODO is this stille used?!
-    const [gameObj2, setGameObj2] = useState(JSON.parse(localStorage.getItem('gto')));
-
+    //const [gameObj2, setGameObj2] = useState(JSON.parse(localStorage.getItem('gto')));
+    const [gameObj2, setGameObj2] = useState()
+    connect(gameObj2, setGameObj2());
 
     //************************  Websocket  **************************************************
 
@@ -126,7 +127,7 @@ const Game =  () => {
                 console.log("just before sending to server")
 
                 localStorage.setItem('gto', JSON.stringify(gameObj2));
-                sockClient.sendDiscard();
+                sendDiscard();
 
 
 
@@ -143,7 +144,7 @@ const Game =  () => {
         setCounter(0);
         disableCards = true;
         //TODO change local storage turn;
-        sockClient.sendDraw();
+        sendDraw();
     }
 
 

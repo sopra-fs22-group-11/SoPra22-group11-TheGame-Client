@@ -13,7 +13,8 @@ import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
-import SockClient from "../utils/sockClient";
+import {connect, sendName, startGame} from "../utils/sockClient";
+
 
 const Player = ({user}) => (
     <div className="player container">
@@ -26,8 +27,12 @@ const Player = ({user}) => (
 
 const Waitingroom =   () => {
     //************************  Websocket  **************************************************
-    //hello sandra:)
-    SockClient.connect();
+
+    useEffect( () =>{
+    })
+
+
+    connect();
 
     const history = useHistory();
 
@@ -37,7 +42,7 @@ const Waitingroom =   () => {
 
     //to show users
 
-    const sendName = () => {
+    const sendNameToWS = () => {
         //TODO delete if not necesary
         //const userId = localStorage.getItem('loggedInUser');
         //const response1 = await api.get('/users/' + userId);
@@ -48,7 +53,7 @@ const Waitingroom =   () => {
         if(!registered){
             setRegistered(true);
             console.log("vor sockClient send name");
-            SockClient.sendName(localStorage.getItem('username'));
+            sendName(localStorage.getItem('username'));
             alert("You have successfully enrolled in this game.")
         }
         else{
@@ -62,7 +67,7 @@ const Waitingroom =   () => {
 
     const goToGame = async () => {
 
-        SockClient.startGame();
+        startGame();
         localStorage.setItem('clickedStart', JSON.stringify(true));
         await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -96,7 +101,7 @@ const Waitingroom =   () => {
             <div className="home important" > IMPORTANT: Please leave the game only via Leave Game, otherwise the game can not be restarted again!</div>
             <Button
                 width="100%"
-                onClick={() => sendName()}
+                onClick={() => sendNameToWS()}
             >
                 1. Join this Game
             </Button>
