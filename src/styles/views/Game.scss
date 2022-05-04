@@ -9,7 +9,12 @@
 
 .game {
   &.container {
-    //background: $background;
+    background-image: radial-gradient(ellipse at 200px 50px,
+            hsl(200,10%,50%) 29%,
+            hsl(200,10%,60%) 30%,
+            hsl(200,10%,90%) 50%,
+            hsl(200,10%,60%) 70%,
+            hsl(200,10%,90%) 73%);
     //padding: 1.5em;
     //border-radius: $borderRadius;
     //display: flex;
@@ -17,26 +22,26 @@
     //align-items: center;
     //box-shadow: $dropShadow;
     margin-top: 2em;
-    min-height: 200px;
+    //min-height: 200px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
   }
 
-  &.form {
+  &.form2 {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 20px;
     width: 100%;
     //max-width: 80em;
     //height: 20em;
-    height: 30%;
+    height: 50%;
     font-size: 16px;
     font-weight: 300;
-    padding-left: 37px;
-    padding-right: 37px;
     border-radius: 0.75em;
-    background-color: $accentDark;
+    //background-color: $accentDark;
+    background-image: radial-gradient(ellipse at 50% 50%, #e3e6e8 0%, #8f9ca3 0%, #4D555D 70%, #323538 90%, #222324 100%);
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
   }
@@ -72,18 +77,12 @@
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
   }
-  .Logo {
-    background-image: url(../tableBackground.png);
-  }
+  //.Logo {
+    //background-image: url(../tableBackground.png);
+  //}
 
-}
-.right{
-  width: 30%;
-  float: right;
-}
-.left{
-  width: 70%;
-  float: left;
+
+
 }
 
 .user {
@@ -111,3 +110,90 @@
     font-weight: 300;
   }
 }
+
+.right{
+  width: 20%;
+  float: right;
+
+}
+
+.gameBoard{
+  width:80%;
+  float: left;
+  //display: block;
+  &.top{
+    width: 100%;
+    height: 20%;
+    display:block;
+    justify-content: space-between;
+    margin-top: 5%;
+  }
+  &.rotationMinus90 {
+    transform: rotate(-90deg);
+  }
+  &.rotation90 {
+    transform: rotate(90deg);
+  }
+  &.rotation180 {
+    display: flow;
+    transform: rotate(180deg);
+  }
+
+  &.middle{
+    width: 100%;
+    height: 60%;
+    display:flex;
+    justify-content: space-between;
+    margin-top: 5%;
+    margin-bottom: 10%;
+    &.players_left{
+      width: 15%;
+      height: 40%;
+      //display:flex;
+      //justify-content: space-between;
+      margin-top: 5%;
+      margin-bottom: 10%;
+    }
+    &.DrawAndPileArea{
+      width: 70%;
+      height: 40%;
+      //display:flex;
+      //justify-content: space-between;
+      margin-top: 5%;
+      margin-bottom: 10%;
+      &.pileArea{
+        width: 70%;
+        height: 20%;
+        display:flow;
+        justify-content: space-between;
+        margin-top: 5%;
+        margin-bottom: 10%;
+      }
+      &.drawArea{
+        width: 70%;
+        height: 20%;
+        margin-left: 15px;
+        //display:flex;
+        justify-content: space-between;
+        margin-top: 5%;
+        margin-bottom: 10%;
+      }
+    }
+    &.players_right{
+      width: 15%;
+      height: 40%;
+      //display:flex;
+      //justify-content: space-between;
+      margin-top: 5%;
+      margin-bottom: 10%;
+    }
+  }
+  &.bottom {
+    width: 100%;
+    height: 20%;
+    display:flex;
+    justify-content: space-between;
+    margin-top: 5%;
+  }
+}
+
