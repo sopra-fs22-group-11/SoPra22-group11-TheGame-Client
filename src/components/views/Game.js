@@ -51,6 +51,7 @@ const Game =  () => {
     const [chosenCard, setChosenCard] = useState(null);
     const playerListAndCards = [];
     const name= localStorage.getItem('username');
+    //localStorage.removeItem('playerList');
     console.log("just before the draw option")
 
     if (counter<2){

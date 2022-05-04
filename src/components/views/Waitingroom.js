@@ -27,15 +27,14 @@ const Player = ({user}) => (
 const Waitingroom =   () => {
     //************************  Websocket  **************************************************
     //hello sandra:)
-    SockClient.connect(state, setState);
+    SockClient.connect();
 
     const history = useHistory();
 
 
     const [registered, setRegistered]=useState(false);
 
-    const [state, setState] = useState(true);
-
+    const [playerList, setPlayerList] = useState([]);
 
     //to show users
 
@@ -56,7 +55,7 @@ const Waitingroom =   () => {
         else{
             alert("You are already enrolled")
         }
-
+        setPlayerList(JSON.parse(localStorage.getItem('playerList')));
     }
     //************************  Websocket  **************************************************
 
@@ -121,6 +120,16 @@ const Waitingroom =   () => {
             >
                 2.2 Start The Game as a Team Member
             </Button>
+
+            <h2> Players registered in this waiting-room: </h2>
+            <ul>
+                {playerList.map(item => (
+                    <li>
+                       <div key={item}>{item}</div>
+                    </li>
+                ))}
+            </ul>
+
             <h2>How to play this Game</h2>
             <p> You will see at the top of the page, which player needs to play. <br/>
                 You can play a card, with clicking on your hand card and than clicking on the pile. If you want to change your selected card, you can just click on a other card. <br/>
@@ -142,8 +151,6 @@ const Waitingroom =   () => {
                 <div className="home form">
                     {startGameUI}
                 </div>
-
-
             </BaseContainer>
         </div>
 

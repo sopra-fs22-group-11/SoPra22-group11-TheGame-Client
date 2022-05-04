@@ -39,9 +39,12 @@ class SockClient {
             //console.log("before subscribe");
             this.subscribe('/topic/players', (message)=> { // The response is a list of all the players in the waiting room
                     //const data = JSON.parse(message.body);
+                    const list = message;
                     console.log("this is the response:");
-                    console.log(message['playerName']);
-                    localStorage.setItem('playerList', message);
+                    console.log(list);
+                    localStorage.setItem('playerList', JSON.stringify(list));
+                    const savedList = JSON.parse(localStorage.getItem('playerList'));
+                    console.log('saved list: ' + savedList);
             });
 
             this.subscribe('/topic/game',(message) => { // the message is a tgo
