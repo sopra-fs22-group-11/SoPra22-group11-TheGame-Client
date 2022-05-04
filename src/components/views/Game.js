@@ -54,6 +54,7 @@ const Game =  () => {
     let  disableDrawCards = false;
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
+ 
     const name= localStorage.getItem('username');
     console.log("just before the draw option")
 
@@ -233,6 +234,7 @@ const Game =  () => {
     const showGameObject = () => {
         console.log(gameObj2);
     }
+
 
     //************************  GameLogic  **************************************************
 
@@ -467,13 +469,10 @@ const Game =  () => {
             <HeaderGame height="100"/>
 
 
+
             <div>
 
-                <BaseContainer className = "overlay">
-            <Modal/>
-            <Backdrop/>
 
-                </BaseContainer>
 
 
 
@@ -556,6 +555,10 @@ const Game =  () => {
                 >
                     update
                 </Button>
+
+
+
+
                 <h2> </h2>
                 <div className="home important" > IMPORTANT:</div>
                 <h3> Please leave the game only via Leave Game, otherwise the game can not be restarted again!</h3>

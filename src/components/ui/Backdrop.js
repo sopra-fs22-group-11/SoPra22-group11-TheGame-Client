@@ -1,11 +1,13 @@
 
+import Game from "../views/Game";
 
 
+function Backdrop(props){
 
-function Backdrop(){
+
 
     return(
-    <div className={'backdrop'}/>
+    <div className={'backdrop'}  onClick= {props.clicked}/>
     )
 }
 export default Backdrop;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
@@ -7,6 +7,11 @@ import goToRulePage from "./Startpage";
 import doRegister from "./Login";
 import goToLogin from "./Registration";
 import sockClient from "../utils/sockClient";
+import BaseContainer from "../ui/BaseContainer";
+import Modal from "../ui/Modal";
+import Backdrop from "../ui/Backdrop";
+
+
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -56,14 +61,26 @@ const leaveGame = () => {
     goToHome();
 }
 
-const HeaderGame = props => (
+const HeaderGame = props => {
+
+const [modalIsOpen, setModalIsOpen]= useState(false);
+
+function openModal(){
+        setModalIsOpen(true);
+    }
+
+function closeModal(){
+    setModalIsOpen(false);
+}
+return(
     <div className="header container">
         <div className="header title">
             The Game |
         </div>
+
         <div className="header-right">
             <a //href="/rulePage"
-               onClick={() => {alert("This does not yet exist")}} /*gotoRulesPage()}*/
+               onClick={() => openModal()} /*gotoRulesPage()}*/
             >Rules</a>
             <a //href = "/startpage"
                 //href="/login"
@@ -73,8 +90,18 @@ const HeaderGame = props => (
                onClick={() => leaveGame() }
             >Leave Game </a>
         </div>
+        <div>
+            <BaseContainer className = "overlay">
+                {modalIsOpen && <Modal/>}
+                {modalIsOpen &&<Backdrop clicked ={closeModal}/>}
+
+            </BaseContainer>
+        </div>
+
     </div>
 );
+
+}
 
 
 
