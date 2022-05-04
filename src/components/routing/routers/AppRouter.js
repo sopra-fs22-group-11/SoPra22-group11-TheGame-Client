@@ -73,10 +73,10 @@ const AppRouter = () => {
           </CheckLoggedIn>
         </Route>
 
-        <Route exact path ="/user/:userId/settings/:userId">
-          <SettingsGuard userId>
+        <Route exact path ="/editUser/">
+          <CheckLoggedIn>
             <ProfileSettings/>
-          </SettingsGuard>
+          </CheckLoggedIn>
         </Route>
 
         <Route exact path ="/waitingroomOverview">

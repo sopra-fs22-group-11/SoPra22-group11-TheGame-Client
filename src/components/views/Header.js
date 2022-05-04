@@ -51,10 +51,10 @@ const Header = props => (
         </div>
         <div className="header-right">
             <a href="/login"
-               onClick={() => goToLogin()}
+               //onClick={() => goToLogin()}
             >Login </a>
-            <a href="/register"
-               onClick={() => doRegister()}
+            <a href="/registration"
+               //onClick={() => doRegister()}
             >Register</a>
         </div>
     </div>

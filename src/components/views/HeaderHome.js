@@ -6,6 +6,8 @@ import goToHome from "./Waitingroom";
 import goToRulePage from "./Startpage";
 import doRegister from "./Login";
 import goToLogin from "./Registration";
+import {useHistory} from "react-router-dom";
+import {api, handleError} from "../../helpers/api";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -42,12 +44,28 @@ const changeLocation = () =>{
 
 const logout = () => {
     //get a token
-    localStorage.removeItem('token');
-    //get ID of user
-    let id = localStorage.getItem('ID');
-    localStorage.removeItem('ID')
-}
+    //localStorage.removeItem('token'); // It is important that this happens after the logout is done
+    let id = localStorage.getItem('loggedInUser');
+    console.log('/session/'+ id)
+    try{
+        const response = api.get('/session/'+ id);}
+    catch (e){
+        console.log(e)
+    }
 
+    localStorage.removeItem('loggedInUser')
+    localStorage.removeItem('token')
+    localStorage.removeItem('username');
+    localStorage.removeItem('clickedStart');
+    localStorage.removeItem('gto')
+}
+const goToUserPage = () => {
+    console.log("Hello")
+    //const response = fetchUser()
+
+    //console.log(response.id)
+
+}
 
 
 
@@ -56,17 +74,20 @@ const HeaderHome = props => (
         <div className="header title">
             The Game |
         </div>
-        <div className="header-right">
+        <iv className="header-right">
             <a href="/startpage"
                onClick={() => goToHome()}
             >Home </a>
+            <a href="/editUser/"
+               onClick={() => goToUserPage()}
+            >Edit Profile</a>
             <a href="/rulePage"
                onClick={() => goToRulePage()}
             >Rules</a>
             <a href="/login"
                onClick={() => logout()}
             >Logout</a>
-        </div>
+        </iv>
     </div>
 );
 
