@@ -44,7 +44,7 @@ const changeLocation = () =>{
 
 const logout = () => {
     //get a token
-    localStorage.removeItem('token');
+    //localStorage.removeItem('token'); // It is important that this happens after the logout is done
     let id = localStorage.getItem('loggedInUser');
     console.log('/session/'+ id)
     try{

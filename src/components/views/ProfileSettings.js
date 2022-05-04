@@ -17,8 +17,9 @@ const PlayerInformationField = props => {
             </label>
             <input
                 className="entry input"
-                // All the other displayed attributes (expect birthday) are not nullable and therefore always displayed
+                // All the other displayed attributes (expect password) are not nullable and therefore always displayed
                 placeholder= "Reset your password"
+
                 type = {props.type}
                 value={props.value}
                 disabled = {props.disabled}
@@ -32,12 +33,10 @@ const PlayerInformationField = props => {
 const ProfileSettings = () => {
     const [user, setUser] = useState(null)
     const [isDisabled, setIsDisabled] = useState(true); // We are currently not editing
-    const [updatedUsername, setUpdatedUsername] = useState(null)
-    const [updatedPassword, setUpdatedPassword] = useState(null);
-    const [score, setScore] = useState(null)
+    const [updatedUsername, setUpdatedUsername] = useState("")
+    const [updatedPassword, setUpdatedPassword] = useState("");
+    const [score, setScore] = useState("")
     const id = localStorage.getItem('loggedInUser')
-
-
 
 
     const editUser = (user) =>{
@@ -53,30 +52,41 @@ const ProfileSettings = () => {
 
     async function saveChanges()  {
         // We make sure the username is not empty
-        if(!user.username){
-            alert("Username cannot be empty")
+        if(!updatedUsername){
+            alert("Username cannot be empty") //This should never be reachable
         }
+        else {
 
-        try {
-            // Put the updated user to the server
-            await api.put('/users/'+id, user);
+            try {
+                //Apply changes
+                user.username = updatedUsername
+                if(updatedPassword){
+                    user.password = updatedPassword
+                }
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
+                //console.log(user)
+                // Put the updated user to the server
+                await api.put('/users/' + id, user);
+                if(updatedPassword){
+                    alert("Password successfully updated")
+                }
+                await new Promise(resolve => setTimeout(resolve, 400));
+
+
+            } catch (error) {
+                // Handle errors
+
+                console.error(`Something went wrong while editing the user: \n${handleError(error)}`);
+                console.error("Details:", error);
+                alert(`Something went wrong during the editing: \n${handleError(error)}`);
+
+            } finally {
+                // Change the state of editable back
+                setUpdatedUsername("")
+                setUpdatedPassword("")
+                setIsDisabled(!isDisabled);
+            }
         }
-        catch (error) {
-            // Handle errors
-
-            console.error(`Something went wrong while editing the user: \n${handleError(error)}`);
-            console.error("Details:", error);
-            alert(`Something went wrong during the editing: \n${handleError(error)}`);
-
-        }
-        finally{
-            // Change the state of editable back
-            setIsDisabled(!isDisabled);
-        }
-
-
     }
 
 
@@ -90,12 +100,12 @@ const ProfileSettings = () => {
                 const response = await api.get('/users/'+ id);
                 const score = await api.get('/users/'+ id + '/score')
 
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                //await new Promise(resolve => setTimeout(resolve, 1000));
 
                 setUser(response.data);
                 setScore(score.data)
-                console.log(user)
-                console.log(score)
+                //console.log(user)
+                //console.log(score)
 
             } catch (error) {
                 // Handle occuring errors
@@ -115,12 +125,19 @@ const ProfileSettings = () => {
 
     if (user) {
         content = (
-            <div className="editUser">
+            <div className="entry">
                 <PlayerInformationField
                     label="Username"
                     disabled={isDisabled}
                     value={isDisabled ? user.username : updatedUsername}
                     onChange={un =>setUpdatedUsername(un)}
+                />
+                <PlayerInformationField
+                    type = "text"
+                    label="password"
+                    disabled={isDisabled}
+                    value = {updatedPassword}
+                    onChange ={pw =>setUpdatedPassword(pw)}
                 />
                 <PlayerInformationField
                     type = "text"
@@ -134,18 +151,11 @@ const ProfileSettings = () => {
                     disabled={true}
                     value={score}
                 />
-                <PlayerInformationField
-                    type = "text"
-                    label="password"
-                    disabled={isDisabled}
-                    value = {updatedPassword}
-                    onChange ={pw =>setUpdatedPassword(pw)}
-                />
 
 
                 <Button
-                    //disabled={!accessRights && !updatedUsername}
-                    width="50%"
+                    disabled= {!isDisabled && !updatedUsername}
+                    width="20%"
                     onClick={isDisabled ? () => editUser(user): () => saveChanges()}
 
                 >
