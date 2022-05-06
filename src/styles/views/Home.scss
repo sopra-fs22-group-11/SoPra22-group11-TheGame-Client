@@ -48,6 +48,10 @@
     text-transform: lowercase;
     font-weight: 300;
   }
+  &.user-list {
+    list-style: none;
+    padding-left: 0;
+  }
   &.labelAccent {
     color: $accent;
     margin-bottom: 10px;
@@ -87,7 +91,9 @@
       border-radius: $borderRadius;
       display: flex;
       align-items: center;
-      background: lighten($background, 5);
+      background: $background; //lighten($background, 5);
+      border: 4px solid $buttonColor;
+      justify-content: space-between;
     }
     &.name {
       font-weight: 300;
@@ -95,15 +101,21 @@
     }
     &.username {
       font-weight: 500;
-      color: $accent;
+      color: $textColor;
+      flex-direction: row;
     }
     &.status {
-      font-weight: 500;
-      color: $accent;
+      font-weight: 300;
+      //font-size: smaller;
+      color: $textColor;
+      flex-direction: row;
     }
     &.score {
-      font-weight: 800;
-      color: $accent;
+      font-weight: 500;
+      font-size: larger;
+        color: $textColor;
+      flex-direction: row;
+
     }
     &.id {
       margin-left: auto;

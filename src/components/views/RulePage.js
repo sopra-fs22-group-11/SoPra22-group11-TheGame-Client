@@ -1,10 +1,5 @@
-import {useEffect, useState} from 'react';
-import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
-import {Button} from 'components/ui/Button';
-import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import "styles/views/RulePage.scss";
 import HeaderHome from "./HeaderHome";            //maybe change it later to Home.scss
 
@@ -100,7 +95,7 @@ const RulePage = () => {
     return (
         <div>
             <HeaderHome height="100"/>
-        <BaseContainer className = "Home container">
+        <BaseContainer className = "rule container">
             <h2>Rules for The Game</h2>
             <div className="rules form">
 
