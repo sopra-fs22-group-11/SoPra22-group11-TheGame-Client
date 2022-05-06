@@ -4,6 +4,8 @@
   &.container {
     margin-top: 2em;
     min-height: 200px;
+  //  display: flex;
+   // align-items: center;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
@@ -23,6 +25,7 @@
     background-color: $accentDark;
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
+    flex-wrap: nowrap;
   }
   &.field {
     display: flex;

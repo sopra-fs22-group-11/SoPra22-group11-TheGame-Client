@@ -8,14 +8,17 @@ import PropTypes from "prop-types";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
 
-// TODO: display calculated score winningCount/gameCount
+
 
 const User = ({user}) => (
     <div className="user container">
-        <div className="username">{user.username}</div>
-        <div className="status">{user.status}</div>
+        <div className="user username">{user.username}</div>
+        <div className="user status"> {user.status}</div>
+        <div className="user score">{user.score }</div>
     </div>
 );
+
+
 
 User.propTypes = {
     user: PropTypes.object
@@ -57,13 +60,11 @@ const Scoreboard = () => {
     let content = <Spinner/>;
     if (users) {
         content = (
-            <div className="game">
-                <ul className="game user-list">
+            <div className="home">
+                <ul className="home user-list">
                     {users.map(user => (
                         <li>
-                            <button className="user-button">
-                                <User user={user} key={user.username}/>
-                            </button>
+                            <User user={user} key={user.username}/>
                         </li>
                     ))}
                 </ul>
@@ -77,14 +78,13 @@ const Scoreboard = () => {
             <HeaderHome height="100"/>
         <BaseContainer className = "Home container">
             <h2>Ranking</h2>
-            <p className="game paragraph">
-                User ranking with their percentage of won games and status:
+            <div className="home form">
+            <p className="home paragraph">
+                User ranking with their game scores and status:
                 <p></p>
-                <button className="user-button">
-                    Username, Score, Status
-                </button>
             </p>
             {content}
+            </div>
         </BaseContainer>
         </div>
 
