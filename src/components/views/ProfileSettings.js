@@ -66,6 +66,7 @@ const ProfileSettings = () => {
                 //console.log(user)
                 // Put the updated user to the server
                 await api.put('/users/' + id, user);
+                localStorage.setItem('username', user.username)
                 if(updatedPassword){
                     alert("Password successfully updated")
                 }

@@ -1,54 +1,19 @@
 import {useEffect, useState} from 'react';
-import {api, handleError} from 'helpers/api';
-import {Spinner} from 'components/ui/Spinner';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import "styles/views/Home.scss";
-import ZoomVideo from '@zoom/videosdk';
-import initClientEventListeners from "../../zoom/js/meeting/session/client-event-listeners";
-import initButtonClickHandlers from "../../zoom/js/meeting/session/button-click-handlers";
-import state from "../../zoom/js/meeting/session/simple-state";
-import sessionConfig from "../../zoom/js/config";
-import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
 import {connect, isConnected, sendName, startGame, subscribe} from "../utils/sockClient";
 
 
-const Player = ({player}) => (
-    <div className="player container">
-        <div className="player username">{user.username}</div>
-    </div>
-);
-
-Player.propTypes = {
-    player: PropTypes.object
-};
-
-const Member = ({member}) => {
-    return (
-        <div className="lobby member-container">
-            <div className="lobby circle">
-            </div>
-            <label className="lobby member"> {member.username} </label>
-        </div>
-    );
-};
-
-Member.propTypes = {
-    member: PropTypes.object
-};
-
-
 const Waitingroom = () => {
+
     //************************  Websocket  **************************************************
     const history = useHistory();
-    const [users, setUsers] = useState(null);
     const [players, setPlayers] = useState([]);
     const [registered, setRegistered] = useState(false);
 
-    const [playerList, setPlayerList] = useState([]);
     useEffect(() => {
             if (!isConnected()) {
                 connect(registerWaitingRoomSocket());
@@ -64,7 +29,9 @@ const Waitingroom = () => {
     const registerWaitingRoomSocket = () => {
         subscribe('/topic/players', msg => {
             console.log(msg.map(p => p.playerName))
-            setPlayers(msg) //TODO figure out how to store the string array in a hook
+            sessionStorage.setItem('playerList', JSON.stringify(msg))
+            setPlayers(JSON.parse(sessionStorage.getItem('playerList')));
+            sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
             console.log(players)
         });
         subscribe('/topic/start', msg => {
@@ -84,21 +51,10 @@ const Waitingroom = () => {
         } else {
             alert("You are already enrolled")
         }
-        setPlayerList(JSON.parse(localStorage.getItem('playerList')));
     }
 
     //************************  Websocket  **************************************************
 
-    //************************  Waiting Room Logic  **************************************************
-
-    const goToGame = async () => {
-
-        startGame();
-
-    }
-
-
-    //************************  Waiting Room Logic  **************************************************
 
 
     //************************ UI  *******************************************************************
@@ -107,10 +63,9 @@ const Waitingroom = () => {
     let startGameUI = (
         <div>
             <div className="home title"> How to start THE GAME</div>
-            <p> 1. You need to enroll for this Game clicking on the 1. button (maybe give it a second) <br/>
-                2. You decide within your Team, who is the Team Leader.<br/>
-                3. The Team Leader clicks on 2.1 and the Team Member click on 2.2.<br/>
-                4. Enjoy THE GAME :D </p>
+            <p> 1. You need to enroll for this Game clicking on the 1. button  <br/>
+                2. Once everyone is ready one player can click on Start Game<br/>
+                3. Enjoy THE GAME :D </p>
 
             <div className="home important"> IMPORTANT: Please leave the game only via Leave Game, otherwise the game
                 can not be restarted again!
@@ -119,12 +74,11 @@ const Waitingroom = () => {
                 width="100%"
                 onClick={() => sendNameToWS()}
             >
-                1. Join this Game
+                Join this Game
             </Button>
-            <li>{players}</li>
             <Button
                 width="100%"
-                onClick={() => goToGame()}
+                onClick={() => startGame()}
             >
                 Start The Game for everyone :)
 
@@ -132,7 +86,7 @@ const Waitingroom = () => {
 
             <h2> Players registered in this waiting-room: </h2>
             <ul>
-                {playerList.map(item => (
+                {players.map(item => (
                     <li>
                        <div key={item}>{item}</div>
                     </li>
@@ -169,5 +123,4 @@ const Waitingroom = () => {
     );
 
 }
-
 export default Waitingroom;

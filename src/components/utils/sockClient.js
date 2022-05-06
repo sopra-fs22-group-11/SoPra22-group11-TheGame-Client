@@ -20,7 +20,6 @@ export const connect = (callback) => {
         console.log("Socket closed!", reason);
         connected = false;
     }
-
 }
 
 export const sendName = (username) => {
@@ -41,7 +40,6 @@ export const sendDiscard = (gameObj) => {
 
 export const terminate = () => { //TODO delete this once we have the end of the game
     stompClient.send("/app/gameTerminated", {})
-    alert("We sent this")
 }
 
 const stripResponse = (response) => {

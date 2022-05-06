@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import "styles/views/Home.scss";
 import ZoomVideo from '@zoom/videosdk';
 import initClientEventListeners from "../../zoom/js/meeting/session/client-event-listeners";
@@ -16,13 +15,6 @@ import {isConnected, sendDiscard, sendName, stompClient, subscribe} from "../uti
 import {connect, sendDraw, startGame} from "../utils/sockClient";
 import "../views/Waitingroom";
 
-const User = ({user}) => (
-    <div className="user container">
-        <div className="user username">{user.username}</div>
-        <div className="user name">{user.name}</div>
-        <div className="user id">id: {user.id}</div>
-    </div>
-);
 
 const retrieveGTO = () => {
     const gto = JSON.parse(sessionStorage.getItem('gto'));
@@ -132,7 +124,6 @@ const Game = () => {
 
 
     const draw = () => {
-        showGameObject();
         setCounter(0);
         disableCards = true;
         sendDraw();
@@ -168,8 +159,8 @@ const Game = () => {
     }
 
     // Create list of players and their cards
-    for (const [player, noOfCards] of Object.entries(gameObj2.playerCards)) {console.log(player, noOfCards.length);
-        var data = [player, noOfCards.length];
+    for (const [player, noOfCards] of Object.entries(gameObj.playerCards)) {console.log(player, noOfCards.length);
+        let data = [player, noOfCards.length];
         playerListAndCards.push(data);
         console.log(playerListAndCards);
     }
@@ -305,7 +296,7 @@ const Game = () => {
 
     const listHiddenValues = [true, true, true, true, true, true, true];
 
-    //by default we enter 0 so that there is no null value at the start
+    //by default, we enter 0 so that there is no null value at the start
     const cardValues = [0, 0, 0, 0, 0, 0, 0];
 
 

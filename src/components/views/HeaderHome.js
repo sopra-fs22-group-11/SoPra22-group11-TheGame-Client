@@ -58,6 +58,9 @@ const logout = () => {
     localStorage.removeItem('username');
     localStorage.removeItem('clickedStart');
     localStorage.removeItem('gto')
+    localStorage.removeItem('playerList')
+
+    //TODO check correct removeItem
 }
 const goToUserPage = () => {
     console.log("Hello")
