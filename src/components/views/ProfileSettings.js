@@ -17,12 +17,11 @@ const PlayerInformationField = props => {
             </label>
             <input
                 className="entry input"
-                // All the other displayed attributes (expect password) are not nullable and therefore always displayed
-                placeholder= "Reset your password"
-
+                placeholder={props.placeholder}
                 type = {props.type}
                 value={props.value}
                 disabled = {props.disabled}
+                visible={props.visible}
                 onChange={e => props.onChange(e.target.value)}
             />
         </div>
@@ -70,7 +69,7 @@ const ProfileSettings = () => {
                 if(updatedPassword){
                     alert("Password successfully updated")
                 }
-                await new Promise(resolve => setTimeout(resolve, 400));
+
 
 
             } catch (error) {
@@ -89,6 +88,12 @@ const ProfileSettings = () => {
         }
     }
 
+    async function cancelChanges()  {
+        // Change the state of editable back
+        setUpdatedUsername("")
+        setUpdatedPassword("")
+        setIsDisabled(!isDisabled);
+    }
 
 
     useEffect(() => {
@@ -100,7 +105,7 @@ const ProfileSettings = () => {
                 const response = await api.get('/users/'+ id);
                 const score = await api.get('/users/'+ id + '/score')
 
-                //await new Promise(resolve => setTimeout(resolve, 1000));
+
 
                 setUser(response.data);
                 setScore(score.data)
@@ -117,7 +122,7 @@ const ProfileSettings = () => {
 
         fetchUser();
 
-    });
+    }, []);
 
 
 
@@ -128,6 +133,7 @@ const ProfileSettings = () => {
             <div className="entry">
                 <PlayerInformationField
                     label="Username"
+                    placeholder="Enter your desired username"
                     disabled={isDisabled}
                     value={isDisabled ? user.username : updatedUsername}
                     onChange={un =>setUpdatedUsername(un)}
@@ -135,6 +141,7 @@ const ProfileSettings = () => {
                 <PlayerInformationField
                     type = "text"
                     label="password"
+                    placeholder="Reset your password"
                     disabled={isDisabled}
                     value = {updatedPassword}
                     onChange ={pw =>setUpdatedPassword(pw)}
@@ -161,6 +168,12 @@ const ProfileSettings = () => {
                 >
                     {isDisabled ? "Edit User" : "Save changes"}
                 </Button>
+                {!isDisabled ?  <Button
+                                 width="20%"
+                                 onClick={() => cancelChanges()}
+                                     >
+                                {"Cancel"}
+                                </Button> : null }
 
             </div>
         );
