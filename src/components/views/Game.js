@@ -12,49 +12,34 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
-import {isConnected, sendDiscard, sendName, subscribe} from "../utils/sockClient";
+import {isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
 import {connect, sendDraw, startGame} from "../utils/sockClient";
 import "../views/Waitingroom";
-import Waitingroom from "./Waitingroom";
-//import {getGameObj} from "./Waitingroom";
-import dummy from "./Waitingroom";
 
-
-const User = ({user}) => (
-    <div className="user container">
-        <div className="user username">{user.username}</div>
-        <div className="user name">{user.name}</div>
-        <div className="user id">id: {user.id}</div>
-    </div>
-);
-
-
-User.propTypes = {
-    user: PropTypes.object
-};
 
 const retrieveGTO = () => {
     const gto = JSON.parse(sessionStorage.getItem('gto'));
-    // sessionStorage.removeItem('gto');
+    sessionStorage.removeItem('gto');
     return gto;
 }
 
 const Game = () => {
-    //navigate trough Pages
     const history = useHistory();
-    let disableCards = false;
-    let disableDrawCards = false;
+
+    const [gameObj, setGameObj] = useState(retrieveGTO());
+
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
+
+    let disableCards = false;
+    let disableDrawCards = false;
+
     const name = localStorage.getItem('username');
-    console.log("just before the draw option")
+
+
 
     //************************  Websocket  **************************************************
 
-    //for Websocket setup
-    //TODO is this stille used?!
-    //const [gameObj, setGameObj2] = useState(JSON.parse(localStorage.getItem('gto')));
-    const [gameObj, setGameObj] = useState(retrieveGTO());
 
     console.log("game render!", gameObj);
 
@@ -63,12 +48,14 @@ const Game = () => {
             setGameObj(msg)
         });
         subscribe('/topic/terminated', msg => {
-            setGameObj(msg)
+            history.push('/startpage')
         });
+        subscribe('/topic/status', msg => {
+            //TODO do something here
+        })
     };
 
     useEffect(() => {
-        console.log("basic board rendering");
         if (!isConnected()) {
             connect(registerGameSocket);
         }
@@ -76,96 +63,54 @@ const Game = () => {
             registerGameSocket();
         }
 
-        sendName(localStorage.getItem('username'));
     }, []);
 
-
-    //startGame(gameObj, setGameObj2);
-    // await new Promise(resolve => setTimeout(resolve, 1000));
 
     //************************  Websocket  **************************************************
 
 
     //************************  GameLogic  **************************************************
 
-    if (counter < 2) {
-        disableDrawCards = true;
-        console.log("we are changing the value" + JSON.stringify(disableCards));
+    const checkForDraw = () => {
+        if (counter < 2 && (gameObj.noCardsOnDeck>0 || counter <1)) { //This does look silly, but I double-checked, it is fine
+            disableDrawCards = true;
+        }
     }
-    console.log(disableDrawCards);
-    localStorage.setItem('disableDraw', true);
-    let drawLabel = "Draw";
-
-
-    //TODO add Running Game Logic
-
 
     const checkWhoseTurn = () => {
-        console.log("It is the turn of " + gameObj.whoseTurn);
-        const gameTemp = JSON.parse(localStorage.getItem('gto'));
-        const whoseTurn = gameTemp.whoseTurn;
-
-        if (name == whoseTurn) {
-            disableCards = false;
-
-        } else {
-            disableCards = true;
-        }
+        disableCards = name !== gameObj.whoseTurn;
         return disableCards;
-
     }
 
+    const discard = (pile, index) => {
+        // Build the new handcards
+        let newSpecificPlayerCards = [];
 
-    const allowedToDrawCard = () => {
+        for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+            if (gameObj.playerCards[name][i].value != chosenCard) { // Keep at two ==
+                newSpecificPlayerCards.push(gameObj.playerCards[name][i]);
+            }
+        }
+        gameObj.playerCards[name] = newSpecificPlayerCards;
+        gameObj.pilesList[index].topCard.value = chosenCard;
 
-        return localStorage.getItem('draw');
+        setCounter(counter + 1);
+        setChosenCard(null);
+
+        sendDiscard(JSON.stringify(gameObj));
     }
+
 
     const checkDiscardPossible = (pile, index) => {
 
         if (checkWhoseTurn() === true) {
             alert("Sorry but is not your turn");
         }
-
-
-        if (chosenCard == null) {
+        else if (chosenCard == null) {
             alert("You have not chosen a card, please do so.")
         } else {
-            console.log(chosenCard);
             if (validChoice(chosenCard, pile)) {
-                //take card from hand and put card into piles list
-                //we do all the stuff below to update the gto object
-
-                let newSpecificPlayerCards = [];
-
-
-                for (let i = 0; i < gameObj.playerCards[name].length; i++) {
-                    if (gameObj.playerCards[name][i].value != chosenCard) {
-                        newSpecificPlayerCards.push(gameObj.playerCards[name][i]);
-                    }
-                }
-                gameObj.playerCards[name] = newSpecificPlayerCards;
-
-
-                gameObj.pilesList[index].topCard.value = chosenCard;
-
-                //actually update
-
-                console.log("LocalStorage gto: " + localStorage.getItem('gto'));
-                console.log(" hook gto: " + gameObj);
-                gameObj.playerCards[name] = newSpecificPlayerCards;
-
-                setCounter(counter + 1);
-                console.log("the Discard counter is: " + counter);
-
-
-                setChosenCard(null);
-                console.log("just before sending to server")
-
-                localStorage.setItem('gto', JSON.stringify(gameObj));
-                sendDiscard();
-
-
+                discard(pile, index)
             } else {
                 alert("you can't play this card, on that pile, sooorryyyyy :(")
             }
@@ -173,93 +118,65 @@ const Game = () => {
 
     }
 
-
     const draw = () => {
-        showGameObject();
         setCounter(0);
         disableCards = true;
-        //TODO change local storage turn;
         sendDraw();
     }
 
 
     const validChoice = (val, pile) => {
-        if (pile.direction == "TOPDOWN") {
+        if (pile.direction == "TOPDOWN") { //Keep this at only ==
             if (parseInt(val) < parseInt(pile.topCard.value) || (parseInt(val) - 10) === parseInt(pile.topCard.value)) {
                 return true;
             } else {
                 return false;
             }
         }
-        if (pile.direction == "DOWNUP") {
+        if (pile.direction == "DOWNUP") { //Keep this at only ==
             if (parseInt(val) > parseInt(pile.topCard.value) || parseInt(val) + 10 === parseInt(pile.topCard.value)) {
                 return true;
             } else {
                 return false;
             }
-
         }
-
     }
 
     const chooseCard = (val) => {
-        if (checkWhoseTurn() == true) {
+        if (checkWhoseTurn() === true) {
             alert("Sorry but is not your turn")
         }
+        else{
         setChosenCard(JSON.stringify(val));
+        }
     }
 
-    const updateUI = () => {
-        getClients();
 
-        console.log("we are in the update function")
-        setGameObj(JSON.parse(localStorage.getItem('gto')));
-        showGameObject();
-
-        console.log(gameObj);
-    }
 
 
     //add in this function all methods which need to be called when leaving the page/gameObj
     //TODO add close gameObj method and tell server to close the gameObj
-    const myfun = async () => {
+    const close = async () => {
         try {
             await client.leave();
             //this.sock.close();
 
-
         } catch (e) {
-            console.log("was not in a meeting");
+            console.log(e);
         }
+        history.push('/startpage');
     }
 
 
     //show popup before leaving
     window.onbeforeunload = function () {
-        return 'Are you sure you want to leave?';
+        return 'We do not recommend reloading the page, additionally leaving the page like this (not using Leave Game) is not recommended';
     };
 
     //do when leaving page
-    window.onunload = function () {
-        myfun();
+    window.onunload = function () { //TODO take care of those functions such that they differentiate finely
+        close();
         alert('Bye.');
-    }
-
-    //change location
-    const goToHome = async () => {
-        setGameObj(null);
-        console.log(gameObj);
-
-        try {
-            await client.leave();
-        } catch (e) {
-            alert("Problems when leave the meeting")
-        }
-        history.push('/startpage');
-    }
-
-    const showGameObject = () => {
-        console.log(gameObj);
     }
 
     //************************  GameLogic  **************************************************
@@ -357,7 +274,7 @@ const Game = () => {
         }
     }
 
-    // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
+    //TODO localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
     // siehe gameIdGuard in RouteProtectors
 
     //************************  Zoom  *******************************************************
@@ -373,7 +290,6 @@ const Game = () => {
     //here we fill the cards with the right value
     for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         cardValues[i] = gameObj.playerCards[name][i].value;
-        console.log(cardValues[i]);
     }
 
 
@@ -384,7 +300,8 @@ const Game = () => {
 
     //check wheter it is players turn and cards should be shown
     checkWhoseTurn();
-    allowedToDrawCard();
+    checkForDraw();
+
 
 
     //idee um zu zeigen das ein button ausgewählt wurde: { cardSelected?"cards-button selected": "cards-button unselected"}
@@ -515,7 +432,8 @@ const Game = () => {
                                 disabled={disableDrawCards}
                                 onClick={() => draw()}
                         >
-                            {drawLabel + "\n (cards on deck: " + gameObj.noCardsOnDeck + ")"}
+                            {parseInt(gameObj.noCardsOnDeck)>0 ? "Draw \n (cards on deck: " + gameObj.noCardsOnDeck + ")"
+                            : "End turn"}
                         </Button>
                     </div>
 
@@ -544,13 +462,7 @@ const Game = () => {
                 </div>
                 {informationBox}
                 <h2></h2>
-                <Button className="user-button"
-                        disabled={false}
-                        onClick={() => updateUI()}
-                >
-                    update
-                </Button>
-                <h2></h2>
+
                 <div className="home important"> IMPORTANT:</div>
                 <h3> Please leave the game only via Leave Game, otherwise the game can not be restarted again!</h3>
             </BaseContainer>

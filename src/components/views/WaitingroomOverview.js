@@ -15,8 +15,9 @@ const WaitingroomOverview = () => {
     const history = useHistory();
 
     const joinWaitingroom = async () => {
-        //await connect()
+        connect(()=> {
         history.push('/waitingroom/1'); //for the start we need the waitingroom 1
+        })
     }
 
 

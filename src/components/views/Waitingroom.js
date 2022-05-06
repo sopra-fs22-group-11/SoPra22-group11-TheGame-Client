@@ -1,29 +1,21 @@
 import {useEffect, useState} from 'react';
-import {api, handleError} from 'helpers/api';
-import {Spinner} from 'components/ui/Spinner';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
-import ZoomVideo from '@zoom/videosdk';
-import initClientEventListeners from "../../zoom/js/meeting/session/client-event-listeners";
-import initButtonClickHandlers from "../../zoom/js/meeting/session/button-click-handlers";
-import state from "../../zoom/js/meeting/session/simple-state";
-import sessionConfig from "../../zoom/js/config";
-import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
-import {connect, sendName, startGame, PlayerList, subscribe} from "../utils/sockClient";
+import {connect, isConnected, sendName, startGame, subscribe} from "../utils/sockClient";
 
 
-const Player = ({user}) => (
+const Player = ({player}) => (
     <div className="player container">
-        <div className="player username">{user.username}</div>
+        <div className="player username">{player}</div>
     </div>
 );
 
 Player.propTypes = {
-    user: PropTypes.object
+    player: PropTypes.object
 };
 
 const Member = ({member}) => {
@@ -40,7 +32,6 @@ Member.propTypes = {
     member: PropTypes.object
 };
 
-export var dummy = null;
 
 const Waitingroom = () => {
     //************************  Websocket  **************************************************
@@ -50,91 +41,40 @@ const Waitingroom = () => {
     const [registered, setRegistered] = useState(false);
 
     useEffect(() => {
-        //fetches all members in the lobby
-        async function fetchDataWaitingroom() {
-            try {
-                console.log("we are trying to connect");
-                connect(() => {
-                    subscribe('/topic/players', msg => {
-                        //console.log(msg);
-                        setPlayers(msg.map(p => p.playerName));
-                    });
-                    subscribe('/topic/start', msg => {
-                        sessionStorage.setItem('gto', JSON.stringify(msg));
-                        console.log(msg);
-                        history.push('/game');
-                    });
-                    console.log("connection is done");
-                });
-
-                //TODO mir bruched en endpoint wo eus e liste git
-                //await sendName(localStorage.getItem('username'));
-                //console.log("name is sent");
-                //await setPlayers(PlayerList);
-                //alert("Your are registered");
-                //
-            } catch (error) {
-                console.error("Details:", error);
+            if (!isConnected()) {
+                connect(registerWaitingRoomSocket());
             }
-        }
-
-        /*function startUpdateListener(event)
-        {
-            let gametoken = event.detail.gameToken;
-            if(gametoken)
-            {
-                localStorage.setItem("gametoken", gametoken);
-                history.push("/game");
+            else {
+                registerWaitingRoomSocket();
             }
-        }
-        //only add the listener on initial render, otherwise we have multiple
-        //check if the game gets started
-        document.addEventListener("startUpdate", startUpdateListener);
 
-        function lobbyUpdateListener(e)
-        {
-            fetchDataLobby();
-        }
-
-        document.addEventListener("lobbyUpdate", lobbyUpdateListener);
-
-        fetchDataLobby();
-        fetchDataSearch();
-
-        return () => { // This code runs when component is unmounted
-            document.removeEventListener("lobbyUpdate", lobbyUpdateListener);
-            document.removeEventListener("startUpdate", startUpdateListener); // (4) set it to false when we leave the page
-
-        }*/
-        fetchDataWaitingroom();
-    }, []);
+        }, []);
 
 
-    /*const suscribePlayer= () =>{
-        setPlayers([localStorage.getItem('username')]);
-    }*/
 
+    const registerWaitingRoomSocket = () => {
+        subscribe('/topic/players', msg => {
+            console.log(msg.map(p => p.playerName))
+            setPlayers(msg) //TODO figure out how to store the string array in a hook
+            console.log(players)
+        });
+        subscribe('/topic/start', msg => {
+            sessionStorage.setItem('gto', JSON.stringify(msg));
+            console.log(msg);
+            history.push('/game');
+        });
+    };
 
-    //to show users
 
     const sendNameToWS = async () => {
-        //TODO delete if not necesary
-        //const userId = localStorage.getItem('loggedInUser');
-        //const response1 = await api.get('/users/' + userId);
-        //await new Promise(resolve => setTimeout(resolve, 1000));
-        //
-        //setUser(response1.data);
-
         if (!registered) {
             setRegistered(true);
-            console.log("vor sockClient send name");
             await sendName(localStorage.getItem('username'));
             alert("You have successfully enrolled in this game.");
 
         } else {
             alert("You are already enrolled")
         }
-
     }
 
     //************************  Websocket  **************************************************
@@ -144,20 +84,9 @@ const Waitingroom = () => {
     const goToGame = async () => {
 
         startGame();
-        // await new Promise(resolve => setTimeout(resolve, 1000));
-
-        //if (localStorage.getItem('clickedStart') === true) {
-        //history.push('/game');
-        //}
 
     }
-    const redirectToGame = async () => {
-        history.push('/game');
-    }
 
-    const goToHome = () => {
-        history.push('/startpage');
-    }
 
     //************************  Waiting Room Logic  **************************************************
 
@@ -182,19 +111,13 @@ const Waitingroom = () => {
             >
                 1. Join this Game
             </Button>
-
+            <li>{players}</li>
             <Button
                 width="100%"
                 onClick={() => goToGame()}
             >
-                2.1 Start The Game as a Team Leader
-            </Button>
+                Start The Game as a Team Leader
 
-            <Button
-                width="100%"
-                onClick={() => redirectToGame()}
-            >
-                2.2 Start The Game as a Team Member
             </Button>
             <h2>How to play this Game</h2>
             <p> You will see at the top of the page, which player needs to play. <br/>
