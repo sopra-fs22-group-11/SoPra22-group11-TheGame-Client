@@ -1,6 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
-import {api, handleError} from 'helpers/api';
-import {Spinner} from 'components/ui/Spinner';
+import {useEffect, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
@@ -14,10 +12,9 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
-import sockClient from "../utils/sockClient";
-import SockClient from "../utils/sockClient";
-import {Views} from "./simple-view-switcher";
-import {string} from "sockjs-client/lib/utils/random";
+import {isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
+import {connect, sendDraw, startGame} from "../utils/sockClient";
+import "../views/Waitingroom";
 
 const User = ({user}) => (
     <div className="user container">
@@ -27,112 +24,106 @@ const User = ({user}) => (
     </div>
 );
 
+const retrieveGTO = () => {
+    const gto = JSON.parse(sessionStorage.getItem('gto'));
+    sessionStorage.removeItem('gto');
+    return gto;
+}
 
-User.propTypes = {
-    user: PropTypes.object
-};
-
-const Game =  () => {
-    //************************  Websocket  **************************************************
-
-    //for Websocket setup
-    //TODO is this stille used?!
-    const [gameObj2, setGameObj2] = useState(JSON.parse(localStorage.getItem('gto')));
-
-
-    //************************  Websocket  **************************************************
-
-    //************************  GameLogic  **************************************************
-    //navigate trough Pages
+const Game = () => {
     const history = useHistory();
-    let disableCards = false;
-    let  disableDrawCards = false;
+
+    const [gameObj, setGameObj] = useState(retrieveGTO());
+
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
+
+    let disableCards = false;
+    let disableDrawCards = false;
+
+    const name = localStorage.getItem('username');
+
     const playerListAndCards = [];
-    const name= localStorage.getItem('username');
-    //localStorage.removeItem('playerList');
-    console.log("just before the draw option")
-
-    if (counter<2){
-        disableDrawCards =true;
-        console.log("we are changing the value" + JSON.stringify(disableCards));}
-    console.log(disableDrawCards);
-    localStorage.setItem('disableDraw',true);
-    let drawLabel = "Draw";
 
 
-    //TODO add Running Game Logic
 
 
-    const checkWhoseTurn =  ()=>{
-        console.log("It is the turn of " + gameObj2.whoseTurn);
-        const gameTemp = JSON.parse(localStorage.getItem('gto'));
-        const whoseTurn = gameTemp.whoseTurn;
+    //************************  Websocket  **************************************************
 
-        if (name == whoseTurn ){
-            disableCards = false;
 
-        } else {
-            disableCards = true;
+    console.log("game render!", gameObj);
+
+    const registerGameSocket = () => {
+        subscribe('/topic/game', msg => {
+            setGameObj(msg)
+        });
+        subscribe('/topic/terminated', msg => {
+            history.push('/startpage')
+        });
+        subscribe('/topic/status', msg => {
+            //TODO do something here
+        })
+    };
+
+    useEffect(() => {
+        if (!isConnected()) {
+            connect(registerGameSocket);
         }
+        else {
+            registerGameSocket();
+        }
+
+    }, []);
+
+
+    //************************  Websocket  **************************************************
+
+
+
+
+    //************************  GameLogic  **************************************************
+
+    const checkForDraw = () => {
+        if (counter < 2 && (gameObj.noCardsOnDeck>0 || counter <1)) { //This does look silly, but I double-checked, it is fine
+            disableDrawCards = true;
+        }
+    }
+
+    const checkWhoseTurn = () => {
+        disableCards = name !== gameObj.whoseTurn;
         return disableCards;
+    }
 
+    const discard = (pile, index) => {
+        // Build the new handcards
+        let newSpecificPlayerCards = [];
+
+        for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+            if (gameObj.playerCards[name][i].value != chosenCard) { // Keep at two ==
+                newSpecificPlayerCards.push(gameObj.playerCards[name][i]);
+            }
+        }
+        gameObj.playerCards[name] = newSpecificPlayerCards;
+        gameObj.pilesList[index].topCard.value = chosenCard;
+
+        setCounter(counter + 1);
+        setChosenCard(null);
+
+        sendDiscard(JSON.stringify(gameObj));
     }
 
 
-    const allowedToDrawCard =  ()=>{
+    const checkDiscardPossible = (pile, index) => {
 
-        return localStorage.getItem('draw');
-    }
-
-    const checkDiscardPossible =  (pile, index)=>{
-
-        if (checkWhoseTurn()=== true){
+        if (checkWhoseTurn() === true) {
             alert("Sorry but is not your turn");
         }
-
-
-        if (chosenCard == null){
+        else if (chosenCard == null) {
             alert("You have not chosen a card, please do so.")
         } else {
-            console.log(chosenCard);
-            if(validChoice(chosenCard, pile)){
-                //take card from hand and put card into piles list
-                //we do all the stuff below to update the gto object
-
-                let newSpecificPlayerCards = [];
-
-
-                for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
-                    if (gameObj2.playerCards[name][i].value != chosenCard){
-                        newSpecificPlayerCards.push(gameObj2.playerCards[name][i]);
-                    }
-                }
-                gameObj2.playerCards[name] = newSpecificPlayerCards;
-
-
-                gameObj2.pilesList[index].topCard.value = chosenCard;
-
-                //actually update
-
-                console.log("LocalStorage gto: " + localStorage.getItem('gto'));
-                console.log(" hook gto: " + gameObj2);
-                gameObj2.playerCards[name] = newSpecificPlayerCards;
-
-                setCounter(counter+1);
-                console.log("the Discard counter is: " + counter);
-
-
-                setChosenCard(null);
-                console.log("just before sending to server")
-
-                localStorage.setItem('gto', JSON.stringify(gameObj2));
-                sockClient.sendDiscard();
-
-
-
-            } else{
+            if (validChoice(chosenCard, pile)) {
+                discard(pile, index)
+            } else {
                 alert("you can't play this card, on that pile, sooorryyyyy :(")
             }
         }
@@ -144,44 +135,37 @@ const Game =  () => {
         showGameObject();
         setCounter(0);
         disableCards = true;
-        //TODO change local storage turn;
-        sockClient.sendDraw();
+        sendDraw();
     }
 
 
     const validChoice = (val, pile) => {
-        if (pile.direction == "TOPDOWN"){
-            if(parseInt(val) < parseInt(pile.topCard.value) || (parseInt(val) - 10)  === parseInt(pile.topCard.value))
-            {return true;}
-            else {return false;}
-        }
-        if (pile.direction == "DOWNUP") {
-            if (parseInt(val) > parseInt(pile.topCard.value) || parseInt(val) + 10 === parseInt(pile.topCard.value)) {
+        if (pile.direction == "TOPDOWN") { //Keep this at only ==
+            if (parseInt(val) < parseInt(pile.topCard.value) || (parseInt(val) - 10) === parseInt(pile.topCard.value)) {
                 return true;
             } else {
                 return false;
             }
         }
+        if (pile.direction == "DOWNUP") { //Keep this at only ==
+            if (parseInt(val) > parseInt(pile.topCard.value) || parseInt(val) + 10 === parseInt(pile.topCard.value)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
     }
 
     const chooseCard = (val) => {
-        if (checkWhoseTurn()== true){
+        if (checkWhoseTurn() === true) {
             alert("Sorry but is not your turn")
         }
+        else{
         setChosenCard(JSON.stringify(val));
+        }
     }
-
-    const updateUI = () =>{
-        getClients();
-
-        console.log("we are in the update function")
-        setGameObj2(JSON.parse(localStorage.getItem('gto')));
-        showGameObject();
-
-        console.log(gameObj2);
-    }
-
-
 
     // Create list of players and their cards
     for (const [player, noOfCards] of Object.entries(gameObj2.playerCards)) {console.log(player, noOfCards.length);
@@ -194,45 +178,27 @@ const Game =  () => {
 
     //add in this function all methods which need to be called when leaving the page/gameObj
     //TODO add close gameObj method and tell server to close the gameObj
-    const myfun = async ()=>{
-        try{
+    const close = async () => {
+        try {
             await client.leave();
             //this.sock.close();
 
-
-        } catch (e){
-            console.log("was not in a meeting");
-        }
-    }
-
-
-
-    //show popup before leaving
-    window.onbeforeunload = function(){
-        return 'Are you sure you want to leave?';
-    };
-
-    //do when leaving page
-    window.onunload = function() {
-        myfun();
-        alert('Bye.');
-    }
-
-    //change location
-    const goToHome = async () => {
-        setGameObj2(null);
-        console.log(gameObj2);
-
-        try{
-            await client.leave();
-        }catch (e) {
-            alert("Problems when leave the meeting")
+        } catch (e) {
+            console.log(e);
         }
         history.push('/startpage');
     }
 
-    const showGameObject = () => {
-        console.log(gameObj2);
+
+    //show popup before leaving
+    window.onbeforeunload = function () {
+        return 'We do not recommend reloading the page, additionally leaving the page like this (not using Leave Game) is not recommended';
+    };
+
+    //do when leaving page
+    window.onunload = function () { //TODO take care of those functions such that they differentiate finely
+        close();
+        alert('Bye.');
     }
 
     //************************  GameLogic  **************************************************
@@ -305,8 +271,8 @@ const Game =  () => {
         client.on('chat-on-message', (payload) => {
             const {
                 message,
-                sender: { name: senderName  },
-                receiver: { name: receiverName  },
+                sender: {name: senderName},
+                receiver: {name: receiverName},
                 timestamp,
             } = payload;
             console.log(
@@ -318,7 +284,7 @@ const Game =  () => {
 
     const startAudioMuted = async () => {
 
-        try{
+        try {
             await mediaStream.startAudio();
         } catch (e) {
             console.log("We can not start the audio.")
@@ -330,7 +296,7 @@ const Game =  () => {
         }
     }
 
-    // localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
+    //TODO localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
     // siehe gameIdGuard in RouteProtectors
 
     //************************  Zoom  *******************************************************
@@ -340,25 +306,24 @@ const Game =  () => {
     const listHiddenValues = [true, true, true, true, true, true, true];
 
     //by default we enter 0 so that there is no null value at the start
-    const cardValues= [0, 0, 0, 0, 0, 0, 0];
+    const cardValues = [0, 0, 0, 0, 0, 0, 0];
 
 
 
     //here we fill the cards with the right value
-    for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
-        cardValues[i] = gameObj2.playerCards[name][i].value;
-        console.log(cardValues[i]);
+    for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+        cardValues[i] = gameObj.playerCards[name][i].value;
     }
 
 
-    for (let i = 0; i < gameObj2.playerCards[name].length; i++) {
+    for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         listHiddenValues[i] = false;
     }
 
 
     //check wheter it is players turn and cards should be shown
     checkWhoseTurn();
-    allowedToDrawCard();
+    checkForDraw();
 
 
 
@@ -366,53 +331,53 @@ const Game =  () => {
 
 
     let cards = (
-        <div  className="left bottom">
-            <Button id="card1" className ="cards-button unselected"
+        <div className="left bottom">
+            <Button id="card1" className="cards-button unselected"
                     hidden={listHiddenValues[0]}
-                    disabled = {false}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[0])}
             >
                 {cardValues[0]}
             </Button>
-            <Button id="card2" className ="cards-button unselected"
+            <Button id="card2" className="cards-button unselected"
                     hidden={listHiddenValues[1]}
-                    disabled = {false}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[1])}
             >
                 {cardValues[1]}
             </Button>
-            <Button id="card3" className ="cards-button unselected"
+            <Button id="card3" className="cards-button unselected"
                     hidden={listHiddenValues[2]}
-                    disabled = {false}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[2])}
             >
                 {cardValues[2]}
             </Button>
-            <Button id="card4" className ="cards-button unselected"
+            <Button id="card4" className="cards-button unselected"
                     hidden={listHiddenValues[3]}
-                    disabled = {false}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[3])}
             >
                 {cardValues[3]}
             </Button>
-            <Button id="card5" className ="cards-button unselected"
+            <Button id="card5" className="cards-button unselected"
                     hidden={listHiddenValues[4]}
-                    disabled = {false}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[4])}
             >
                 {cardValues[4]}
             </Button>
-            <Button id="card6" className ="cards-button unselected"
+            <Button id="card6" className="cards-button unselected"
                     hidden={listHiddenValues[5]}
-                    disabled = {false}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[5])}
             >
                 {cardValues[5]}
             </Button>
-            <Button id="card7" className ="cards-button unselected"
+            <Button id="card7" className="cards-button unselected"
                     hidden={listHiddenValues[6]}
-                    disabled = {false}
-                    onClick={() => chooseCard( cardValues[6])}
+                    disabled={false}
+                    onClick={() => chooseCard(cardValues[6])}
             >
                 {cardValues[6]}
             </Button>
@@ -424,21 +389,21 @@ const Game =  () => {
     );
 
     //show cards nicely
-   /*let cards=(
-    <section className="wrapper">
-        <figure className="card">Card1</figure>
-        <figure className="card">Card2</figure>
-        <figure className="card">Card3</figure>
-        <figure className="card">Card4</figure>
-        <figure className="card">Card5</figure>
-    </section>)*/
+    /*let cards=(
+     <section className="wrapper">
+         <figure className="card">Card1</figure>
+         <figure className="card">Card2</figure>
+         <figure className="card">Card3</figure>
+         <figure className="card">Card4</figure>
+         <figure className="card">Card5</figure>
+     </section>)*/
 
-    let informationBox =(
+    let informationBox = (
         <div>
             <h3> Information for {localStorage.getItem('username')}</h3>
-            <div> Whose Turn: {gameObj2.whoseTurn}</div>
-            <div> {"Played cards: "+counter }</div>
-            <div> {"Chosen card:"+ chosenCard }</div>
+            <div> Whose Turn: {gameObj.whoseTurn}</div>
+            <div> {"Played cards: " + counter}</div>
+            <div> {"Chosen card:" + chosenCard}</div>
         </div>
     );
 
@@ -460,52 +425,53 @@ const Game =  () => {
     return (
         <div>
             <HeaderGame height="100"/>
-            <BaseContainer className = "left">
-                <h2> </h2>
+            <BaseContainer className="left">
+                <h2></h2>
                 <div className="home form">
-                <div className="left top">
+                    <div className="left top">
 
-                    <Button className ="game-button"
-                            disabled = {false}
-                            onClick ={() => checkDiscardPossible(gameObj2.pilesList[0], 0)}
-                    >
-                        {gameObj2.pilesList[0].topCard.value + "▼"}
-                    </Button>
-                    <Button className ="game-button"
-                            disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj2.pilesList[1], 1)}
-                    >
-                        {gameObj2.pilesList[1].topCard.value + "▼"}
-                    </Button>
-                    <Button className ="game-button"
-                            disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj2.pilesList[2], 2)}
-                    >
-                        {gameObj2.pilesList[2].topCard.value +"▲"}
-                    </Button>
-                    <Button className ="game-button"
-                            disabled = {false}
-                            onClick={() => checkDiscardPossible(gameObj2.pilesList[3], 3)}
-                    >
-                        {gameObj2.pilesList[3].topCard.value +"▲"}
-                    </Button>
-                </div>
-                <div className="left middle">
-                    <Button className ="game-button"
-                            disabled = {disableDrawCards}
-                            onClick={() => draw()}
-                    >
-                        {drawLabel + "\n (cards on deck: " +  gameObj2.noCardsOnDeck + ")"}
-                    </Button>
-                </div>
+                        <Button className="game-button"
+                                disabled={false}
+                                onClick={() => checkDiscardPossible(gameObj.pilesList[0], 0)}
+                        >
+                            {gameObj.pilesList[0].topCard.value + "▼"}
+                        </Button>
+                        <Button className="game-button"
+                                disabled={false}
+                                onClick={() => checkDiscardPossible(gameObj.pilesList[1], 1)}
+                        >
+                            {gameObj.pilesList[1].topCard.value + "▼"}
+                        </Button>
+                        <Button className="game-button"
+                                disabled={false}
+                                onClick={() => checkDiscardPossible(gameObj.pilesList[2], 2)}
+                        >
+                            {gameObj.pilesList[2].topCard.value + "▲"}
+                        </Button>
+                        <Button className="game-button"
+                                disabled={false}
+                                onClick={() => checkDiscardPossible(gameObj.pilesList[3], 3)}
+                        >
+                            {gameObj.pilesList[3].topCard.value + "▲"}
+                        </Button>
+                    </div>
+                    <div className="left middle">
+                        <Button className="game-button"
+                                disabled={disableDrawCards}
+                                onClick={() => draw()}
+                        >
+                            {parseInt(gameObj.noCardsOnDeck)>0 ? "Draw \n (cards on deck: " + gameObj.noCardsOnDeck + ")"
+                            : "End turn"}
+                        </Button>
+                    </div>
 
-                {cards}
-                    <h2> </h2>
+                    {cards}
+                    <h2></h2>
                 </div>
 
             </BaseContainer>
-            <BaseContainer className = "right">
-                <h2> </h2>
+            <BaseContainer className="right">
+                <h2></h2>
                 <div id="js-video-view" className="container video-app">
                     <canvas id="video-canvas" className="video-canvas" width="320" height="160"></canvas>
                     <div className="container meeting-control-layer">
@@ -534,22 +500,13 @@ const Game =  () => {
                             </li>
                     ))}
                 </ul>
-
-
-                <h2> </h2>
-                <Button className ="user-button"
-                        disabled = {false}
-                        onClick={() => updateUI()}
-                >
-                    update
-                </Button>
                 <h2> </h2>
                 <div className="home important" > IMPORTANT:</div>
                 <h3> Please leave the game only via Leave Game, otherwise the game can not be restarted again!</h3>
             </BaseContainer>
         </div>
 
-    ) ;
+    );
 
 }
 

@@ -13,77 +13,90 @@ import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderHome from "./HeaderHome";
-import SockClient from "../utils/sockClient";
+import {connect, isConnected, sendName, startGame, subscribe} from "../utils/sockClient";
 
-const Player = ({user}) => (
+
+const Player = ({player}) => (
     <div className="player container">
         <div className="player username">{user.username}</div>
     </div>
 );
 
+Player.propTypes = {
+    player: PropTypes.object
+};
+
+const Member = ({member}) => {
+    return (
+        <div className="lobby member-container">
+            <div className="lobby circle">
+            </div>
+            <label className="lobby member"> {member.username} </label>
+        </div>
+    );
+};
+
+Member.propTypes = {
+    member: PropTypes.object
+};
 
 
-
-const Waitingroom =   () => {
+const Waitingroom = () => {
     //************************  Websocket  **************************************************
-    //hello sandra:)
-    SockClient.connect();
-
     const history = useHistory();
-
-
-    const [registered, setRegistered]=useState(false);
+    const [users, setUsers] = useState(null);
+    const [players, setPlayers] = useState([]);
+    const [registered, setRegistered] = useState(false);
 
     const [playerList, setPlayerList] = useState([]);
+    useEffect(() => {
+            if (!isConnected()) {
+                connect(registerWaitingRoomSocket());
+            }
+            else {
+                registerWaitingRoomSocket();
+            }
 
-    //to show users
+        }, []);
 
-    const sendName = () => {
-        //TODO delete if not necesary
-        //const userId = localStorage.getItem('loggedInUser');
-        //const response1 = await api.get('/users/' + userId);
-        //await new Promise(resolve => setTimeout(resolve, 1000));
-        //
-        //setUser(response1.data);
 
-        if(!registered){
+
+    const registerWaitingRoomSocket = () => {
+        subscribe('/topic/players', msg => {
+            console.log(msg.map(p => p.playerName))
+            setPlayers(msg) //TODO figure out how to store the string array in a hook
+            console.log(players)
+        });
+        subscribe('/topic/start', msg => {
+            sessionStorage.setItem('gto', JSON.stringify(msg));
+            console.log(msg);
+            history.push('/game');
+        });
+    };
+
+
+    const sendNameToWS = async () => {
+        if (!registered) {
             setRegistered(true);
-            console.log("vor sockClient send name");
-            SockClient.sendName(localStorage.getItem('username'));
-            alert("You have successfully enrolled in this game.")
-        }
-        else{
+            await sendName(localStorage.getItem('username'));
+            alert("You have successfully enrolled in this game.");
+
+        } else {
             alert("You are already enrolled")
         }
         setPlayerList(JSON.parse(localStorage.getItem('playerList')));
     }
+
     //************************  Websocket  **************************************************
 
     //************************  Waiting Room Logic  **************************************************
 
-    useEffect(() => {
-        SockClient.connect();
-    }, []);
-
-
     const goToGame = async () => {
 
-        SockClient.startGame();
-        localStorage.setItem('clickedStart', JSON.stringify(true));
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        //if (localStorage.getItem('clickedStart') === true) {
-        history.push('/game');
-        //}
+        startGame();
 
     }
-    const redirectToGame = async () => {
-        history.push('/game');
-    }
 
-    const goToHome = () => {
-        history.push('/startpage');
-    }
 
     //************************  Waiting Room Logic  **************************************************
 
@@ -99,26 +112,22 @@ const Waitingroom =   () => {
                 3. The Team Leader clicks on 2.1 and the Team Member click on 2.2.<br/>
                 4. Enjoy THE GAME :D </p>
 
-            <div className="home important" > IMPORTANT: Please leave the game only via Leave Game, otherwise the game can not be restarted again!</div>
+            <div className="home important"> IMPORTANT: Please leave the game only via Leave Game, otherwise the game
+                can not be restarted again!
+            </div>
             <Button
                 width="100%"
-                onClick={() => sendName()}
+                onClick={() => sendNameToWS()}
             >
                 1. Join this Game
             </Button>
-
+            <li>{players}</li>
             <Button
                 width="100%"
                 onClick={() => goToGame()}
             >
-                2.1 Start The Game as a Team Leader
-            </Button>
+                Start The Game for everyone :)
 
-            <Button
-                width="100%"
-                onClick={() => redirectToGame()}
-            >
-                2.2 Start The Game as a Team Member
             </Button>
 
             <h2> Players registered in this waiting-room: </h2>
@@ -132,10 +141,12 @@ const Waitingroom =   () => {
 
             <h2>How to play this Game</h2>
             <p> You will see at the top of the page, which player needs to play. <br/>
-                You can play a card, with clicking on your hand card and than clicking on the pile. If you want to change your selected card, you can just click on a other card. <br/>
+                You can play a card, with clicking on your hand card and than clicking on the pile. If you want to
+                change your selected card, you can just click on a other card. <br/>
                 With clicking on the draw pile you can get your new cards.<br/>
                 2 REMARKS: <br/>
-                1. Until we have solved the Hook issue, you need to click update to render your page and see what the other player has played.<br/>
+                1. Until we have solved the Hook issue, you need to click update to render your page and see what the
+                other player has played.<br/>
                 2. Zoom ins unfortunately not yet working, due to deployment difficulties</p>
 
 
