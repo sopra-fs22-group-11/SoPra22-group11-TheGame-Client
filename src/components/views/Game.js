@@ -34,6 +34,7 @@ const Game = () => {
 
     let disableCards = false;
     let disableDrawCards = false;
+    let listOfPlayers =[];
 
     const name = localStorage.getItem('username');
 
@@ -167,7 +168,11 @@ const Game = () => {
         let data = [player, noOfCards.length];
         playerListAndCards.push(data);
         console.log(playerListAndCards);
+        if (name != player){
+            listOfPlayers.push(player);
+        }
     }
+
 
 
 
@@ -320,6 +325,7 @@ const Game = () => {
     for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         listHiddenValues[i] = false;
     }
+    //setShowOwenCards(listHiddenValues);
 
 
     //here we fill the cards of the other player
@@ -344,45 +350,43 @@ const Game = () => {
 
     let cards=(
         <section className="wrapper">
-            <button className="card" hidden={listHiddenValues[0]}
+            <button className={gameObj.playerCards[name].length>0? "card":"card hidden"}
+                    display="none"
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[0])}
             >
                 {cardValues[0]}
             </button>
-            <button className="card"hidden={listHiddenValues[1]}
+            <button className={gameObj.playerCards[name].length>1? "card":"card hidden"}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[1])}
             >
                 {cardValues[1]}</button>
-            <button className="card" hidden={listHiddenValues[2]}
+            <button className={gameObj.playerCards[name].length>2? "card":"card hidden"}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[2])}
             >
                 {cardValues[2]}
             </button>
-            <button className="card"hidden={listHiddenValues[3]}
+            <button className={gameObj.playerCards[name].length>3? "card":"card hidden"}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[3])}
             >
                 {cardValues[3]}
             </button>
-            <button className="card"
-                    hidden={listHiddenValues[4]}
+            <button className={gameObj.playerCards[name].length>4? "card":"card hidden"}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[4])}
             >
                 {cardValues[4]}
             </button>
-            <button className="card"
-                    hidden={listHiddenValues[5]}
+            <button className={gameObj.playerCards[name].length>5? "card":"card hidden"}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[5])}
             >
                 {cardValues[5]}
             </button>
-            <button className="card"
-                    hidden={listHiddenValues[6]}
+            <button className={gameObj.playerCards[name].length>6? "card":"card hidden"}
                     disabled = {false}
                     onClick={() => chooseCard(cardValues[6])}
             >
@@ -393,31 +397,31 @@ const Game = () => {
 
     let cardsPlayer2=(
         <section className="wrapper">
-            <div className="cardPlayer" hidden={listHiddenValues[1]}
-            >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
-            </div>
-            <div className="cardPlayer" hidden={listHiddenValues[1]}
-            >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
-            </div>
-            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            <div className={gameObj.playerCards[listOfPlayers[0]].length>0? "cardPlayer":"cardPlayer hidden"}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%" />
             </div>
-            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            <div className={gameObj.playerCards[listOfPlayers[0]].length>1? "cardPlayer":"cardPlayer hidden"}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
             </div>
-            <div className="cardPlayer" hidden={listHiddenValues[1]}
-            >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
-            </div>
-            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            <div className={gameObj.playerCards[listOfPlayers[0]].length>2? "cardPlayer":"cardPlayer hidden"}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%" />
             </div>
-            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            <div className={gameObj.playerCards[listOfPlayers[0]].length>3? "cardPlayer":"cardPlayer hidden"}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+            </div>
+            <div className={gameObj.playerCards[listOfPlayers[0]].length>4? "cardPlayer":"cardPlayer hidden"}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+            </div>
+            <div className={gameObj.playerCards[listOfPlayers[0]].length>5? "cardPlayer":"cardPlayer hidden"}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%" />
+            </div>
+            <div className={gameObj.playerCards[listOfPlayers[0]].length>6? "cardPlayer":"cardPlayer hidden"}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%" />
             </div>
@@ -528,23 +532,20 @@ const Game = () => {
 
             </BaseContainer>
             <BaseContainer className="right">
-                <h2></h2>
-                <div id="js-video-view" className="container video-app">
-                    <canvas id="video-canvas" className="video-canvas" width="320" height="160"></canvas>
-                    <div className="container meeting-control-layer">
-                        <button id="js-mic-button" className="meeting-control-button">
-                            <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
-                        </button>
-                        <button id="js-webcam-button" className="meeting-control-button">
-                            <i id="js-webcam-icon" className="fas fa-video webcam__off"></i>
-                        </button>
-                        <div className="vertical-divider"></div>
-                        <button id="js-leave-button"
-                                className="meeting-control-button meeting-control-button__leave-session">
-                            <i id="js-leave-session-icon" className="fas fa-phone"></i>
-                        </button>
-                    </div>
-                </div>
+                <h2> </h2>
+
+                {playerListAndCards.map(item => (
+                        <Button className ={item[0]==gameObj.whoseTurn?"user-game selected":"user-game unselected"} >
+                            <div key={item}>
+                                <button id="js-mic-button" className="meeting-control-button">
+                                    <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
+                                </button>
+                                {item[0]}
+                            </div>
+
+                        </Button>
+
+                ))}
                 {informationBox}
                 <h2> </h2>
                 <h3> List of Players: </h3>
@@ -557,9 +558,7 @@ const Game = () => {
                             </li>
                     ))}
                 </ul>
-                <h2> </h2>
-                <div className="home important" > IMPORTANT:</div>
-                <h3> Please leave the game only via Leave Game, otherwise the game can not be restarted again!</h3>
+
             </BaseContainer>
         </div>
 
