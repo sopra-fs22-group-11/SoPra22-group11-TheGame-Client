@@ -23,20 +23,20 @@
     flex-direction: column;
   }
 
-  &.form {
+  &.formGame {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 90%;
+    margin-bottom: 20px;
+    width: 100%;
     //max-width: 80em;
     //height: 20em;
-    height: 30%;
+    height: 50%;
     font-size: 16px;
     font-weight: 300;
-    padding-left: 37px;
-    padding-right: 37px;
     border-radius: 0.75em;
-    background-color: $accentDark;
+    //background-color: $accentDark;
+    background-image: radial-gradient(ellipse at 50% 50%, #e3e6e8 0%, #8f9ca3 0%, #4D555D 70%, #323538 90%, #222324 100%);
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
   }
@@ -72,8 +72,14 @@
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
   }
+  &.Logo {
+    background-image: url(../../TheGameLogo.png);
+  }
 
 }
+
+
+
 .right{
   width: 30%;
   float: right;
@@ -110,95 +116,15 @@
 }
 
 .wrapper{
-  width:600px;
-  margin:20px auto;
-  padding:20px;
-}
-
-.card{
-  position:relative;
-  padding:20px;
-  width:80px;
-  height:300px;
-  background:#fff;
-  float:left;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -webkit-box-shadow: 2px 2px 2px 2px #000;
-  box-shadow: 2px 2px 2px 2px #000;
-  -moz-transition: all 500ms linear;
-  -webkit-transition: all 500ms linear;
-  -o-transition: all 500ms linear;
-  transition: all 500ms linear;
-}
-
-.card:nth-child(1){
-  -moz-transform: rotate(-18deg);
-  -webkit-transform: rotate(-18deg);
-  -o-transform: rotate(-18deg);
-  -ms-transform: rotate(-18deg);
-  transform: rotate(-18deg);
-  top:20px;
-  left:30px;
-}
-
-.card:nth-child(2){
-  -moz-transform: rotate(-8deg);
-  -webkit-transform: rotate(-8deg);
-  -o-transform: rotate(-8deg);
-  -ms-transform: rotate(-8deg);
-  transform: rotate(-8deg);
-  top:-0px;
-  left:-30px;
-}
-
-.card:nth-child(3){
-  left:-80px;
-  z-index:5;
-  top:-10px;
-}
-
-.card:nth-child(4){
-  -moz-transform: rotate(8deg);
-  -webkit-transform: rotate(8deg);
-  -o-transform: rotate(8deg);
-  -ms-transform: rotate(8deg);
-  transform: rotate(8deg);
-  top:-0px;
-  left:-120px;
-  z-index:4;
-}
-
-.card:nth-child(5){
-  -moz-transform: rotate(18deg);
-  -webkit-transform: rotate(18deg);
-  -o-transform: rotate(18deg);
-  -ms-transform: rotate(18deg);
-  transform: rotate(18deg);
-  top:15px;
-  left:-170px;
-}
-
-.card:hover{
-  z-index:6;
-  cursor:pointer;
-  -moz-transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  -o-transform: scale(1.1);
-  transform: scale(1.1);
-}
-
-//show cards
-.wrapper{
   position: center;
   display: flex;
   justify-content: space-between;
-  max-width:60%;
+  //max-width:60%;
   //margin: 5px;
   //padding:20px;
-  margin-left: 25%;
+  //margin-left: 25%;
 }
+
 .card{
   display: flex;
   //justify-content: space-between;
@@ -299,6 +225,116 @@
   transform: scale(1.1);
 }
 
+//show cards
+.wrapper{
+  position: center;
+  display: flex;
+  justify-content: space-between;
+  max-width:60%;
+  //margin: 5px;
+  //padding:20px;
+  margin-left: 25%;
+}
+.card{
+  display: flex;
+  //justify-content: space-between;
+  position: relative;
+  font-weight: 300;
+  font-size: 20px;
+  text-align: center;
+  //padding:20px;
+  border-radius: $borderRadius;
+  color: $accent;
+  width:100px;
+  height:150px;
+  background:$background;
+  //float: left;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 2px 2px #000;
+  box-shadow: 2px 2px 2px 2px #000;
+  -moz-transition: all 500ms linear;
+  -webkit-transition: all 500ms linear;
+  -o-transition: all 500ms linear;
+  transition: all 500ms linear;
+
+}
+
+.card:nth-child(1){
+  -moz-transform: rotate(-15deg);
+  -webkit-transform: rotate(-15deg);
+  -o-transform: rotate(-15deg);
+  -ms-transform: rotate(-15deg);
+  transform: rotate(-15deg);
+  top:20px;
+  left: $startCard;
+}
+
+.card:nth-child(2){
+  -moz-transform: rotate(-10deg);
+  -webkit-transform: rotate(-10deg);
+  -o-transform: rotate(-10deg);
+  -ms-transform: rotate(-10deg);
+  transform: rotate(-10deg);
+  top:-0px;
+  left: $startCard - 40px;
+}
+
+.card:nth-child(3){
+  -moz-transform: rotate(-5deg);
+  -webkit-transform: rotate(-5deg);
+  -o-transform: rotate(-5deg);
+  -ms-transform: rotate(-5deg);
+  transform: rotate(-5deg);
+  left: $startCard - 60px;
+  //z-index:5;
+  top:-10px;
+}
+
+.card:nth-child(4){
+  left: $startCard - 80px;
+  //z-index:5;
+  top:-10px;
+}
+
+.card:nth-child(5){
+  -moz-transform: rotate(5deg);
+  -webkit-transform: rotate(5deg);
+  -o-transform: rotate(5deg);
+  -ms-transform: rotate(5deg);
+  transform: rotate(5deg);
+  top:-10px;
+  left: $startCard - 100px;
+}
+.card:nth-child(6){
+  -moz-transform: rotate(10deg);
+  -webkit-transform: rotate(10deg);
+  -o-transform: rotate(10deg);
+  -ms-transform: rotate(10deg);
+  transform: rotate(10deg);
+  top:-0px;
+  left: $startCard - 130px;
+}
+.card:nth-child(7){
+  -moz-transform: rotate(15deg);
+  -webkit-transform: rotate(15deg);
+  -o-transform: rotate(15deg);
+  -ms-transform: rotate(15deg);
+  transform: rotate(15deg);
+  top:20px;
+  left: $startCard - 150px;
+}
+
+.card:hover{
+  z-index:6;
+  cursor:pointer;
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
 .right{
   width: 20%;
   float: right;
@@ -379,8 +415,99 @@
   &.bottom {
     width: 100%;
     height: 20%;
-    display:flex;
-    justify-content: space-between;
-    margin-top: 5%;
+    //display:flex;
+    //justify-content: space-between;
+    //margin-top: 5%;
   }
+}
+
+.cardPlayer{
+  display: flex;
+  //justify-content: space-between;
+  position: relative;
+  font-weight: 300;
+  font-size: 20px;
+  text-align: center;
+  //padding:20px;
+  border-radius: $borderRadius;
+  color: $accent;
+  width:100px;
+  height:150px;
+  background:$accentDark;
+  //float: left;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 2px 2px #000;
+  box-shadow: 2px 2px 2px 2px #000;
+  -moz-transition: all 500ms linear;
+  -webkit-transition: all 500ms linear;
+  -o-transition: all 500ms linear;
+  transition: all 500ms linear;
+
+}
+
+.cardPlayer:nth-child(1){
+  -moz-transform: rotate(-15deg);
+  -webkit-transform: rotate(-15deg);
+  -o-transform: rotate(-15deg);
+  -ms-transform: rotate(-15deg);
+  transform: rotate(-15deg);
+  top:20px;
+  left: $startCardPlayer;
+}
+
+.cardPlayer:nth-child(2){
+  -moz-transform: rotate(-10deg);
+  -webkit-transform: rotate(-10deg);
+  -o-transform: rotate(-10deg);
+  -ms-transform: rotate(-10deg);
+  transform: rotate(-10deg);
+  top:-0px;
+  left: $startCardPlayer - 40px;
+}
+
+.cardPlayer:nth-child(3){
+  -moz-transform: rotate(-5deg);
+  -webkit-transform: rotate(-5deg);
+  -o-transform: rotate(-5deg);
+  -ms-transform: rotate(-5deg);
+  transform: rotate(-5deg);
+  left: $startCardPlayer - 60px;
+  //z-index:5;
+  top:-10px;
+}
+
+.cardPlayer:nth-child(4){
+  left: $startCardPlayer - 80px;
+  //z-index:5;
+  top:-10px;
+}
+
+.cardPlayer:nth-child(5){
+  -moz-transform: rotate(5deg);
+  -webkit-transform: rotate(5deg);
+  -o-transform: rotate(5deg);
+  -ms-transform: rotate(5deg);
+  transform: rotate(5deg);
+  top:-10px;
+  left: $startCardPlayer - 100px;
+}
+.cardPlayer:nth-child(6){
+  -moz-transform: rotate(10deg);
+  -webkit-transform: rotate(10deg);
+  -o-transform: rotate(10deg);
+  -ms-transform: rotate(10deg);
+  transform: rotate(10deg);
+  top:-0px;
+  left: $startCardPlayer - 130px;
+}
+.cardPlayer:nth-child(7){
+  -moz-transform: rotate(15deg);
+  -webkit-transform: rotate(15deg);
+  -o-transform: rotate(15deg);
+  -ms-transform: rotate(15deg);
+  transform: rotate(15deg);
+  top:20px;
+  left: $startCardPlayer - 150px;
 }

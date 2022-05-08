@@ -15,6 +15,7 @@ import {generateSessionToken} from "../../zoom/js/tool";
 import {isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
 import {connect, sendDraw, startGame} from "../utils/sockClient";
 import "../views/Waitingroom";
+import TheGameLogo from '../../TheGameLogo.png';
 
 
 const retrieveGTO = () => {
@@ -37,6 +38,8 @@ const Game = () => {
     const name = localStorage.getItem('username');
 
     const playerListAndCards = [];
+
+
 
 
 
@@ -295,14 +298,20 @@ const Game = () => {
 
     //************************  HTML  *******************************************************
 
-    const listHiddenValues = [true, true, true, true, true, true, true];
+    let listHiddenValues = [true, true, true, true, true, true, true];
+    //const[showOwnCards, setShowOwenCards]=useState(listHiddenValues);
 
     //by default, we enter 0 so that there is no null value at the start
-    const cardValues = [0, 0, 0, 0, 0, 0, 0];
+    let cardValues = [0, 0, 0, 0, 0, 0, 0];
+
+    const listHiddenValues2 = [true, true, true, true, true, true, true];
+
+    //by default, we enter 0 so that there is no null value at the start
+    const cardValues2 = [0, 0, 0, 0, 0, 0, 0];
 
 
 
-    //here we fill the cards with the right value
+    //here we fill our cards with the right value
     for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         cardValues[i] = gameObj.playerCards[name][i].value;
     }
@@ -310,6 +319,17 @@ const Game = () => {
 
     for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         listHiddenValues[i] = false;
+    }
+
+
+    //here we fill the cards of the other player
+    for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+        cardValues2[i] = gameObj.playerCards[name][i].value;
+    }
+
+
+    for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+        listHiddenValues2[i] = false;
     }
 
 
@@ -370,6 +390,39 @@ const Game = () => {
             </button>
         </section>);
 
+
+    let cardsPlayer2=(
+        <section className="wrapper">
+            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+            </div>
+            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+            </div>
+            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%" />
+            </div>
+            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+            </div>
+            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+            </div>
+            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%" />
+            </div>
+            <div className="cardPlayer" hidden={listHiddenValues[1]}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%" />
+            </div>
+        </section>)
+
     //show cards nicely
     /*let cards=(
      <section className="wrapper">
@@ -409,16 +462,16 @@ const Game = () => {
             <HeaderGame height="100"/>
             <BaseContainer className = "gameBoard">
                 <h2> </h2>
-                <div className="game form2">
+                <div className="game formGame">
                     <div className="gameBoard top">
                         <div className="gameBoard rotation180">
-                            {cards}
+                            {cardsPlayer2}
                         </div>
                     </div>
                     <div className="gameBoard middle">
                         <div className="gameBoard middle players_left">
                             <div className="gameBoard rotation90">
-                                {cards}
+
                             </div>
                         </div>
                         <div className="gameBoard middle DrawAndPileArea">
@@ -459,7 +512,7 @@ const Game = () => {
                         </div>
                         <div className="gameBoard middle players_right">
                             <div className="gameBoard rotationMinus90">
-                                {cards}
+
                             </div>
                         </div>
 
