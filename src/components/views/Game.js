@@ -533,22 +533,19 @@ const Game = () => {
             </BaseContainer>
             <BaseContainer className="right">
                 <h2> </h2>
-                <div id="js-video-view" className="container video-app">
-                    <canvas id="video-canvas" className="video-canvas" width="320" height="160"></canvas>
-                    <div className="container meeting-control-layer">
-                        <button id="js-mic-button" className="meeting-control-button">
-                            <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
-                        </button>
-                        <button id="js-webcam-button" className="meeting-control-button">
-                            <i id="js-webcam-icon" className="fas fa-video webcam__off"></i>
-                        </button>
-                        <div className="vertical-divider"></div>
-                        <button id="js-leave-button"
-                                className="meeting-control-button meeting-control-button__leave-session">
-                            <i id="js-leave-session-icon" className="fas fa-phone"></i>
-                        </button>
-                    </div>
-                </div>
+
+                {playerListAndCards.map(item => (
+                        <Button className ={item[0]==gameObj.whoseTurn?"user-game selected":"user-game unselected"} >
+                            <div key={item}>
+                                <button id="js-mic-button" className="meeting-control-button">
+                                    <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
+                                </button>
+                                {item[0]}
+                            </div>
+
+                        </Button>
+
+                ))}
                 {informationBox}
                 <h2> </h2>
                 <h3> List of Players: </h3>
@@ -561,9 +558,7 @@ const Game = () => {
                             </li>
                     ))}
                 </ul>
-                <h2> </h2>
-                <div className="home important" > IMPORTANT:</div>
-                <h3> Please leave the game only via Leave Game, otherwise the game can not be restarted again!</h3>
+
             </BaseContainer>
         </div>
 
