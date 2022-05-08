@@ -10,20 +10,6 @@ import HeaderHome from "./HeaderHome";
 
 
 
-const User = ({user}) => (
-    <div className="user container">
-        <div className="user username">{user.username}</div>
-        <div className="user status"> {user.status}</div>
-        <div className="user score">{user.score }</div>
-    </div>
-);
-
-
-
-User.propTypes = {
-    user: PropTypes.object
-};
-
 const Scoreboard = () => {
 
     const history = useHistory();
@@ -59,30 +45,39 @@ const Scoreboard = () => {
 
     let content = <Spinner/>;
     if (users) {
+        const  sortedUsers = [].concat(users)
+            .sort((a, b) => a.score < b.score ? 1 : -1)
+            .map((user) => user);
+        console.log(sortedUsers)
         content = (
             <div className="home">
-                <ul className="home user-list">
-                    {users.map(user => (
-                        <li>
-                            <User user={user} key={user.username}/>
-                        </li>
-                    ))}
-                </ul>
+                <table className="home user-table">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Status</th>
+                        <th>Score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {sortedUsers.map(sortedUser => (
+                            <tr key={sortedUser.id}>
+                                <td>{sortedUser.username}</td>
+                                <td>{sortedUser.status}</td>
+                                <td>{sortedUser.score}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         );
     }
-
-
     return (
         <div>
             <HeaderHome height="100"/>
         <BaseContainer className = "Home container">
-            <h2>Ranking</h2>
+            <h2>Scoreboard</h2>
             <div className="home form">
-            <p className="home paragraph">
-                User ranking with their game scores and status:
-                <p></p>
-            </p>
             {content}
             </div>
         </BaseContainer>
