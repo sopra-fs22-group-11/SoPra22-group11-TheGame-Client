@@ -2,7 +2,8 @@ import {useEffect, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-import "styles/views/Home.scss";
+//import "styles/views/Home.scss";
+import "styles/views/Game.scss";
 import ZoomVideo from '@zoom/videosdk';
 import initClientEventListeners from "../../zoom/js/meeting/session/client-event-listeners";
 import initButtonClickHandlers from "../../zoom/js/meeting/session/button-click-handlers";
@@ -321,63 +322,53 @@ const Game = () => {
     //idee um zu zeigen das ein button ausgewählt wurde: { cardSelected?"cards-button selected": "cards-button unselected"}
 
 
-    let cards = (
-        <div className="left bottom">
-            <Button id="card1" className="cards-button unselected"
-                    hidden={listHiddenValues[0]}
-                    disabled={false}
+    let cards=(
+        <section className="wrapper">
+            <button className="card" hidden={listHiddenValues[0]}
+                    disabled = {false}
                     onClick={() => chooseCard(cardValues[0])}
             >
                 {cardValues[0]}
-            </Button>
-            <Button id="card2" className="cards-button unselected"
-                    hidden={listHiddenValues[1]}
-                    disabled={false}
+            </button>
+            <button className="card"hidden={listHiddenValues[1]}
+                    disabled = {false}
                     onClick={() => chooseCard(cardValues[1])}
             >
-                {cardValues[1]}
-            </Button>
-            <Button id="card3" className="cards-button unselected"
-                    hidden={listHiddenValues[2]}
-                    disabled={false}
+                {cardValues[1]}</button>
+            <button className="card" hidden={listHiddenValues[2]}
+                    disabled = {false}
                     onClick={() => chooseCard(cardValues[2])}
             >
                 {cardValues[2]}
-            </Button>
-            <Button id="card4" className="cards-button unselected"
-                    hidden={listHiddenValues[3]}
-                    disabled={false}
+            </button>
+            <button className="card"hidden={listHiddenValues[3]}
+                    disabled = {false}
                     onClick={() => chooseCard(cardValues[3])}
             >
                 {cardValues[3]}
-            </Button>
-            <Button id="card5" className="cards-button unselected"
+            </button>
+            <button className="card"
                     hidden={listHiddenValues[4]}
-                    disabled={false}
+                    disabled = {false}
                     onClick={() => chooseCard(cardValues[4])}
             >
                 {cardValues[4]}
-            </Button>
-            <Button id="card6" className="cards-button unselected"
+            </button>
+            <button className="card"
                     hidden={listHiddenValues[5]}
-                    disabled={false}
+                    disabled = {false}
                     onClick={() => chooseCard(cardValues[5])}
             >
                 {cardValues[5]}
-            </Button>
-            <Button id="card7" className="cards-button unselected"
+            </button>
+            <button className="card"
                     hidden={listHiddenValues[6]}
-                    disabled={false}
+                    disabled = {false}
                     onClick={() => chooseCard(cardValues[6])}
             >
                 {cardValues[6]}
-            </Button>
-        </div>
-
-
-
-
-    );
+            </button>
+        </section>);
 
     //show cards nicely
     /*let cards=(
@@ -416,48 +407,70 @@ const Game = () => {
     return (
         <div>
             <HeaderGame height="100"/>
-            <BaseContainer className="left">
-                <h2></h2>
-                <div className="home form">
-                    <div className="left top">
-
-                        <Button className="game-button"
-                                disabled={false}
-                                onClick={() => checkDiscardPossible(gameObj.pilesList[0], 0)}
-                        >
-                            {gameObj.pilesList[0].topCard.value + "▼"}
-                        </Button>
-                        <Button className="game-button"
-                                disabled={false}
-                                onClick={() => checkDiscardPossible(gameObj.pilesList[1], 1)}
-                        >
-                            {gameObj.pilesList[1].topCard.value + "▼"}
-                        </Button>
-                        <Button className="game-button"
-                                disabled={false}
-                                onClick={() => checkDiscardPossible(gameObj.pilesList[2], 2)}
-                        >
-                            {gameObj.pilesList[2].topCard.value + "▲"}
-                        </Button>
-                        <Button className="game-button"
-                                disabled={false}
-                                onClick={() => checkDiscardPossible(gameObj.pilesList[3], 3)}
-                        >
-                            {gameObj.pilesList[3].topCard.value + "▲"}
-                        </Button>
+            <BaseContainer className = "gameBoard">
+                <h2> </h2>
+                <div className="game form2">
+                    <div className="gameBoard top">
+                        <div className="gameBoard rotation180">
+                            {cards}
+                        </div>
                     </div>
-                    <div className="left middle">
-                        <Button className="game-button"
-                                disabled={disableDrawCards}
-                                onClick={() => draw()}
-                        >
-                            {parseInt(gameObj.noCardsOnDeck)>0 ? "Draw \n (cards on deck: " + gameObj.noCardsOnDeck + ")"
-                            : "End turn"}
-                        </Button>
+                    <div className="gameBoard middle">
+                        <div className="gameBoard middle players_left">
+                            <div className="gameBoard rotation90">
+                                {cards}
+                            </div>
+                        </div>
+                        <div className="gameBoard middle DrawAndPileArea">
+                            <div className="gameBoard middle DrawAndPileArea pileArea">
+                                <Button className ="game-button"
+                                        disabled = {false}
+                                        onClick ={() => checkDiscardPossible(gameObj.pilesList[0], 0)}
+                                >
+                                    {gameObj.pilesList[0].topCard.value + "▼"}
+                                </Button>
+                                <Button className ="game-button"
+                                        disabled = {false}
+                                        onClick={() => checkDiscardPossible(gameObj.pilesList[1], 1)}
+                                >
+                                    {gameObj.pilesList[1].topCard.value + "▼"}
+                                </Button>
+                                <Button className ="game-button"
+                                        disabled = {false}
+                                        onClick={() => checkDiscardPossible(gameObj.pilesList[2], 2)}
+                                >
+                                    {gameObj.pilesList[2].topCard.value +"▲"}
+                                </Button>
+                                <Button className ="game-button"
+                                        disabled = {false}
+                                        onClick={() => checkDiscardPossible(gameObj.pilesList[3], 3)}
+                                >
+                                    {gameObj.pilesList[3].topCard.value +"▲"}
+                                </Button>
+                            </div>
+                            <div className="gameBoard middle DrawAndPileArea drawArea">
+                                <Button className ="game-button"
+                                        disabled = {disableDrawCards}
+                                        onClick={() => draw()}
+                                >
+                                    { "\n (cards on deck: " +  gameObj.noCardsOnDeck + ")"}
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="gameBoard middle players_right">
+                            <div className="gameBoard rotationMinus90">
+                                {cards}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="gameBoard bottom" >
+                        {cards}
                     </div>
 
-                    {cards}
-                    <h2></h2>
+
+                    <h2> </h2>
+
                 </div>
 
             </BaseContainer>
@@ -500,5 +513,15 @@ const Game = () => {
     );
 
 }
+
+//<ul>
+//                     {playerListAndCards.map(item => (
+//                         <li>
+//                             <Button className ="primary-button">
+//                         <div key={item}>{item[0]} {"has"} {item[1]} {"cards"}</div>
+//                             </Button>
+//                             </li>
+//                     ))}
+//                 </ul>
 
 export default Game;

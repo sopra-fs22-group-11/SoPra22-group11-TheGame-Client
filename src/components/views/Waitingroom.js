@@ -85,13 +85,7 @@ const Waitingroom = () => {
             </Button>
 
             <h2> Players registered in this waiting-room: </h2>
-            <ul>
-                {players.map(item => (
-                    <li>
-                       <div key={item}>{item}</div>
-                    </li>
-                ))}
-            </ul>
+
 
             <h2>How to play this Game</h2>
             <p> You will see at the top of the page, which player needs to play. <br/>
@@ -123,4 +117,13 @@ const Waitingroom = () => {
     );
 
 }
+
+//<ul>
+//                 {players.map(item => (
+//                     <li>
+//                        <div key={item}>{item}</div>
+//                     </li>
+//                 ))}
+//             </ul>
+
 export default Waitingroom;
