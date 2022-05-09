@@ -611,30 +611,35 @@ const Game = () => {
                     onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck>2? "drawPile":"drawPile hidden"}
                     disabled = {disableDrawCards}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%" />
+                {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck>3? "drawPile":"drawPile hidden"}
                     disabled = {disableDrawCards}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck>4? "drawPile":"drawPile hidden"}
                     disabled = {disableDrawCards}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck>5? "drawPile":"drawPile hidden"}
                     disabled = {disableDrawCards}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%" />
+                {gameObj.noCardsOnDeck}
             </button>
 
         </section>)
@@ -722,7 +727,6 @@ const Game = () => {
                             </div>
                             <div className="gameBoard middle DrawAndPileArea drawArea">
                                     {drawPile}
-                                {"(Cards: " +  gameObj.noCardsOnDeck + ")"}
                             </div>
                         </div>
                         <div className="gameBoard middle players_right">
@@ -757,6 +761,13 @@ const Game = () => {
                         </Button>
 
                 ))}
+
+                <Button className ="game-button"
+                        disabled = {false}
+                        onClick={() => checkDiscardPossible(gameObj.pilesList[3], 3)}
+                >
+                    No Moves Possible
+                </Button>
             </BaseContainer>
         </div>
 
