@@ -2,16 +2,18 @@ import React, {useState} from "react";
 import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
-import closeAndRedirect from "./Game";
+import goToHome from "./Game";
 import goToRulePage from "./Startpage";
 import doRegister from "./Login";
+import goToLogin from "./Registration";
 
 import BaseContainer from "../ui/BaseContainer";
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
-import {playerLeaves} from "../utils/sockClient";
+import {terminate} from "../utils/sockClient";
 import {Button} from "../ui/Button";
 import {useHistory} from "react-router-dom";
+import TheGameLogo from "../../TheGameLogo.png";
 
 
 
@@ -91,16 +93,54 @@ const HeaderGame = props => {
 
         </ul>
 
+
     )
 
+    function cannotPlay(){ // TODO notify websocket that gamerunning: lost
+        setTextToDisplay(lostText);
+        openModal();
+    }
+    const lostText =(
+        <div>
+            <p>You have lost the game. Click "OK" to see your results</p>
 
+            <Button className ="player-button"
+                    disabled = {false}
+                    width = "10%"
+                    onClick={() => history.push('/gameResults')}
+            >
+                OK
+            </Button>
+        </div>
+
+
+
+    )
     return(
         <div className="header container">
             <div className="header title">
                 The Game |
+                <img src={TheGameLogo} alt="game Logo" height="45px" />
             </div>
 
             <div className="header-right">
+                <a //href="/rulePage"
+                    onClick={() => clickRules()} /*gotoRulesPage()}*/
+                > Rules
+                    <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/000000/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
+
+
+                </a>
+                <a href="/startpage"
+                   onClick={() => leaveGame()}
+                   display ="block"
+                >
+                    Leave Game
+                    <img src="https://img.icons8.com/emoji/48/000000/leaf-fluttering-in-wind.png" />
+
+
+
+                </a>
                 <a
                     onClick={() => clickRules()}
                 >Rules</a>

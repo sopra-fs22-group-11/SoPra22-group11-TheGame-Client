@@ -8,6 +8,7 @@ import doRegister from "./Login";
 import goToLogin from "./Registration";
 import {useHistory} from "react-router-dom";
 import {api, handleError} from "../../helpers/api";
+import TheGameLogo from "../../TheGameLogo.png";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -76,6 +77,7 @@ const HeaderHome = props => (
     <div className="header container">
         <div className="header title">
             The Game |
+            <img src={TheGameLogo} alt="game Logo" height="45px" />
         </div>
         <iv className="header-right">
             <a href="/startpage"
