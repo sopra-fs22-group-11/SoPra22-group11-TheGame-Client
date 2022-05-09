@@ -161,14 +161,26 @@
   //outline: $accent 2px solid;
   //transition: all 0.3s ease;
 
-  &.selected{
-    background-color: $accent;
-    width : 100%
+  &.player{
+    width : 100%;
+    &.selected{
+      background-color: $accent;
+    }
+
+    &.unselected{
+      background-color: $accentDark;
+    }
   }
 
-  &.unselected{
-    background-color: $accentDark;
+  &.others{
     float: right;
     width: 80%;
+    &.selected{
+      background-color: $accent;
+    }
+
+    &.unselected{
+      background-color: $accentDark;
+    }
   }
 }
