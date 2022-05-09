@@ -45,9 +45,7 @@ export const playerLeaves = () => {
 export const gameLost = () => {
     stompClient.send("/app/gameLost", {})
 }
-export const terminate = () => { //TODO delete this once we have the end of the game
-    stompClient.send("/app/gameTerminated", {})
-}
+
 
 export const whyFinished = () => {
     stompClient.send("/app/gameStatus", {})

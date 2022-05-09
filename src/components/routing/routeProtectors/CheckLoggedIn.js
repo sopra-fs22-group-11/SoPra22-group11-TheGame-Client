@@ -11,7 +11,7 @@ export  const CheckLoggedIn = props => {
         return props.children;
     }
     // if user is already registered, redirects to the main app
-    return <Redirect to="/login"/>;
+    return <Redirect to="/registration"/>;
 };
 
 CheckLoggedIn.propTypes = {

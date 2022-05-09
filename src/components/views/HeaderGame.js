@@ -2,15 +2,14 @@ import React, {useState} from "react";
 import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
-import goToHome from "./Game";
+import closeAndRedirect from "./Game";
 import goToRulePage from "./Startpage";
 import doRegister from "./Login";
-import goToLogin from "./Registration";
 
 import BaseContainer from "../ui/BaseContainer";
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
-import {gameLost, playerLeaves, terminate} from "../utils/sockClient";
+import {playerLeaves} from "../utils/sockClient";
 import {Button} from "../ui/Button";
 import {useHistory} from "react-router-dom";
 
@@ -58,27 +57,7 @@ const logout = () => {
 }
 
 
-const leaveGame = () => {
-    terminate();
-    localStorage.removeItem('gto');
-    goToHome();
-}
 
-const triesToLeave =  () => {
-    alert(
-        //This is title
-        'You are trying to leave.',
-        //This is body text
-        'Are you sure you want to leave, the game will be ended for all your Teammates',
-        [
-            {text: 'Yes', style: 'cancel'},
-            {text: 'No', onPress: () => playerLeaves()},
-        ],
-        { cancelable: false }
-        //on clicking out side, Alert will not dismiss
-    );
-
-}
 
 const HeaderGame = props => {
 
@@ -126,11 +105,14 @@ const HeaderGame = props => {
                     onClick={() => clickRules()}
                 >Rules</a>
                 <a
-                    onClick={() =>gameLost()}
-                >No moves possible</a>
-                <a
-                   onClick={() => triesToLeave()}
-                   href="/rulePage"
+                   onClick={() => {
+                       // eslint-disable-next-line no-restricted-globals
+                       let result = confirm("Are you sure you want to leave, this will end the Game for your teammates.")
+
+                       if(result){
+                           playerLeaves();
+                           closeAndRedirect();
+                       }}}
                 >Leave Game </a>
             </div>
             <div>

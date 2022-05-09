@@ -12,7 +12,7 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
-import {isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
+import {gameLost, isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
 import {connect, sendDraw, whyFinished} from "../utils/sockClient";
 import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
@@ -45,9 +45,12 @@ const Game = () => {
     const [modalIsOpen, setModalIsOpen]= useState(false);
     const [textToDisplay, setTextToDisplay]= useState("");
 
+
     let playerRight;
     let playerTop;
     let playerLeft;
+
+
 
 
 
@@ -62,9 +65,6 @@ const Game = () => {
     const registerGameSocket = () => {
         subscribe('/topic/game', msg => {
             setGameObj(msg)
-        });
-        subscribe('/topic/terminated', msg => {
-            history.push('/startpage') //TODO remove
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
@@ -208,14 +208,17 @@ const Game = () => {
     const close = async () => {
         try {
             await client.leave();
-            //this.sock.close();
+            this.sock.close();
 
         } catch (e) {
             console.log(e);
         }
-        history.push('/startpage');
     }
 
+    const closeAndRedirect = async () => {
+        close()
+        history.push('/startpage')
+    }
 
     //show popup before leaving
     window.onbeforeunload = function () {
@@ -224,7 +227,8 @@ const Game = () => {
 
     //do when leaving page
     window.onunload = function () { //TODO take care of those functions such that they differentiate finely
-        close();
+        // eslint-disable-next-line no-restricted-globals
+        closeAndRedirect()
         alert('Bye.');
     }
 
@@ -374,6 +378,7 @@ const Game = () => {
     //check wheter it is players turn and ownCards should be shown
     checkWhoseTurn();
     checkForDraw();
+    checkForFinishedGame();
 
 
 
@@ -697,65 +702,67 @@ const Game = () => {
 
 
     function onLost(){
-        setTextToDisplay(<div>
-            <h2> Better luck next time</h2>
-            <p>You have lost the Game.</p>
-            <Button className ="player-button"
-                    disabled = {false}
-                    width = "30%"
-                    onClick={() => history.push('/score')}
-            >
-                Score
-            </Button>
-            <Button className ="player-button"
-                    disabled = {false}
-                    width = "30%"
-                    onClick={() => history.push('/waitingroom/1')}
-            >
-                Play Again
-            </Button>
-            <Button className ="player-button"
-                    disabled = {false}
-                    width = "30%"
-                    onClick={() => history.push('/startpage')}
-            >
-                Leave
-            </Button>
-        </div>);
+        onLostOrWon("Better luck next time :(", "You have lost the Game.")
     }
 
     function onWon () {
+        onLostOrWon("Congratulations :)","You have won the Game." )
+    }
+
+    const leaveButton = (
+        <Button className ="player-button"
+            disabled = {false}
+            width = "33%"
+        /* eslint-disable-next-line no-restricted-globals */
+            onClick={() => {close()
+                history.push('/startpage')}}
+    >
+        Leave
+    </Button>
+    )
+    const playAgainButton = (
+        <Button className ="player-button"
+                disabled = {false}
+                width = "33%"
+            /* eslint-disable-next-line no-restricted-globals */
+                onClick={() => {close()
+                    history.push('/waitingroomOverview')
+                }}
+        >
+            Play Again
+        </Button>
+    )
+
+    function onLostOrWon(headerText, descriptionText){
         setTextToDisplay(<div>
-            <h2> Congratulations :) </h2>
-            <p>You have won the Game.</p>
+            <h2> {headerText}</h2>
+            <p>{descriptionText}</p>
             <Button className ="player-button"
                     disabled = {false}
-                    width = "10%"
-                    onClick={() => history.push('/gameResults')}
+                    width = "33%"
+                /* eslint-disable-next-line no-restricted-globals */
+                    onClick={() => {close()
+                        history.push('/scoreboard')
+                    }}
             >
-                See Results
+                Score
             </Button>
+            {leaveButton}
+            {playAgainButton}
         </div>);
     }
+
+
 
     function onLeft () {
         setTextToDisplay(<div>
-            <h2> You're game is over </h2>
+            <h2> Your game is over </h2>
             <p>One of your Teammates left the Game. </p>
-            <Button className ="player-button"
-                    disabled = {false}
-                    width = "10%"
-                    onClick={() => history.push('/waitingroom/1')}
-            >
-                Continue to another Game
-            </Button>
+            {leaveButton}
+            {playAgainButton}
         </div>);
     }
 
-
-    function closeModal(){
-        setModalIsOpen(false);
-    }
 
     //************************  HTML  *******************************************************
 
@@ -777,10 +784,9 @@ const Game = () => {
             <HeaderGame height="100"/>
             <BaseContainer className = "gameBoard">
                 <h2> </h2>
-
                 <BaseContainer className = "overlay">
                     {modalIsOpen && <Modal text ={textToDisplay}/>}
-                    {modalIsOpen &&<Backdrop clicked ={closeModal}/>}
+                    {modalIsOpen &&<Backdrop />}
                 </BaseContainer>
                     <div className="game formGame">
                     <div className="gameBoard top">
@@ -860,7 +866,14 @@ const Game = () => {
 
                 <Button className ="game-button"
                         disabled = {false}
-                        onClick={() => checkDiscardPossible(gameObj.pilesList[3], 3)}
+                        onClick={() => {
+                            // eslint-disable-next-line no-restricted-globals
+                            let result = confirm("Are you sure you have no moves left, this will end the game for you and your teammates.")
+                            if(result){
+                                gameLost();
+                        }
+                        }
+                }
                 >
                     No Moves Possible
                 </Button>
@@ -871,14 +884,5 @@ const Game = () => {
 
 }
 
-//<ul>
-//                     {playerListAndCards.map(item => (
-//                         <li>
-//                             <Button className ="primary-button">
-//                         <div key={item}>{item[0]} {"has"} {item[1]} {"cards"}</div>
-//                             </Button>
-//                             </li>
-//                     ))}
-//                 </ul>
 
 export default Game;
