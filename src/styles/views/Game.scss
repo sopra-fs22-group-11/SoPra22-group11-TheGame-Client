@@ -409,6 +409,7 @@
   left: $startCardPlayer - 150px;
 }
 
+<<<<<<< HEAD
 .drawPile{
   //display: block;
   //justify-content: space-between;
@@ -485,3 +486,40 @@
   transform: rotate(10deg);
 
 }
+=======
+
+.overlay{
+  width: 100%;
+  height: 100%;
+  color: #000000;
+  opacity: 100%;
+  z-index: 1000;
+  position: static;
+  //position: absolute; if not commentet out it scrolls with the page
+
+}
+.modal {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  background-color: $background;
+  padding: 1rem;
+  text-align: left;
+  width: 30rem;
+  z-index: 5;
+  position: fixed;
+  top: 20vh;
+  left: calc(50% - 15rem);
+  overflow-y: auto; // these to make the scroll bar, if bigger than max height of view point, then scroll
+  max-height: 100vh;
+}
+
+.backdrop {
+  position: fixed;
+  z-index: 4;
+  background-color: rgba(0, 0, 0, 0.75);
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+>>>>>>> 8beb93e04aefb6c7a24f4915f0bc2a6e29059828
