@@ -13,6 +13,7 @@ import Backdrop from "../ui/Backdrop";
 import {terminate} from "../utils/sockClient";
 import {Button} from "../ui/Button";
 import {useHistory} from "react-router-dom";
+import TheGameLogo from "../../TheGameLogo.png";
 
 
 
@@ -123,19 +124,27 @@ const HeaderGame = props => {
         <div className="header container">
             <div className="header title">
                 The Game |
+                <img src={TheGameLogo} alt="game Logo" height="45px" />
             </div>
 
             <div className="header-right">
                 <a //href="/rulePage"
                     onClick={() => clickRules()} /*gotoRulesPage()}*/
-                >Rules</a>
-                <a //href = "/startpage"
-                    //href="/login"
-                    onClick={() =>cannotPlay()}
-                >I cannot play</a>
+                > Rules
+                    <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/000000/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
+
+
+                </a>
                 <a href="/startpage"
                    onClick={() => leaveGame()}
-                >Leave Game </a>
+                   display ="block"
+                >
+                    Leave Game
+                    <img src="https://img.icons8.com/emoji/48/000000/leaf-fluttering-in-wind.png" />
+
+
+
+                </a>
             </div>
             <div>
                 <BaseContainer className = "overlay">
