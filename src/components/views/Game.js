@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
@@ -13,9 +13,11 @@ import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
 import {isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
-import {connect, sendDraw, startGame} from "../utils/sockClient";
+import {connect, sendDraw, whyFinished} from "../utils/sockClient";
 import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
+import Modal from "../ui/Modal";
+import Backdrop from "../ui/Backdrop";
 
 
 const retrieveGTO = () => {
@@ -40,6 +42,9 @@ const Game = () => {
 
     const playerListAndCards = [];
 
+    const [modalIsOpen, setModalIsOpen]= useState(false);
+    const [textToDisplay, setTextToDisplay]= useState("");
+
 
 
 
@@ -55,10 +60,22 @@ const Game = () => {
             setGameObj(msg)
         });
         subscribe('/topic/terminated', msg => {
-            history.push('/startpage')
+            history.push('/startpage') //TODO remove
         });
         subscribe('/topic/status', msg => {
-            //TODO do something here
+            setModalIsOpen(true);
+            if(msg == "won"){
+                onWon();
+            }
+            else if(msg == "lost"){
+               onLost();
+            }
+            else if (msg == "left"){
+                onLeft();
+            }
+            else{
+                alert("There seems to be an error")
+            }
         })
     };
 
@@ -89,6 +106,12 @@ const Game = () => {
     const checkWhoseTurn = () => {
         disableCards = name !== gameObj.whoseTurn;
         return disableCards;
+    }
+
+    const checkForFinishedGame = () => {
+        if (!gameObj.gameRunning){
+            whyFinished()
+        }
     }
 
     const discard = (pile, index) => {
@@ -338,10 +361,16 @@ const Game = () => {
         listHiddenValues2[i] = false;
     }
 
+    function closeModal(){
+        setModalIsOpen(false);
+    }
+
+
 
     //check wheter it is players turn and cards should be shown
     checkWhoseTurn();
     checkForDraw();
+    checkForFinishedGame();
 
 
 
@@ -446,6 +475,69 @@ const Game = () => {
         </div>
     );
 
+
+
+    function onLost(){
+        setTextToDisplay(<div>
+            <h2> Better luck next time</h2>
+            <p>You have lost the Game.</p>
+            <Button className ="player-button"
+                    disabled = {false}
+                    width = "30%"
+                    onClick={() => history.push('/score')}
+            >
+                Score
+            </Button>
+            <Button className ="player-button"
+                    disabled = {false}
+                    width = "30%"
+                    onClick={() => history.push('/waitingroom/1')}
+            >
+                Play Again
+            </Button>
+            <Button className ="player-button"
+                    disabled = {false}
+                    width = "30%"
+                    onClick={() => history.push('/startpage')}
+            >
+                Leave
+            </Button>
+        </div>);
+    }
+
+    function onWon () {
+        setTextToDisplay(<div>
+            <h2> Congratulations :) </h2>
+            <p>You have won the Game.</p>
+            <Button className ="player-button"
+                    disabled = {false}
+                    width = "10%"
+                    onClick={() => history.push('/gameResults')}
+            >
+                See Results
+            </Button>
+        </div>);
+    }
+
+    function onLeft () {
+        setTextToDisplay(<div>
+            <h2> You're game is over </h2>
+            <p>One of your Teammates left the Game. </p>
+            <Button className ="player-button"
+                    disabled = {false}
+                    width = "10%"
+                    onClick={() => history.push('/waitingroom/1')}
+            >
+                Continue to another Game
+            </Button>
+        </div>);
+    }
+
+
+    function closeModal(){
+        setModalIsOpen(false);
+    }
+
     //************************  HTML  *******************************************************
 
 
@@ -466,7 +558,12 @@ const Game = () => {
             <HeaderGame height="100"/>
             <BaseContainer className = "gameBoard">
                 <h2> </h2>
-                <div className="game formGame">
+
+                <BaseContainer className = "overlay">
+                    {modalIsOpen && <Modal text ={textToDisplay}/>}
+                    {modalIsOpen &&<Backdrop clicked ={closeModal}/>}
+                </BaseContainer>
+                    <div className="game formGame">
                     <div className="gameBoard top">
                         <div className="gameBoard rotation180">
                             {cardsPlayer2}

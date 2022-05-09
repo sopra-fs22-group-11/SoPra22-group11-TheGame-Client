@@ -10,7 +10,7 @@ import goToLogin from "./Registration";
 import BaseContainer from "../ui/BaseContainer";
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
-import {terminate} from "../utils/sockClient";
+import {gameLost, playerLeaves, terminate} from "../utils/sockClient";
 import {Button} from "../ui/Button";
 import {useHistory} from "react-router-dom";
 
@@ -64,6 +64,22 @@ const leaveGame = () => {
     goToHome();
 }
 
+const triesToLeave =  () => {
+    alert(
+        //This is title
+        'You are trying to leave.',
+        //This is body text
+        'Are you sure you want to leave, the game will be ended for all your Teammates',
+        [
+            {text: 'Yes', style: 'cancel'},
+            {text: 'No', onPress: () => playerLeaves()},
+        ],
+        { cancelable: false }
+        //on clicking out side, Alert will not dismiss
+    );
+
+}
+
 const HeaderGame = props => {
 
     const [modalIsOpen, setModalIsOpen]= useState(false);
@@ -96,29 +112,9 @@ const HeaderGame = props => {
 
         </ul>
 
-
     )
 
-    function cannotPlay(){ // TODO notify websocket that gamerunning: lost
-        setTextToDisplay(lostText);
-        openModal();
-    }
-    const lostText =(
-        <div>
-            <p>You have lost the game. Click "OK" to see your results</p>
 
-            <Button className ="player-button"
-                    disabled = {false}
-                    width = "10%"
-                    onClick={() => history.push('/gameResults')}
-            >
-                OK
-            </Button>
-        </div>
-
-
-
-    )
     return(
         <div className="header container">
             <div className="header title">
@@ -126,15 +122,15 @@ const HeaderGame = props => {
             </div>
 
             <div className="header-right">
-                <a //href="/rulePage"
-                    onClick={() => clickRules()} /*gotoRulesPage()}*/
+                <a
+                    onClick={() => clickRules()}
                 >Rules</a>
-                <a //href = "/startpage"
-                    //href="/login"
-                    onClick={() =>cannotPlay()}
-                >I cannot play</a>
-                <a href="/startpage"
-                   onClick={() => leaveGame()}
+                <a
+                    onClick={() =>gameLost()}
+                >No moves possible</a>
+                <a
+                   onClick={() => triesToLeave()}
+                   href="/rulePage"
                 >Leave Game </a>
             </div>
             <div>
