@@ -180,7 +180,7 @@
     border-radius: $borderRadius;
     display: flex;
     align-items: center;
-    background: lighten($background, 5);
+   // background: lighten($background, 5);
   }
   &.name {
     font-weight: 300;

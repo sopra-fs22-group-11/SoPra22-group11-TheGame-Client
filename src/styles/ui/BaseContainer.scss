@@ -1,4 +1,5 @@
 @import 'styles/theme';
+import
 
 .base-container {
   margin-left: auto;
@@ -18,6 +19,19 @@
   color: $textColor;
 }
 
+.Entry-base-container {
+  margin-left: auto;
+  padding-left: 400px;
+  margin-right: auto;
+  padding-right: 15px;
+  max-width: $DESKTOP_WIDTH;
+  color: $textColor;
+
+}
+
+.img {
+  opacity: 0.2;
+}
 .right{
   width: 25%;
   float: right;

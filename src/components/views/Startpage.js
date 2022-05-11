@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
+import "styles/ui/Button.scss";
 import HeaderHome from "./HeaderHome";
 
 
@@ -93,39 +94,39 @@ const Startpage = () => {
 
     let content = <Spinner/>;
 
+    //put away the users
+   /* <ul className="home user-list">
+        {users.map(user => (
+            <User user={user} key={user.id}/>
+        ))}
+    </ul>*/
+
     if (users) {
         content = (
-            <div className="home">
-                <ul className="home user-list">
-                    {users.map(user => (
-                        <User user={user} key={user.id}/>
-                    ))}
-                </ul>
+            <div className="home"
+            >
+                <div display="block" justify-content="space-between">
                 <Button
-                    width="100%"
-                    onClick={() => goToWaitingroomOverview()}
-
-                  //  onClick={() => history.push('/game')}
-                >
-                    Play
-                </Button>
-                <Button
-                    width="100%"
+                    width ="30%"
                     onClick={() => history.push('/rulePage')}
+
                 >
                     Rules
                 </Button>
                 <Button
-                    width="100%"
+                    width ="30%"
                     onClick={() => history.push('/scoreboard')}
                 >
-                    Score
+                    Scores
                 </Button>
-                <Button
-                    width="100%"
-                    onClick={() => logout()}
+                </div>
+                <Button className = "button-startPage"
+                        margine-top ="10px"
+                    onClick={() => goToWaitingroomOverview()}
+
+                    //  onClick={() => history.push('/game')}
                 >
-                    Logout
+                    Let's play
                 </Button>
             </div>
         );
@@ -141,6 +142,9 @@ const Startpage = () => {
                 <div className="home title">
                     The Game
                 </div>
+                <h2> </h2>
+                <h2> </h2>
+                <h2> </h2>
                 {content}
             </div>
 

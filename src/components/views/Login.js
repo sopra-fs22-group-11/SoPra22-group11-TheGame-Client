@@ -136,13 +136,14 @@ const Login = props => {
                 Login
               </Button>
             </div>
-            <div className="entry button-container">
-              <Button
-                  width="100%"
-                  onClick={() => doRegister()}
-              >
-                Click here to register
-              </Button>
+            <div className="entry button-container" display = "block">
+              <label className="entry label">
+                No account yet?
+              </label>
+
+              <a href="/registration"
+                  //onClick={() => goToLogin()}
+              > Register here </a>
             </div>
           </div>
         </div>

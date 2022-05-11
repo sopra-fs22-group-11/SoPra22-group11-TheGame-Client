@@ -9,10 +9,16 @@
 */
 
 $accent: #fc7c24;
-$accentDark: #4D555D;
+//$accentDark: #4D555D;
+$accentDark:#292b2e;
 $textColor: white;
-$background: #81868A;
-$buttonColor:#845342;
+$background: #464747;
+//$background: linear-gradient(#5c5d5e, #292b2e);;
+//$background: #292b2e;
+//$background: #81868A;
+//$buttonColor:#845342;
+$buttonColor: #a16e4c;
+
 
 /* some constants */
 
@@ -23,13 +29,14 @@ $SMALL_WIDTH: 768px;
 
 /* some standard elements */
 /* fonts */
-$fontDefault: "M PLUS Rounded 1c", sans-serif;
+//$fontDefault: "M PLUS Rounded 1c", sans-serif;
+$fontDefault: Georgia, serif;
 $fontMono: "Roboto Mono", monospace;
 
 /* a standard drop shadow */
 $dropShadow: 0 0.25em 0.25em rgba(0, 0, 0, 0.25);
 
-$borderRadius: 0.75em;
+$borderRadius: 1.5em;
 
 /* mixins
 
@@ -46,3 +53,6 @@ $borderRadius: 0.75em;
 
 $startCard: 30px;
 $startCardPlayer: -100px;
+
+
+

@@ -8,6 +8,7 @@
     @include center;
     flex-direction: column;
   }
+
   &.form {
     display: flex;
     flex-direction: column;
@@ -42,33 +43,53 @@
   &.label {
     color: $textColor;
     margin-bottom: 10px;
-    text-transform: lowercase;
+    //text-transform: lowercase;
     font-weight: 300;
   }
   &.labelAccent {
     color: $accent;
     margin-bottom: 10px;
-    text-transform: lowercase;
+    //text-transform: lowercase;
     font-weight: 300;
   }
   &.button-container {
-    display: flex;
+    //display: ;
     justify-content: center;
     margin-top: 1em;
     color: $buttonColor;
   }
 
   &.title {
-    color: $textColor;
+    color: $accent;
     margin-bottom: 10px;
     text-transform: uppercase;
     font-size: xxx-large;
     font-weight: 700;
     text-align: center;
-    text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
+    //text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
   }
   ::placeholder {
     color: #323232;
     font-size: 16px;
   }
+
+  a {
+    color: $accent;
+  }
+}
+
+.Logo {
+  background-image: url(../../TheGameLogoblack.png);
+  opacity: 0.2;
+}
+
+.landingPage{
+  margin-top: 2em;
+  min-height: 300px;
+  /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+  @include center;
+  flex-direction: column;
+  background-color: $accentDark;
+  color: $textColor;
+
 }
