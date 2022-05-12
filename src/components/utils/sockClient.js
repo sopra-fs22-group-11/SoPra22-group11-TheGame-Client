@@ -22,6 +22,11 @@ export const connect = (callback) => {
     }
 }
 
+
+export const LeaveWaitingRoom = (username) => {
+    stompClient.send("/app/leave", {}, JSON.stringify(username));
+}
+
 export const sendName = (username) => {
     stompClient.send("/app/game", {}, JSON.stringify(username));
 }

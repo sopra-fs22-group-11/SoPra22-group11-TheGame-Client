@@ -7,19 +7,18 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
-import {connect, isConnected, sendName, subscribe} from "../utils/sockClient";
+import {connect, isConnected, sendName, subscribe, checkNoOfPlayersWaitingRoom} from "../utils/sockClient";
 import User from "../../models/User";
 
 
 const WaitingroomOverview = () => {
 
     const history = useHistory();
-    const [players, setPlayers] = useState([]);
-    const [registered, setRegistered] = useState(false);
+    const [noOfPlayers, setNoOfPlayers] = useState([]);
 
     useEffect(() => {
         if (!isConnected()) {
-            connect(WaitingRoomPlayersSocket());
+            connect(WaitingRoomPlayersSocket);
         }
         else {
             WaitingRoomPlayersSocket();
@@ -27,24 +26,26 @@ const WaitingroomOverview = () => {
     }, []);
 
     const WaitingRoomPlayersSocket = () => {
-        //subscribe('/topic/players', msg => {
-       //     console.log(msg);
-        //    sessionStorage.setItem('playerList', JSON.stringify(msg));
-        //    setPlayers((JSON.parse(sessionStorage.getItem('playerList'))));
-        //    sessionStorage.removeItem('playerList');
-        //});
+        subscribe('/topic/players', msg => {
+            console.log(msg.length);
+            setNoOfPlayers(msg);
+            //console.log(noOfPlayers);
+            sessionStorage.setItem('playerList', JSON.stringify(msg))
+        });
     }
 
-    const joinWaitingRoom = async () => {
-        if (!registered) {
-            setRegistered(true);
-            await sendName(localStorage.getItem('username'));
+    const joinWaitingRoom = () => {
+        console.log(noOfPlayers)
+        if (checkIfWaitingRoomHasSpace()) {
+            sendName(localStorage.getItem('username'));
+            history.push('/waitingroom/1'); //for the start we need the waitingroom 1
+        } else {
+            alert('Sorry, this waiting room is already full! :(')
         }
-        history.push('/waitingroom/1'); //for the start we need the waitingroom 1
     }
 
-    const checkIfWaitingRoomFull = () => {
-            if (players.length >= 4) {
+    const checkIfWaitingRoomHasSpace = () => {
+            if (noOfPlayers.length < 4) {
                 return true;
             }
             return false;
@@ -65,7 +66,7 @@ const WaitingroomOverview = () => {
                     height="50%"
                     onClick={() => joinWaitingRoom()}
                 >
-                    Join the Waiting Room - ({players.length}/4 players are in this Waiting Room)
+                    Waiting Room 1 - ({noOfPlayers.length}/4 players are in this Waiting Room)
                 </Button>
             </div>
         </BaseContainer>

@@ -12,7 +12,15 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
-import {gameLost, isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
+import {
+    gameLost,
+    isConnected,
+    LeaveWaitingRoom,
+    sendDiscard,
+    sendName,
+    stompClient,
+    subscribe
+} from "../utils/sockClient";
 import {connect, sendDraw, whyFinished} from "../utils/sockClient";
 import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
@@ -44,6 +52,8 @@ const Game = () => {
 
     const [modalIsOpen, setModalIsOpen]= useState(false);
     const [textToDisplay, setTextToDisplay]= useState("");
+
+    LeaveWaitingRoom(localStorage.getItem('username'));
 
 
     let playerRight;
