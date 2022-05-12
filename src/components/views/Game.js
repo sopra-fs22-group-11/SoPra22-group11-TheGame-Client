@@ -18,6 +18,7 @@ import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
+import {api2} from "../../helpers/api";
 
 
 const retrieveGTO = () => {
@@ -243,6 +244,16 @@ const Game = () => {
     let mediaStream;
     //const canvas = document.querySelector('.video-canvas');
 
+    const getSignature = async (sessionTopic, sessionKey) => {
+        const requestBody = JSON.stringify({sessionName: sessionTopic, role: 1, sessionKey: sessionKey, userIdentity: name});
+        const response = await api2.post('/', requestBody);
+        console.log("response of signature server request:")
+        console.log(response.data);
+       // const signatureResponse = JSON.parse(response.data);
+        const signatureResponse = JSON.parse(JSON.stringify(response.data));
+        console.log("signature: " + signatureResponse.signature);
+        return signatureResponse.signature;
+    }
 
     const joinMeeting = async () => {
         console.log("Let's see our client:")
@@ -264,21 +275,28 @@ const Game = () => {
         await client.init('en-US', 'Global');
         const date = new Date().toDateString();
         const sessionTopic = "theGame" + date;
+        const sessionKey = "session" + name;
         console.log(sessionTopic);
+        console.log(sessionKey);
 
+        const signature = getSignature(sessionTopic, sessionKey);
+/*
         const signature = generateSessionToken(
             sessionConfig.sdkKey,
             sessionConfig.sdkSecret,
             sessionTopic,
             sessionConfig.password,
-            sessionConfig.sessionKey,
-            localStorage.getItem('username')
+            sessionKey,
+            name //localStorage.getItem('username')
         );
+
+ */
+        console.log("signature that is passed by function: " + signature);
         try {
             await client.join(
                 sessionTopic,
                 signature,
-                localStorage.getItem('username'),
+                name, //localStorage.getItem('username'),
                 sessionConfig.password
             );
             mediaStream = client.getMediaStream();
@@ -774,7 +792,7 @@ const Game = () => {
     //TODO
     //Comment the next line, when working on the gameObj
 
-    //joinMeeting(); // The Secrets do not work at the moments
+    joinMeeting(); // The Secrets do not work at the moments
 
 
     //*************************************************************************
