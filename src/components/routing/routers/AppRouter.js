@@ -18,6 +18,7 @@ import WaitingroomOverview from "../../views/WaitingroomOverview";
 import {GameIdGuard} from "../routeProtectors/GameIdGuard";
 import Waitingroom from "../../views/Waitingroom";
 import {StartpageGuard} from "../routeProtectors/StartpageGuard";
+import LandingPage from "../../views/LandingPage";
 
 /**
  * Main router of your application.
@@ -34,7 +35,12 @@ const AppRouter = () => {
       <Switch>
 
         <Route exact path="/">
-          <Redirect to="/startpage"/>
+          <Redirect to="/landingpage"/>
+        </Route>
+        <Route path="/landingpage">
+          <LoginGuard>
+            <LandingPage/>
+          </LoginGuard>
         </Route>
 
         <Route path="/startpage">

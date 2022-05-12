@@ -7,16 +7,20 @@
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
+    color: $textColor;
+    text-align: center;
+
   }
   &.form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-bottom: 20px;
-    width: 90%;
+    min-width: 90%;
+    min-height: 60;
     //max-width: 80em;
     //height: 20em;
-    height: 30%;
+    height: 30em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -26,6 +30,9 @@
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
   }
+
+
+
   &.field {
     display: flex;
     flex-direction: column;
@@ -66,13 +73,13 @@
   }
 
   &.title {
-    color: $textColor;
+    color: $accent;
     margin-bottom: 10px;
     text-transform: uppercase;
     font-size: xxx-large;
     font-weight: 700;
     text-align: center;
-    text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
+    //text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
   }
   &.important {
     color: $accent;

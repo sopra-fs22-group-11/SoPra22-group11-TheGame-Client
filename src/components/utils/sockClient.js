@@ -38,8 +38,17 @@ export const sendDiscard = (gameObj) => {
     stompClient.send("/app/discard", {}, gameObj);
 }
 
-export const terminate = () => { //TODO delete this once we have the end of the game
-    stompClient.send("/app/gameTerminated", {})
+export const playerLeaves = () => {
+    stompClient.send("/app/gameLeft", {})
+}
+
+export const gameLost = () => {
+    stompClient.send("/app/gameLost", {})
+}
+
+
+export const whyFinished = () => {
+    stompClient.send("/app/gameStatus", {})
 }
 
 const stripResponse = (response) => {

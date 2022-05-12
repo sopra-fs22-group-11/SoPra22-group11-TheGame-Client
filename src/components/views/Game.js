@@ -12,10 +12,12 @@ import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
 import {generateSessionToken} from "../../zoom/js/tool";
-import {isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
-import {connect, sendDraw, startGame} from "../utils/sockClient";
+import {gameLost, isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
+import {connect, sendDraw, whyFinished} from "../utils/sockClient";
 import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
+import Modal from "../ui/Modal";
+import Backdrop from "../ui/Backdrop";
 
 
 const retrieveGTO = () => {
@@ -40,6 +42,16 @@ const Game = () => {
 
     const playerListAndCards = [];
 
+    const [modalIsOpen, setModalIsOpen]= useState(false);
+    const [textToDisplay, setTextToDisplay]= useState("");
+
+
+    let playerRight;
+    let playerTop;
+    let playerLeft;
+
+
+
 
 
 
@@ -54,11 +66,20 @@ const Game = () => {
         subscribe('/topic/game', msg => {
             setGameObj(msg)
         });
-        subscribe('/topic/terminated', msg => {
-            history.push('/startpage')
-        });
         subscribe('/topic/status', msg => {
-            //TODO do something here
+            setModalIsOpen(true);
+            if(msg == "won"){
+                onWon();
+            }
+            else if(msg == "lost"){
+               onLost();
+            }
+            else if (msg == "left"){
+                onLeft();
+            }
+            else{
+                alert("There seems to be an error")
+            }
         })
     };
 
@@ -89,6 +110,12 @@ const Game = () => {
     const checkWhoseTurn = () => {
         disableCards = name !== gameObj.whoseTurn;
         return disableCards;
+    }
+
+    const checkForFinishedGame = () => {
+        if (!gameObj.gameRunning){
+            whyFinished()
+        }
     }
 
     const discard = (pile, index) => {
@@ -163,7 +190,7 @@ const Game = () => {
         }
     }
 
-    // Create list of players and their cards
+    // Create list of players and their ownCards
     for (const [player, noOfCards] of Object.entries(gameObj.playerCards)) {console.log(player, noOfCards.length);
         let data = [player, noOfCards.length];
         playerListAndCards.push(data);
@@ -181,14 +208,17 @@ const Game = () => {
     const close = async () => {
         try {
             await client.leave();
-            //this.sock.close();
+            this.sock.close();
 
         } catch (e) {
             console.log(e);
         }
-        history.push('/startpage');
     }
 
+    const closeAndRedirect = async () => {
+        close()
+        history.push('/startpage')
+    }
 
     //show popup before leaving
     window.onbeforeunload = function () {
@@ -197,7 +227,8 @@ const Game = () => {
 
     //do when leaving page
     window.onunload = function () { //TODO take care of those functions such that they differentiate finely
-        close();
+        // eslint-disable-next-line no-restricted-globals
+        closeAndRedirect()
         alert('Bye.');
     }
 
@@ -316,7 +347,7 @@ const Game = () => {
 
 
 
-    //here we fill our cards with the right value
+    //here we fill our ownCards with the right value
     for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         cardValues[i] = gameObj.playerCards[name][i].value;
     }
@@ -328,7 +359,7 @@ const Game = () => {
     //setShowOwenCards(listHiddenValues);
 
 
-    //here we fill the cards of the other player
+    //here we fill the ownCards of the other player
     for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         cardValues2[i] = gameObj.playerCards[name][i].value;
     }
@@ -338,17 +369,23 @@ const Game = () => {
         listHiddenValues2[i] = false;
     }
 
+    function closeModal(){
+        setModalIsOpen(false);
+    }
 
-    //check wheter it is players turn and cards should be shown
+
+
+    //check wheter it is players turn and ownCards should be shown
     checkWhoseTurn();
     checkForDraw();
+    checkForFinishedGame();
 
 
 
-    //idee um zu zeigen das ein button ausgewählt wurde: { cardSelected?"cards-button selected": "cards-button unselected"}
+    //idee um zu zeigen das ein button ausgewählt wurde: { cardSelected?"ownCards-button selected": "ownCards-button unselected"}
 
 
-    let cards=(
+    let ownCards=(
         <section className="wrapper">
             <button className={gameObj.playerCards[name].length>0? "card":"card hidden"}
                     display="none"
@@ -394,57 +431,338 @@ const Game = () => {
             </button>
         </section>);
 
+    console.log("list of Players"+ listOfPlayers.length);
 
-    let cardsPlayer2=(
+    if (listOfPlayers.length +1 == 2) {
+        playerTop = (
+            <section className="wrapper">
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 1 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 2 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 3 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 4 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 5 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 6 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+            </section>)
+    } else if (listOfPlayers.length +1 == 3){
+        playerRight = (
+            <section className="wrapper">
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 1 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 2 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 3 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 4 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 5 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 6 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+            </section>)
+
+        playerTop = (
+            <section className="wrapper">
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 1 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 2 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 3 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 4 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 5 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 6 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+            </section>)
+
+    } else {
+        playerRight = (
+            <section className="wrapper">
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 1 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 2 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 3 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 4 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 5 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[0]].length > 6 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+            </section>)
+
+        playerTop = (
+            <section className="wrapper">
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 1 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 2 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 3 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 4 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 5 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[1]].length > 6 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+            </section>)
+
+        playerLeft = (
+            <section className="wrapper">
+                <div className={gameObj.playerCards[listOfPlayers[2]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[2]].length > 1 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[2]].length > 2 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[2]].length > 3 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[2]].length > 4 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[2]].length > 5 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+                <div className={gameObj.playerCards[listOfPlayers[2]].length > 6 ? "cardPlayer" : "cardPlayer hidden"}
+                >
+                    <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                </div>
+            </section>)
+
+    }
+
+
+
+    let drawPile=(
         <section className="wrapper">
-            <div className={gameObj.playerCards[listOfPlayers[0]].length>0? "cardPlayer":"cardPlayer hidden"}
+            <button className="drawPile"
+                    disabled = {disableDrawCards}
+                    onClick={() => draw()}
             >
-                <img src={TheGameLogo} alt="game Logo" height="60%" />
-            </div>
-            <div className={gameObj.playerCards[listOfPlayers[0]].length>1? "cardPlayer":"cardPlayer hidden"}
-            >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
-            </div>
-            <div className={gameObj.playerCards[listOfPlayers[0]].length>2? "cardPlayer":"cardPlayer hidden"}
-            >
-                <img src={TheGameLogo} alt="game Logo" height="60%" />
-            </div>
-            <div className={gameObj.playerCards[listOfPlayers[0]].length>3? "cardPlayer":"cardPlayer hidden"}
+                Finished Move
+            </button>
+            <button className={gameObj.noCardsOnDeck>1? "drawPile":"drawPile hidden"}
+                    disabled = {disableDrawCards}
+                    onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
-            </div>
-            <div className={gameObj.playerCards[listOfPlayers[0]].length>4? "cardPlayer":"cardPlayer hidden"}
+                {gameObj.noCardsOnDeck}
+            </button>
+            <button className={gameObj.noCardsOnDeck>2? "drawPile":"drawPile hidden"}
+                    disabled = {disableDrawCards}
+                    onClick={() => draw()}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%" />
+                {gameObj.noCardsOnDeck}
+            </button>
+            <button className={gameObj.noCardsOnDeck>3? "drawPile":"drawPile hidden"}
+                    disabled = {disableDrawCards}
+                    onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
-            </div>
-            <div className={gameObj.playerCards[listOfPlayers[0]].length>5? "cardPlayer":"cardPlayer hidden"}
+                {gameObj.noCardsOnDeck}
+            </button>
+            <button className={gameObj.noCardsOnDeck>4? "drawPile":"drawPile hidden"}
+                    disabled = {disableDrawCards}
+                    onClick={() => draw()}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                {gameObj.noCardsOnDeck}
+            </button>
+            <button className={gameObj.noCardsOnDeck>5? "drawPile":"drawPile hidden"}
+                    disabled = {disableDrawCards}
+                    onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%" />
-            </div>
-            <div className={gameObj.playerCards[listOfPlayers[0]].length>6? "cardPlayer":"cardPlayer hidden"}
-            >
-                <img src={TheGameLogo} alt="game Logo" height="60%" />
-            </div>
+                {gameObj.noCardsOnDeck}
+            </button>
+
         </section>)
 
-    //show cards nicely
-    /*let cards=(
-     <section className="wrapper">
-         <figure className="card">Card1</figure>
-         <figure className="card">Card2</figure>
-         <figure className="card">Card3</figure>
-         <figure className="card">Card4</figure>
-         <figure className="card">Card5</figure>
-     </section>)*/
 
-    let informationBox = (
+    /*let informationBox = (
         <div>
             <h3> Information for {localStorage.getItem('username')}</h3>
             <div> Whose Turn: {gameObj.whoseTurn}</div>
-            <div> {"Played cards: " + counter}</div>
+            <div> {"Played ownCards: " + counter}</div>
             <div> {"Chosen card:" + chosenCard}</div>
         </div>
-    );
+    );*/
+
+    const getCssForPlayer =  (player) => {
+        if (player==gameObj.whoseTurn & player==name){
+            return "user-game player selected"
+        } else if (player==gameObj.whoseTurn & player!=name){
+            return "user-game others selected"
+        } else if (player!=gameObj.whoseTurn & player==name){
+            return "user-game player unselected"
+        } else if (player!=gameObj.whoseTurn & player!=name){
+            return "user-game others unselected"
+        }
+    }
+
+
+
+    function onLost(){
+        onLostOrWon("Better luck next time :(", "You have lost the Game.")
+    }
+
+    function onWon () {
+        onLostOrWon("Congratulations :)","You have won the Game." )
+    }
+
+    const leaveButton = (
+        <Button className ="player-button"
+            disabled = {false}
+            width = "33%"
+        /* eslint-disable-next-line no-restricted-globals */
+            onClick={() => {close()
+                history.push('/startpage')}}
+    >
+        Leave
+    </Button>
+    )
+    const playAgainButton = (
+        <Button className ="player-button"
+                disabled = {false}
+                width = "33%"
+            /* eslint-disable-next-line no-restricted-globals */
+                onClick={() => {close()
+                    history.push('/waitingroomOverview')
+                }}
+        >
+            Play Again
+        </Button>
+    )
+
+    function onLostOrWon(headerText, descriptionText){
+        setTextToDisplay(<div>
+            <h2> {headerText}</h2>
+            <p>{descriptionText}</p>
+            <Button className ="player-button"
+                    disabled = {false}
+                    width = "33%"
+                /* eslint-disable-next-line no-restricted-globals */
+                    onClick={() => {close()
+                        history.push('/scoreboard')
+                    }}
+            >
+                Score
+            </Button>
+            {leaveButton}
+            {playAgainButton}
+        </div>);
+    }
+
+
+
+    function onLeft () {
+        setTextToDisplay(<div>
+            <h2> Your game is over </h2>
+            <p>One of your Teammates left the Game. </p>
+            {leaveButton}
+            {playAgainButton}
+        </div>);
+    }
+
 
     //************************  HTML  *******************************************************
 
@@ -466,16 +784,20 @@ const Game = () => {
             <HeaderGame height="100"/>
             <BaseContainer className = "gameBoard">
                 <h2> </h2>
-                <div className="game formGame">
+                <BaseContainer className = "overlay">
+                    {modalIsOpen && <Modal text ={textToDisplay}/>}
+                    {modalIsOpen &&<Backdrop />}
+                </BaseContainer>
+                    <div className="game formGame">
                     <div className="gameBoard top">
                         <div className="gameBoard rotation180">
-                            {cardsPlayer2}
+                            {playerTop}
                         </div>
                     </div>
                     <div className="gameBoard middle">
                         <div className="gameBoard middle players_left">
                             <div className="gameBoard rotation90">
-
+                                {playerLeft}
                             </div>
                         </div>
                         <div className="gameBoard middle DrawAndPileArea">
@@ -506,23 +828,18 @@ const Game = () => {
                                 </Button>
                             </div>
                             <div className="gameBoard middle DrawAndPileArea drawArea">
-                                <Button className ="game-button"
-                                        disabled = {disableDrawCards}
-                                        onClick={() => draw()}
-                                >
-                                    { "\n (cards on deck: " +  gameObj.noCardsOnDeck + ")"}
-                                </Button>
+                                    {drawPile}
                             </div>
                         </div>
                         <div className="gameBoard middle players_right">
                             <div className="gameBoard rotationMinus90">
-
+                                {playerRight}
                             </div>
                         </div>
 
                     </div>
                     <div className="gameBoard bottom" >
-                        {cards}
+                        {ownCards}
                     </div>
 
 
@@ -535,7 +852,7 @@ const Game = () => {
                 <h2> </h2>
 
                 {playerListAndCards.map(item => (
-                        <Button className ={item[0]==gameObj.whoseTurn?"user-game selected":"user-game unselected"} >
+                        <Button className ={getCssForPlayer(item[0])} >
                             <div key={item}>
                                 <button id="js-mic-button" className="meeting-control-button">
                                     <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
@@ -546,19 +863,20 @@ const Game = () => {
                         </Button>
 
                 ))}
-                {informationBox}
-                <h2> </h2>
-                <h3> List of Players: </h3>
-                <ul>
-                    {playerListAndCards.map(item => (
-                        <li>
-                            <Button className ="primary-button">
-                        <div key={item}>{item[0]} {"has"} {item[1]} {"cards"}</div>
-                            </Button>
-                            </li>
-                    ))}
-                </ul>
 
+                <Button className ="game-button"
+                        disabled = {false}
+                        onClick={() => {
+                            // eslint-disable-next-line no-restricted-globals
+                            let result = confirm("Are you sure you have no moves left, this will end the game for you and your teammates.")
+                            if(result){
+                                gameLost();
+                        }
+                        }
+                }
+                >
+                    No Moves Possible
+                </Button>
             </BaseContainer>
         </div>
 
@@ -566,14 +884,5 @@ const Game = () => {
 
 }
 
-//<ul>
-//                     {playerListAndCards.map(item => (
-//                         <li>
-//                             <Button className ="primary-button">
-//                         <div key={item}>{item[0]} {"has"} {item[1]} {"cards"}</div>
-//                             </Button>
-//                             </li>
-//                     ))}
-//                 </ul>
 
 export default Game;
