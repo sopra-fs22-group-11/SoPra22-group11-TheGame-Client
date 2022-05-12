@@ -12,7 +12,8 @@ const Waitingroom = () => {
     //************************  Websocket  **************************************************
     const history = useHistory();
     const [players, setPlayers] = useState([]);
-    const [registered, setRegistered] = useState(false);
+    //const [registered, setRegistered] = useState(false);
+
 
     useEffect(() => {
             if (!isConnected()) {
@@ -27,31 +28,35 @@ const Waitingroom = () => {
 
 
     const registerWaitingRoomSocket = () => {
-        subscribe('/topic/players', msg => {
-            console.log(msg.map(p => p.playerName))
-            sessionStorage.setItem('playerList', JSON.stringify(msg))
-            setPlayers(JSON.parse(sessionStorage.getItem('playerList')));
-            sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
-            console.log(players)
-        });
-        subscribe('/topic/start', msg => {
-            sessionStorage.setItem('gto', JSON.stringify(msg));
-            console.log(msg);
-            history.push('/game');
-        });
+            subscribe('/topic/players', msg => {
+                console.log(msg)
+                sessionStorage.setItem('playerList', JSON.stringify(msg))
+                setPlayers((JSON.parse(sessionStorage.getItem('playerList'))));
+                sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
+                console.log(players)
+            });
+            subscribe('/topic/start', msg => {
+                sessionStorage.setItem('gto', JSON.stringify(msg));
+                console.log(msg);
+                history.push('/game');
+            });
+            //if (!registered) {
+            //    setRegistered(true);
+            //    sendName(localStorage.getItem('username'));
+            //}
     };
 
 
-    const sendNameToWS = async () => {
-        if (!registered) {
-            setRegistered(true);
-            await sendName(localStorage.getItem('username'));
-            alert("You have successfully enrolled in this game.");
+    //const sendNameToWS = async () => {
+    //    if (!registered) {
+    //        setRegistered(true);
+    //        await sendName(localStorage.getItem('username'));
+        //    alert("You have successfully enrolled in this game.");
+//
+        //} else {
+        //    alert("You are already enrolled")
+       //}
 
-        } else {
-            alert("You are already enrolled")
-        }
-    }
 
     //************************  Websocket  **************************************************
 
@@ -70,12 +75,7 @@ const Waitingroom = () => {
             <div className="home important"> IMPORTANT: Please leave the game only via Leave Game, otherwise the game
                 can not be restarted again!
             </div>
-            <Button
-                width="100%"
-                onClick={() => sendNameToWS()}
-            >
-                Join this Game
-            </Button>
+
             <Button
                 width="100%"
                 onClick={() => startGame()}
