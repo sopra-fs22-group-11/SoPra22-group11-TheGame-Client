@@ -45,7 +45,7 @@ const Waitingroom = () => {
     const sendNameToWS = async () => {
         if (!registered) {
             setRegistered(true);
-            await sendName(localStorage.getItem('username'));
+            await sendName(sessionStorage.getItem('username'));
             alert("You have successfully enrolled in this game.");
 
         } else {

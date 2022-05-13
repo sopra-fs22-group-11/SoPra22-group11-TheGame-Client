@@ -1,12 +1,9 @@
 import React from "react";
-import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import goToHome from "./Waitingroom";
 import goToRulePage from "./Startpage";
 import doRegister from "./Login";
-import goToLogin from "./Registration";
-import {useHistory} from "react-router-dom";
 import {api, handleError} from "../../helpers/api";
 import TheGameLogo from "../../TheGameLogo.png";
 
@@ -20,7 +17,7 @@ import TheGameLogo from "../../TheGameLogo.png";
  */
 
 const getRouterInHeader = () => {
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
         return "/login";
     } else{
         return "/startpage";
@@ -28,25 +25,17 @@ const getRouterInHeader = () => {
 }
 
 const hasToken = () => {
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
         return "/login";
     } else{
         return "/startpage";
     }
 }
 
-const changeLocation = () =>{
-    if (hasToken() ==true){
-        goToRulePage();
-    } else{
-        doRegister();
-    }
-}
 
 const logout = () => {
     //get a token
-    //localStorage.removeItem('token'); // It is important that this happens after the logout is done
-    let id = localStorage.getItem('loggedInUser');
+    let id = sessionStorage.getItem('loggedInUser');
     console.log('/session/'+ id)
     try{
         const response = api.get('/session/'+ id);}
@@ -54,12 +43,7 @@ const logout = () => {
         console.log(e)
     }
 
-    localStorage.removeItem('loggedInUser')
-    localStorage.removeItem('token')
-    localStorage.removeItem('username');
-    localStorage.removeItem('clickedStart');
-    localStorage.removeItem('gto')
-    localStorage.removeItem('playerList')
+    sessionStorage.clear();
 
     //TODO check correct removeItem
 }

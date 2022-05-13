@@ -38,7 +38,7 @@ const Game = () => {
     let disableDrawCards = false;
     let listOfPlayers =[];
 
-    const name = localStorage.getItem('username');
+    const name = sessionStorage.getItem('username');
 
     const playerListAndCards = [];
 
@@ -272,13 +272,13 @@ const Game = () => {
             sessionTopic,
             sessionConfig.password,
             sessionConfig.sessionKey,
-            localStorage.getItem('username')
+            sessionStorage.getItem('username')
         );
         try {
             await client.join(
                 sessionTopic,
                 signature,
-                localStorage.getItem('username'),
+                sessionStorage.getItem('username'),
                 sessionConfig.password
             );
             mediaStream = client.getMediaStream();

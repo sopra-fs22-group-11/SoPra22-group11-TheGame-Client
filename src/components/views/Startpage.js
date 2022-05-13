@@ -35,21 +35,6 @@ const Startpage = () => {
     // more information can be found under https://reactjs.org/docs/hooks-state.html
     const [users, setUsers] = useState(null);
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('loggedInUser')
-        localStorage.removeItem('username');
-        localStorage.removeItem('clickedStart');
-
-        history.push('/login');
-    }
-
-
-
-
-    const goTorulePage = () => {
-        history.push('/rulePage');
-    }
 
     const goToWaitingroomOverview = () => {
         history.push('/waitingroomOverview');

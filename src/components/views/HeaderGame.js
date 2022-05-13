@@ -1,11 +1,9 @@
 import React, {useState} from "react";
-import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import closeAndRedirect from "./Game";
 import goToRulePage from "./Startpage";
 import doRegister from "./Login";
-import goToLogin from "./Registration";
 
 import BaseContainer from "../ui/BaseContainer";
 import Modal from "../ui/Modal";
@@ -26,36 +24,13 @@ import TheGameLogo from "../../TheGameLogo.png";
  * @FunctionalComponent
  */
 
-const getRouterInHeader = () => {
-    if (localStorage.getItem("token")) {
-        return "/login";
-    } else{
-        return "/startpage";
-    }
-}
 
 const hasToken = () => {
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
         return "/login";
     } else{
         return "/startpage";
     }
-}
-
-const changeLocation = () =>{
-    if (hasToken() ==true){
-        goToRulePage();
-    } else{
-        doRegister();
-    }
-}
-
-const logout = () => {
-    //get a token
-    localStorage.removeItem('token');
-    //get ID of user
-    let id = localStorage.getItem('ID');
-    localStorage.removeItem('ID')
 }
 
 

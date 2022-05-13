@@ -2,9 +2,7 @@ import {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
 import {Button} from 'components/ui/Button';
-import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
 
@@ -35,7 +33,7 @@ const ProfileSettings = () => {
     const [updatedUsername, setUpdatedUsername] = useState("")
     const [updatedPassword, setUpdatedPassword] = useState("");
     const [score, setScore] = useState("")
-    const id = localStorage.getItem('loggedInUser')
+    const id = sessionStorage.getItem('loggedInUser')
 
 
     const editUser = (user) =>{
@@ -66,7 +64,7 @@ const ProfileSettings = () => {
                 //console.log(user)
                 // Put the updated user to the server
                 await api.put('/users/' + id, user);
-                localStorage.setItem('username', user.username)
+                sessionStorage.setItem('username', user.username)
                 if(updatedPassword){
                     alert("Password successfully updated")
                 }
