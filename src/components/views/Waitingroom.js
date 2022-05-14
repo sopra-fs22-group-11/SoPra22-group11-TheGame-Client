@@ -91,7 +91,7 @@ const Waitingroom = () => {
         <div>
             <div className="home title"> Waiting-room</div>
             Wait for other players to join this Game
-            <div display = "flow" >
+            <div display = "flow" vertical-align= "middle" >
             <LinkField
                 width = "300px"
                 placeholder={getDomain() + "/waitingroom/1"}
@@ -124,11 +124,11 @@ const Waitingroom = () => {
             </Button>
 
             <h2> Players in this waiting-room: </h2>
-            <ul>
+            <ul >
                                  {players.map(item => (
-                     <li>
+                     <div >
                         <div key={item}>{item}</div>
-                     </li>
+                     </div>
                  ))}
              </ul>
 

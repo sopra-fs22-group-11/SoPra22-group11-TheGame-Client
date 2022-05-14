@@ -129,7 +129,7 @@ const ProfileSettings = () => {
 
     if (user) {
         content = (
-            <div className="entry">
+            <div className="home">
                 <PlayerInformationField
                     label="Username"
                     placeholder="Enter your desired username"
@@ -139,7 +139,7 @@ const ProfileSettings = () => {
                 />
                 <PlayerInformationField
                     type = "text"
-                    label="password"
+                    label="Password"
                     placeholder="Reset your password"
                     disabled={isDisabled}
                     value = {updatedPassword}
@@ -167,6 +167,7 @@ const ProfileSettings = () => {
                 >
                     {isDisabled ? "Edit User" : "Save changes"}
                 </Button>
+                <text>     </text>
                 {!isDisabled ?  <Button
                                  width="20%"
                                  onClick={() => cancelChanges()}
@@ -178,12 +179,24 @@ const ProfileSettings = () => {
         );
     }
 
+    /*<Button className =""
+
+            width="10%"
+            onClick={isDisabled ? () => editUser(user): () => saveChanges()}
+
+    >
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png"/>
+    </Button>*/
+
     return (
     <div>
         <HeaderHome height="100"/>
         <BaseContainer className="home container">
             <div className="home form">
-                <h1>Profile Page</h1>
+                <div className="home title"> Profile
+                    <text>     </text>
+                    <img width="37px"  src={isDisabled? "https://img.icons8.com/ios/50/FFFFFF/edit--v1.png": "https://img.icons8.com/ios-filled/50/FFFFFF/save--v1.png"}  onClick={isDisabled ? () => editUser(user): () => saveChanges()}/>
+                    </div>
 
                 {content}
             </div>
