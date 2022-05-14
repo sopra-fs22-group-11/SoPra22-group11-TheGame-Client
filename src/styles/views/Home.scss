@@ -12,15 +12,15 @@
 
   }
   &.form {
-    display: flex;
+    //display: flex;
     flex-direction: column;
     justify-content: center;
     margin-bottom: 20px;
     min-width: 90%;
-    min-height: 60;
+    //min-height: 60;
     //max-width: 80em;
     //height: 20em;
-    height: 30em;
+    //height: 30em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -29,6 +29,10 @@
     background-color: $accentDark;
     transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: $dropShadow;
+  }
+
+  a {
+    color: $accent;
   }
 
 
@@ -81,6 +85,16 @@
     text-align: center;
     //text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
   }
+  &.titleSmall {
+    color: $accent;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: x-large;
+    font-weight: 600;
+    text-align: center;
+    //text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
+  }
+
   &.important {
     color: $accent;
     margin-bottom: 10px;
@@ -136,5 +150,114 @@
       font-family: $fontMono;
       font-weight: 300;
     }
+  }
+}
+
+.score {
+  &.container {
+    margin-top: 2em;
+    min-height: 200px;
+    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+    @include center;
+    flex-direction: column;
+    color: $textColor;
+    text-align: center;
+
+  }
+  &.form {
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+    min-width: 90%;
+    //max-width: 80em;
+    //height: 20em;
+    font-size: 16px;
+    font-weight: 300;
+    padding-left: 37px;
+    padding-right: 37px;
+    border-radius: 0.75em;
+    background-color: $accentDark;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    box-shadow: $dropShadow;
+  }
+
+  a {
+    color: $accent;
+  }
+
+
+
+  &.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $accentDark;
+  }
+  &.input{
+    height: 35px;
+    padding-left: 15px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 0.75em;
+    margin-bottom: 20px;
+    background: transparentize(white, 0.85);
+    color: $accent;
+    width: 200px;
+  }
+  &.label {
+    color: $textColor;
+    margin-bottom: 10px;
+    text-transform: lowercase;
+    font-weight: 300;
+  }
+  &.user-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  &.labelAccent {
+    color: $accent;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  &.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    color: $buttonColor;
+  }
+
+  &.title {
+    color: $accent;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: xxx-large;
+    font-weight: 700;
+    text-align: center;
+    //text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
+  }
+  &.titleSmall {
+    color: $accent;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: x-large;
+    font-weight: 600;
+    text-align: center;
+    //text-shadow: -2px -2px 0 $accent, 2px -2px 0 $accent, -2px 2px 0 $accent, 2px 2px 0 $accent;
+  }
+
+  &.important {
+    color: $accent;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: x-large;
+    font-weight: 500;
+    text-align: center;
+  }
+  &.user-table {
+    width: 50%;
+    text-align: left;
+    th: {background-color: $accentDark}
+    tr:hover {background-color: $buttonColor}
   }
 }

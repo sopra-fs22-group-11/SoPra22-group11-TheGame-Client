@@ -16,21 +16,7 @@ import TheGameLogo from "../../TheGameLogo.png";
  * @FunctionalComponent
  */
 
-const getRouterInHeader = () => {
-    if (sessionStorage.getItem("token")) {
-        return "/login";
-    } else{
-        return "/startpage";
-    }
-}
 
-const hasToken = () => {
-    if (sessionStorage.getItem("token")) {
-        return "/login";
-    } else{
-        return "/startpage";
-    }
-}
 
 
 const logout = () => {
@@ -42,8 +28,14 @@ const logout = () => {
     catch (e){
         console.log(e)
     }
+    sessionStorage.removeItem('loggedInUser')
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('clickedStart');
+    sessionStorage.removeItem('gto')
+    sessionStorage.removeItem('playerList')
 
-    sessionStorage.clear();
+    //sessionStorage.clear();
 
     //TODO check correct removeItem
 }

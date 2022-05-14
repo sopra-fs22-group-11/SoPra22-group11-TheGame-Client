@@ -95,8 +95,8 @@ const RulePage = () => {
     return (
         <div>
             <HeaderHome height="100"/>
-        <BaseContainer className = "rule container">
-            <h2>Rules for The Game</h2>
+        <BaseContainer className = "rules container">
+            <div className="rules title">Rules for The Game</div>
             <div className="rules form">
 
             {content}

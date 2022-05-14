@@ -2,8 +2,6 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import closeAndRedirect from "./Game";
-import goToRulePage from "./Startpage";
-import doRegister from "./Login";
 
 import BaseContainer from "../ui/BaseContainer";
 import Modal from "../ui/Modal";
@@ -25,13 +23,6 @@ import TheGameLogo from "../../TheGameLogo.png";
  */
 
 
-const hasToken = () => {
-    if (sessionStorage.getItem("token")) {
-        return "/login";
-    } else{
-        return "/startpage";
-    }
-}
 
 
 
@@ -102,7 +93,7 @@ const HeaderGame = props => {
                 <a
                     onClick={() => clickRules()} /*gotoRulesPage()}*/
                 > Rules
-                    <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/000000/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
+                    <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
 
                 </a>
                 <a

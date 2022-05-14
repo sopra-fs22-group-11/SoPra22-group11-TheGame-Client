@@ -48,13 +48,13 @@ const Scoreboard = () => {
             .map((user) => user);
         console.log(sortedUsers)
         content = (
-            <div className="home">
-                <table className="home user-table">
+            <div>
+                <table className="score user-table">
                     <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Status</th>
-                        <th>Score</th>
+                        <th className="score labelAccent">Username</th>
+                        <th className="score labelAccent">Status</th>
+                        <th className="score labelAccent">Score</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -73,9 +73,9 @@ const Scoreboard = () => {
     return (
         <div>
             <HeaderHome height="100"/>
-        <BaseContainer className = "Home container">
-            <h2>Scoreboard</h2>
-            <div className="home form">
+        <BaseContainer className = "score container">
+            <div className="score titleSmall">Scoreboard</div>
+            <div className="score form">
             {content}
             </div>
         </BaseContainer>
