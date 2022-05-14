@@ -34,7 +34,7 @@ const Game = () => {
 
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
-    const [users, setUsers] = useState(null);
+
 
     let disableCards = false;
     let disableDrawCards = false;
