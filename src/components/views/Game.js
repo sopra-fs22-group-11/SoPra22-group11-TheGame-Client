@@ -11,14 +11,13 @@ import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
 import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
-import {generateSessionToken} from "../../zoom/js/tool";
+import {getSignature} from "../../zoom/js/tool";
 import {gameLost, isConnected, sendDiscard, sendName, stompClient, subscribe} from "../utils/sockClient";
 import {connect, sendDraw, whyFinished} from "../utils/sockClient";
 import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
-import {api2} from "../../helpers/api";
 
 
 const retrieveGTO = () => {
@@ -244,16 +243,7 @@ const Game = () => {
     let mediaStream;
     //const canvas = document.querySelector('.video-canvas');
 
-    const getSignature = async (sessionTopic, sessionKey) => {
-        const requestBody = JSON.stringify({sessionName: sessionTopic, role: 1, sessionKey: sessionKey, userIdentity: name});
-        const response = await api2.post('/', requestBody);
-        console.log("response of signature server request:")
-        console.log(response.data);
-       // const signatureResponse = JSON.parse(response.data);
-        const signatureResponse = JSON.parse(JSON.stringify(response.data));
-        console.log("signature: " + signatureResponse.signature);
-        return signatureResponse.signature;
-    }
+
 
     const joinMeeting = async () => {
         console.log("Let's see our client:")
@@ -279,7 +269,7 @@ const Game = () => {
         console.log(sessionTopic);
         console.log(sessionKey);
 
-        const signature = getSignature(sessionTopic, sessionKey);
+        const signature = getSignature(sessionTopic, sessionKey, name);
 /*
         const signature = generateSessionToken(
             sessionConfig.sdkKey,
@@ -290,13 +280,13 @@ const Game = () => {
             name //localStorage.getItem('username')
         );
 
- */
+*/
         console.log("signature that is passed by function: " + signature);
         try {
             await client.join(
                 sessionTopic,
                 signature,
-                name, //localStorage.getItem('username'),
+                name,           //localStorage.getItem('username'),
                 sessionConfig.password
             );
             mediaStream = client.getMediaStream();
