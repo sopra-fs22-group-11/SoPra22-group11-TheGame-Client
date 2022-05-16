@@ -8,7 +8,6 @@ import {connect, isConnected, sendName, startGame, subscribe, LeaveWaitingRoom} 
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
 
-
 const LinkField = props => {
     return (
         <div className="home field">
@@ -26,6 +25,7 @@ const LinkField = props => {
         </div>
     );
 };
+
 
 const retrievePlayerList = () => {
     const pl = JSON.parse(sessionStorage.getItem('playerList'));
@@ -72,11 +72,11 @@ const Waitingroom = () => {
         });
 
 
-            subscribe('/topic/start', msg => {
-                sessionStorage.setItem('gto', JSON.stringify(msg));
-                console.log(msg);
-                history.push('/game');
-            });
+        subscribe('/topic/start', msg => {
+            sessionStorage.setItem('gto', JSON.stringify(msg));
+            console.log(msg);
+            history.push('/game');
+        });
     };
 
     const checkStartPossible = () => {
@@ -119,13 +119,14 @@ const Waitingroom = () => {
             <div className="home title"> Waiting-room</div>
             Wait for other players to join this Game
             <div display = "flow" vertical-align= "middle" >
-            <LinkField
-                width = "300px"
-                placeholder={getDomain() + "/waitingroom/1"}
-                value={getLink()}
-                disabled = {true}
-                visible={true}
-            />
+                <LinkField
+                    width = "300px"
+                    placeholder={getDomain() + "/waitingroom/1"}
+                    value={getLink()}
+                    disabled = {true}
+                    visible={true}
+                />
+
             <Button className="primary-small-button"
                 width="10%"
                 onClick={() => navigator.clipboard.writeText(getLink())}
@@ -152,13 +153,6 @@ const Waitingroom = () => {
             </Button>
 
             <h2> Players in this waiting-room: </h2>
-            <ul >
-                {players.map(item => (
-                    <div >
-                        <div key={item}>{item}</div>
-                    </div>
-                ))}
-            </ul>
 
         </div>)
 

@@ -42,11 +42,14 @@ const Startpage = () => {
     }
 
     //join directly the waitingroom
+    /*
     const joinWaitingroom = async () => {
         connect(()=> {
             history.push('/waitingroom/1'); //for the start we need the waitingroom 1
         })
     }
+
+     */
 
     // the effect hook can be used to react to change in your component.
     // in this case, the effect hook is only run once, the first time the component is mounted
@@ -119,7 +122,7 @@ const Startpage = () => {
                 </div>
                 <Button className = "button-startPage"
                         margine-top ="10px"
-                    onClick={() => joinWaitingroom()}
+                    onClick={() => goToWaitingroomOverview()}
 
                     //  onClick={() => history.push('/game')}
                 >

@@ -22,6 +22,9 @@ export const connect = (callback) => {
     }
 }
 
+export const getPlayers = () => {
+    stompClient.send("/app/getPlayers", {});
+}
 
 export const LeaveWaitingRoom = (username) => {
     stompClient.send("/app/leave", {}, JSON.stringify(username));
