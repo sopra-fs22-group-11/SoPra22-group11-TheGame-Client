@@ -66,11 +66,11 @@ const Registration = props => {
             // Get the returned user and update a new object.
             const user = new User(response.data);
 
-            // Store the token into the local storage.
-            localStorage.setItem('token', user.token);
-            localStorage.setItem('loggedInUser', user.id);
-            localStorage.setItem('username', user.username);
-            localStorage.setItem('clickedStart', JSON.stringify(false));
+            // Store the token into the session storage.
+            sessionStorage.setItem('token', user.token);
+            sessionStorage.setItem('loggedInUser', user.id);
+            sessionStorage.setItem('username', user.username);
+            sessionStorage.setItem('clickedStart', JSON.stringify(false));
 
 
             // Registration successfully worked --> navigate to the route /game in the GameRouter

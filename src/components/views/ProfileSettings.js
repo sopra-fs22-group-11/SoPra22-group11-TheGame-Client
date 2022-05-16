@@ -2,9 +2,7 @@ import {useEffect, useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import {Spinner} from 'components/ui/Spinner';
 import {Button} from 'components/ui/Button';
-import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
 
@@ -35,7 +33,7 @@ const ProfileSettings = () => {
     const [updatedUsername, setUpdatedUsername] = useState("")
     const [updatedPassword, setUpdatedPassword] = useState("");
     const [score, setScore] = useState("")
-    const id = localStorage.getItem('loggedInUser')
+    const id = sessionStorage.getItem('loggedInUser')
 
 
     const editUser = (user) =>{
@@ -66,7 +64,7 @@ const ProfileSettings = () => {
                 //console.log(user)
                 // Put the updated user to the server
                 await api.put('/users/' + id, user);
-                localStorage.setItem('username', user.username)
+                sessionStorage.setItem('username', user.username)
                 if(updatedPassword){
                     alert("Password successfully updated")
                 }
@@ -131,7 +129,7 @@ const ProfileSettings = () => {
 
     if (user) {
         content = (
-            <div className="entry">
+            <div className="home">
                 <PlayerInformationField
                     label="Username"
                     placeholder="Enter your desired username"
@@ -141,7 +139,7 @@ const ProfileSettings = () => {
                 />
                 <PlayerInformationField
                     type = "text"
-                    label="password"
+                    label="Password"
                     placeholder="Reset your password"
                     disabled={isDisabled}
                     value = {updatedPassword}
@@ -169,6 +167,7 @@ const ProfileSettings = () => {
                 >
                     {isDisabled ? "Edit User" : "Save changes"}
                 </Button>
+                <text>     </text>
                 {!isDisabled ?  <Button
                                  width="20%"
                                  onClick={() => cancelChanges()}
@@ -180,12 +179,24 @@ const ProfileSettings = () => {
         );
     }
 
+    /*<Button className =""
+
+            width="10%"
+            onClick={isDisabled ? () => editUser(user): () => saveChanges()}
+
+    >
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png"/>
+    </Button>*/
+
     return (
     <div>
         <HeaderHome height="100"/>
         <BaseContainer className="home container">
             <div className="home form">
-                <h1>Profile Page</h1>
+                <div className="home title"> Profile
+                    <text>     </text>
+                    <img width="37px"  src={isDisabled? "https://img.icons8.com/ios/50/FFFFFF/edit--v1.png": "https://img.icons8.com/ios-filled/50/FFFFFF/save--v1.png"}  onClick={isDisabled ? () => editUser(user): () => saveChanges()}/>
+                    </div>
 
                 {content}
             </div>

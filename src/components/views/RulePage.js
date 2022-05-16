@@ -13,7 +13,7 @@ const RulePage = () => {
     content = (
         <div className="rules">
             <div class = "rules column">
-                <b>Players:</b> 2 – 5 people <br/>
+                <b>Players:</b> 2 – 4 people <br/>
                 <b>Age:</b> 8 years and up <br/>
                 <b>Duration:</b> approx.20min
                 <p>
@@ -29,10 +29,10 @@ const RulePage = () => {
                 </p>
                 <b>How to play</b>
                 <p>
-                    For a 3, 4 or 5-player game, each player is dealt 6 cards (7 cards for a 2-player game), which make up his hand. The remaining number cards are on the draw pile.
+                    For a 3 or 4-player game, each player is dealt 6 cards (7 cards for a 2-player game), which make up his hand. The remaining number cards are on the draw pile.
                 </p>
                 <p>
-                    First, each player looks at his hand, then together the players decide who goes first. On your turn lay at least two cards from your hand to any of the four row piles.
+                    On your turn you have to lay at least two cards from your hand to any of the four row piles.
                 </p>
             </div>
 
@@ -42,26 +42,9 @@ const RulePage = () => {
                     You‘re free to choose which pile to lay your number cards on, as long as you follow the rules as described of laying in a descending or ascending order on the respective pile.  You can lay all your cards on the same pile, or on multiple piles in any sequence you like.
                 </p>
                 <p>
-                    Once you have finished your turn, click on the draw pile to pick up the same number of cards, that you laid in this round. The next player now takes his turn, lays his cards and picks up cards from the draw pile to complete his hand.
+                    Once you have finished your turn, click on the draw pile. Your cards fill up again, as long as the draw pile is not empty. The next player now takes his turn, lays his cards and picks up cards from the draw pile to complete his hand.
 
                 </p>
-                <b>The piles are getting bigger: the backwards trick!</b>
-                <p>
-                    As the game carries on, the four piles will increase in size as you add more and more cards to the piles. The general rules for laying cards as described above must be followed at all times.
-                    However, there is one single exception that lets you play in the reverse order: whenever the value of the number card is exactly 10 higher or lower. Here‘s how it works:
-                    <ul>
-                        <li>
-                            On your turn, you can lay a card on an ascending pile when the number card is exactly 10 less than the number showing on the pile.
-                        </li>
-                        <li>
-                            On your turn, you can lay a card on a descending pile when the number card is exactly 10 greater than the number showing on the pile.
-                        </li>
-                    </ul>
-                    You can use the backwards trick as often as you like and on different piles during your turn.
-                </p>
-            </div>
-
-            <div className="rules column">
                 <b>The backwards trick!</b>
                 <p>
                     As the game carries on, the four piles will increase in size as you add more and more cards to the piles. The general rules for laying cards as described above must be followed at all times.
@@ -76,6 +59,10 @@ const RulePage = () => {
                     </ul>
                     You can use the backwards trick as often as you like and on different piles during your turn.
                 </p>
+            </div>
+
+            <div className="rules column">
+
                 <b>Permissible communication</b>
                 <p>
                     During the game players are never allowed to ask the others for the exact number on their cards or reveal the numbers of their own cards. Mentioning concrete numbers in any way is strictly forbidden!
@@ -84,7 +71,7 @@ const RulePage = () => {
                 <b>End of the game</b>
                 <p>
                     When the draw pile is empty, continue playing without drawing cards. Note: From this point on, each player only has to play a single card, but still may play more.
-                    The game is over as soon as a player cannot play the minimum number of cards during his turn or all cards are played.
+                    The game is over as soon as a player cannot play the minimum number of cards during his turn or all cards are played. When you think you can't make a move anymore, click on the button "no moves possible".
                 </p>
             </div>
 
@@ -95,8 +82,8 @@ const RulePage = () => {
     return (
         <div>
             <HeaderHome height="100"/>
-        <BaseContainer className = "rule container">
-            <h2>Rules for The Game</h2>
+        <BaseContainer className = "rules container">
+            <div className="rules title">Rules for The Game</div>
             <div className="rules form">
 
             {content}

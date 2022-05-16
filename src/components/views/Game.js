@@ -26,6 +26,7 @@ import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
+import {api, handleError} from "../../helpers/api";
 
 
 const retrieveGTO = () => {
@@ -42,16 +43,17 @@ const Game = () => {
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
 
+
     let disableCards = false;
     let disableDrawCards = false;
-    let listOfPlayers =[];
+    let listOfPlayers = [];
 
-    const name = localStorage.getItem('username');
+    const name = sessionStorage.getItem('username');
 
     const playerListAndCards = [];
 
-    const [modalIsOpen, setModalIsOpen]= useState(false);
-    const [textToDisplay, setTextToDisplay]= useState("");
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [textToDisplay, setTextToDisplay] = useState("");
 
     LeaveWaitingRoom(localStorage.getItem('username'));
 
@@ -59,12 +61,6 @@ const Game = () => {
     let playerRight;
     let playerTop;
     let playerLeft;
-
-
-
-
-
-
 
 
     //************************  Websocket  **************************************************
@@ -78,16 +74,13 @@ const Game = () => {
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
-            if(msg == "won"){
+            if (msg == "won") {
                 onWon();
-            }
-            else if(msg == "lost"){
-               onLost();
-            }
-            else if (msg == "left"){
+            } else if (msg == "lost") {
+                onLost();
+            } else if (msg == "left") {
                 onLeft();
-            }
-            else{
+            } else {
                 alert("There seems to be an error")
             }
         })
@@ -96,8 +89,7 @@ const Game = () => {
     useEffect(() => {
         if (!isConnected()) {
             connect(registerGameSocket);
-        }
-        else {
+        } else {
             registerGameSocket();
         }
 
@@ -107,12 +99,10 @@ const Game = () => {
     //************************  Websocket  **************************************************
 
 
-
-
     //************************  GameLogic  **************************************************
 
     const checkForDraw = () => {
-        if (counter < 2 && (gameObj.noCardsOnDeck>0 || counter <1)) { //This does look silly, but I double-checked, it is fine
+        if (counter < 2 && (gameObj.noCardsOnDeck > 0 || counter < 1)) { //This does look silly, but I double-checked, it is fine
             disableDrawCards = true;
         }
     }
@@ -123,7 +113,8 @@ const Game = () => {
     }
 
     const checkForFinishedGame = () => {
-        if (!gameObj.gameRunning){
+        sessionStorage.setItem('go', JSON.stringify(gameObj))
+        if (!gameObj.gameRunning) {
             whyFinished()
         }
     }
@@ -151,8 +142,7 @@ const Game = () => {
 
         if (checkWhoseTurn() === true) {
             alert("Sorry but is not your turn");
-        }
-        else if (chosenCard == null) {
+        } else if (chosenCard == null) {
             alert("You have not chosen a card, please do so.")
         } else {
             if (validChoice(chosenCard, pile)) {
@@ -194,23 +184,21 @@ const Game = () => {
     const chooseCard = (val) => {
         if (checkWhoseTurn() === true) {
             alert("Sorry but is not your turn")
-        }
-        else{
-        setChosenCard(JSON.stringify(val));
+        } else {
+            setChosenCard(JSON.stringify(val));
         }
     }
 
     // Create list of players and their ownCards
-    for (const [player, noOfCards] of Object.entries(gameObj.playerCards)) {console.log(player, noOfCards.length);
+    for (const [player, noOfCards] of Object.entries(gameObj.playerCards)) {
+        console.log(player, noOfCards.length);
         let data = [player, noOfCards.length];
         playerListAndCards.push(data);
         console.log(playerListAndCards);
-        if (name != player){
+        if (name != player) {
             listOfPlayers.push(player);
         }
     }
-
-
 
 
     //add in this function all methods which need to be called when leaving the page/gameObj
@@ -282,13 +270,13 @@ const Game = () => {
             sessionTopic,
             sessionConfig.password,
             sessionConfig.sessionKey,
-            localStorage.getItem('username')
+            sessionStorage.getItem('username')
         );
         try {
             await client.join(
                 sessionTopic,
                 signature,
-                localStorage.getItem('username'),
+                sessionStorage.getItem('username'),
                 sessionConfig.password
             );
             mediaStream = client.getMediaStream();
@@ -356,7 +344,6 @@ const Game = () => {
     const cardValues2 = [0, 0, 0, 0, 0, 0, 0];
 
 
-
     //here we fill our ownCards with the right value
     for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         cardValues[i] = gameObj.playerCards[name][i].value;
@@ -379,10 +366,9 @@ const Game = () => {
         listHiddenValues2[i] = false;
     }
 
-    function closeModal(){
+    function closeModal() {
         setModalIsOpen(false);
     }
-
 
 
     //check wheter it is players turn and ownCards should be shown
@@ -391,59 +377,58 @@ const Game = () => {
     checkForFinishedGame();
 
 
-
     //idee um zu zeigen das ein button ausgewählt wurde: { cardSelected?"ownCards-button selected": "ownCards-button unselected"}
 
 
-    let ownCards=(
+    let ownCards = (
         <section className="wrapper">
-            <button className={gameObj.playerCards[name].length>0? "card":"card hidden"}
+            <button className={gameObj.playerCards[name].length > 0 ? "card" : "card hidden"}
                     display="none"
-                    disabled = {false}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[0])}
             >
                 {cardValues[0]}
             </button>
-            <button className={gameObj.playerCards[name].length>1? "card":"card hidden"}
-                    disabled = {false}
+            <button className={gameObj.playerCards[name].length > 1 ? "card" : "card hidden"}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[1])}
             >
                 {cardValues[1]}</button>
-            <button className={gameObj.playerCards[name].length>2? "card":"card hidden"}
-                    disabled = {false}
+            <button className={gameObj.playerCards[name].length > 2 ? "card" : "card hidden"}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[2])}
             >
                 {cardValues[2]}
             </button>
-            <button className={gameObj.playerCards[name].length>3? "card":"card hidden"}
-                    disabled = {false}
+            <button className={gameObj.playerCards[name].length > 3 ? "card" : "card hidden"}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[3])}
             >
                 {cardValues[3]}
             </button>
-            <button className={gameObj.playerCards[name].length>4? "card":"card hidden"}
-                    disabled = {false}
+            <button className={gameObj.playerCards[name].length > 4 ? "card" : "card hidden"}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[4])}
             >
                 {cardValues[4]}
             </button>
-            <button className={gameObj.playerCards[name].length>5? "card":"card hidden"}
-                    disabled = {false}
+            <button className={gameObj.playerCards[name].length > 5 ? "card" : "card hidden"}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[5])}
             >
                 {cardValues[5]}
             </button>
-            <button className={gameObj.playerCards[name].length>6? "card":"card hidden"}
-                    disabled = {false}
+            <button className={gameObj.playerCards[name].length > 6 ? "card" : "card hidden"}
+                    disabled={false}
                     onClick={() => chooseCard(cardValues[6])}
             >
                 {cardValues[6]}
             </button>
         </section>);
 
-    console.log("list of Players"+ listOfPlayers.length);
+    console.log("list of Players" + listOfPlayers.length);
 
-    if (listOfPlayers.length +1 == 2) {
+    if (listOfPlayers.length + 1 == 2) {
         playerTop = (
             <section className="wrapper">
                 <div className={gameObj.playerCards[listOfPlayers[0]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
@@ -475,7 +460,7 @@ const Game = () => {
                     <img src={TheGameLogo} alt="game Logo" height="60%"/>
                 </div>
             </section>)
-    } else if (listOfPlayers.length +1 == 3){
+    } else if (listOfPlayers.length + 1 == 3) {
         playerRight = (
             <section className="wrapper">
                 <div className={gameObj.playerCards[listOfPlayers[0]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
@@ -640,48 +625,47 @@ const Game = () => {
     }
 
 
-
-    let drawPile=(
+    let drawPile = (
         <section className="wrapper">
             <button className="drawPile"
-                    disabled = {disableDrawCards}
+                    disabled={disableDrawCards}
                     onClick={() => draw()}
             >
                 Finished Move
             </button>
-            <button className={gameObj.noCardsOnDeck>1? "drawPile":"drawPile hidden"}
-                    disabled = {disableDrawCards}
+            <button className={gameObj.noCardsOnDeck > 1 ? "drawPile" : "drawPile hidden"}
+                    disabled={disableDrawCards}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
-            <button className={gameObj.noCardsOnDeck>2? "drawPile":"drawPile hidden"}
-                    disabled = {disableDrawCards}
-                    onClick={() => draw()}
-            >
-                <img src={TheGameLogo} alt="game Logo" height="60%" />
-                {gameObj.noCardsOnDeck}
-            </button>
-            <button className={gameObj.noCardsOnDeck>3? "drawPile":"drawPile hidden"}
-                    disabled = {disableDrawCards}
+            <button className={gameObj.noCardsOnDeck > 2 ? "drawPile" : "drawPile hidden"}
+                    disabled={disableDrawCards}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
-            <button className={gameObj.noCardsOnDeck>4? "drawPile":"drawPile hidden"}
-                    disabled = {disableDrawCards}
+            <button className={gameObj.noCardsOnDeck > 3 ? "drawPile" : "drawPile hidden"}
+                    disabled={disableDrawCards}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogo} alt="game Logo" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
-            <button className={gameObj.noCardsOnDeck>5? "drawPile":"drawPile hidden"}
-                    disabled = {disableDrawCards}
+            <button className={gameObj.noCardsOnDeck > 4 ? "drawPile" : "drawPile hidden"}
+                    disabled={disableDrawCards}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogo} alt="game Logo" height="60%" />
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                {gameObj.noCardsOnDeck}
+            </button>
+            <button className={gameObj.noCardsOnDeck > 5 ? "drawPile" : "drawPile hidden"}
+                    disabled={disableDrawCards}
+                    onClick={() => draw()}
+            >
+                <img src={TheGameLogo} alt="game Logo" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
 
@@ -697,26 +681,94 @@ const Game = () => {
         </div>
     );*/
 
-    const getCssForPlayer =  (player) => {
-        if (player==gameObj.whoseTurn & player==name){
+    const getCssForPlayer = (player) => {
+        if (player == gameObj.whoseTurn & player == name) {
             return "user-game player selected"
-        } else if (player==gameObj.whoseTurn & player!=name){
+        } else if (player == gameObj.whoseTurn & player != name) {
             return "user-game others selected"
-        } else if (player!=gameObj.whoseTurn & player==name){
+        } else if (player != gameObj.whoseTurn & player == name) {
             return "user-game player unselected"
-        } else if (player!=gameObj.whoseTurn & player!=name){
+        } else if (player != gameObj.whoseTurn & player != name) {
             return "user-game others unselected"
         }
     }
 
 
 
-    function onLost(){
-        onLostOrWon("Better luck next time :(", "You have lost the Game.")
+
+    const getScoreOfCurrentPlayers =async (title, text) => {
+        let getRequestResult
+
+        try {
+            const response = await api.get('/users');
+            console.log("get request happened")
+
+            await new Promise(resolve => setTimeout(resolve, 700));
+
+            // Get the returned users and update the state.
+            getRequestResult = response.data;
+
+            console.log('requested data:', response.data);
+
+            // See here to get more data.
+            console.log(response);
+        } catch (error) {
+            console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+            console.error("Details:", error);
+            alert("Something went wrong while fetching the users! See the console for details.");
+        }
+
+
+        //setTimeout( function () {
+        let go = JSON.parse(sessionStorage.getItem('go'))
+        let names = Object.keys(go.playerCards);
+        console.log(names);
+        const usersAndScores = [];
+        console.log("print users hook:")
+        console.log(getRequestResult)
+        for (const user of getRequestResult) {
+            console.log(user.username)
+            if (names.includes(user.username)) {
+                usersAndScores.push(user)
+            }
+        }
+
+        console.log("users and scores:" + JSON.stringify(usersAndScores[0]))
+
+        const scorelist = (
+            <table className="score user-table">
+                <thead>
+                <tr>
+                    <th className="score labelAccent">Username</th>
+                    <th className="score labelAccent">Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {usersAndScores.map(sortedUser => (
+                    <tr key={sortedUser.id}>
+                        <td>{sortedUser.username}</td>
+                        <td>{sortedUser.score}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+        )
+
+        onLostOrWon(title, text, scorelist)
+        return scorelist
+        //}, 2000)
+
     }
 
-    function onWon () {
-        onLostOrWon("Congratulations :)","You have won the Game." )
+
+    function onLost() {
+        getScoreOfCurrentPlayers("Better luck next time :(","You have lost the Game.");
+        // onLostOrWon("Better luck next time :(", "You have lost the Game.", scoretable)
+    }
+
+    function onWon() {
+        getScoreOfCurrentPlayers("Congratulations :)","You have won the Game.");
+        // onLostOrWon("Congratulations :)", "You have won the Game.", scoretable)
     }
 
     const leaveButton = (
@@ -743,10 +795,13 @@ const Game = () => {
         </Button>
     )
 
-    function onLostOrWon(headerText, descriptionText){
+    function onLostOrWon(headerText, descriptionText, score){
         setTextToDisplay(<div>
             <h2> {headerText}</h2>
             <p>{descriptionText}</p>
+              {score}
+
+
             <Button className ="player-button"
                     disabled = {false}
                     width = "33%"

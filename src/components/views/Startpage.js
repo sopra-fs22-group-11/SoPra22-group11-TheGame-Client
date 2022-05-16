@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import "styles/views/Home.scss";
 import "styles/ui/Button.scss";
 import HeaderHome from "./HeaderHome";
+import {connect} from "../utils/sockClient";
 
 
 // COPY FROM GAME SITE OF M1
@@ -35,24 +36,16 @@ const Startpage = () => {
     // more information can be found under https://reactjs.org/docs/hooks-state.html
     const [users, setUsers] = useState(null);
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('loggedInUser')
-        localStorage.removeItem('username');
-        localStorage.removeItem('clickedStart');
-
-        history.push('/login');
-    }
-
-
-
-
-    const goTorulePage = () => {
-        history.push('/rulePage');
-    }
 
     const goToWaitingroomOverview = () => {
         history.push('/waitingroomOverview');
+    }
+
+    //join directly the waitingroom
+    const joinWaitingroom = async () => {
+        connect(()=> {
+            history.push('/waitingroom/1'); //for the start we need the waitingroom 1
+        })
     }
 
     // the effect hook can be used to react to change in your component.
@@ -110,23 +103,28 @@ const Startpage = () => {
                     width ="30%"
                     onClick={() => history.push('/rulePage')}
 
+
                 >
+
                     Rules
+                    <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
                 </Button>
                 <Button
                     width ="30%"
                     onClick={() => history.push('/scoreboard')}
                 >
                     Scores
+                    <img src="https://img.icons8.com/ios/50/FFFFFF/trophy--v1.png"/>
                 </Button>
                 </div>
                 <Button className = "button-startPage"
                         margine-top ="10px"
-                    onClick={() => goToWaitingroomOverview()}
+                    onClick={() => joinWaitingroom()}
 
                     //  onClick={() => history.push('/game')}
                 >
                     Let's play
+                    <img src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/play--v1.png"/>
                 </Button>
             </div>
         );
@@ -147,7 +145,7 @@ const Startpage = () => {
                 <h2> </h2>
                 {content}
             </div>
-
+            <a target="_blank" href="https://icons8.com/icon/LVtMPps1ASuP/spielen" >Spielen icon by Icons8</a>
         </BaseContainer>
         </div>
     );

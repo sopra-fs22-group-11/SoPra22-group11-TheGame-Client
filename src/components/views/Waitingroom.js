@@ -5,6 +5,27 @@ import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
 import {connect, isConnected, sendName, startGame, subscribe, LeaveWaitingRoom} from "../utils/sockClient";
+import {getDomain} from "../../helpers/getDomain";
+import {isProduction} from "../../helpers/isProduction";
+
+
+const LinkField = props => {
+    return (
+        <div className="home field">
+            <label className="home label">
+                {props.label}
+            </label>
+            <input
+                className="home input"
+                placeholder={props.placeholder}
+                type = {props.type}
+                value={props.value}
+                disabled = {props.disabled}
+                visible={props.visible}
+            />
+        </div>
+    );
+};
 
 const retrievePlayerList = () => {
     const pl = JSON.parse(sessionStorage.getItem('playerList'));
@@ -86,59 +107,61 @@ const Waitingroom = () => {
 
     //************************ UI  *******************************************************************
 
+    const getLink = () => {
+         let value = isProduction() ? "https://sopra22-group11-thegame-client.herokuapp.com/waitingroom/1": "http://localhost:3000/waitingroom/1";
+         return value;
+    }
+
+
 
     let startGameUI = (
         <div>
-            <div className="home title"> How to start THE GAME</div>
-            <p> 1. You need to enroll for this Game clicking on the 1. button  <br/>
-                2. Once everyone is ready one player can click on Start Game<br/>
-                3. Enjoy THE GAME :D </p>
+            <div className="home title"> Waiting-room</div>
+            Wait for other players to join this Game
+            <div display = "flow" vertical-align= "middle" >
+            <LinkField
+                width = "300px"
+                placeholder={getDomain() + "/waitingroom/1"}
+                value={getLink()}
+                disabled = {true}
+                visible={true}
+            />
+            <Button className="primary-small-button"
+                width="10%"
+                onClick={() => navigator.clipboard.writeText(getLink())}
+            >
+                <img src="https://img.icons8.com/material-rounded/24/FFFFFF/copy.png"/>
+            </Button>
+                </div>
 
-            <div className="home important"> IMPORTANT: Please leave the game only via Leave Game, otherwise the game
-                can not be restarted again!
-            </div>
-
-
-
+            <h2> </h2>
             <Button
+
                 width="100%"
                 onClick={() => leave()}
             >
                 Leave Waiting Room
 
             </Button>
-
-            <Button
-                width="100%"
+            <Button className = "button-startPage"
                 onClick={() => start()}
             >
-                Start The Game for everyone :)
+                Let's play
+                <img src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/play--v1.png"/>
 
             </Button>
 
-
-            <h2> Players registered in this waiting-room: </h2>
-            <ul>
+            <h2> Players in this waiting-room: </h2>
+            <ul >
                 {players.map(item => (
-                    <li>
+                    <div >
                         <div key={item}>{item}</div>
-                    </li>
+                    </div>
                 ))}
-
-             </ul>
-
-            <h2>How to play this Game</h2>
-            <p> You will see at the top of the page, which player needs to play. <br/>
-                You can play a card, with clicking on your hand card and than clicking on the pile. If you want to
-                change your selected card, you can just click on a other card. <br/>
-                With clicking on the draw pile you can get your new cards.<br/>
-                2 REMARKS: <br/>
-                1. Until we have solved the Hook issue, you need to click update to render your page and see what the
-                other player has played.<br/>
-                2. Zoom ins unfortunately not yet working, due to deployment difficulties</p>
-
+            </ul>
 
         </div>)
+
 
     //************************ UI  *******************************************************************
 
@@ -159,13 +182,5 @@ const Waitingroom = () => {
 }
 
 //
-
-/*
-                                 {players.map(item => (
-                     <li>
-                        <div key={item}>{item}</div>
-                     </li>
-                 ))}
- */
 
 export default Waitingroom;

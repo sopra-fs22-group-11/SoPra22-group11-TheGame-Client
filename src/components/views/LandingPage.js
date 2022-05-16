@@ -1,11 +1,6 @@
-
 import {useHistory} from 'react-router-dom';
-import BaseContainer from "components/ui/BaseContainer";
-import TheGameLogoblack from '../../TheGameLogoblack.png';
-
 import "styles/views/Entry.scss";
 import Header from "./Header";
-import TheGameLogo from "../../TheGameLogo.png";
 import "styles/ui/BaseContainer.scss";
 import {Button} from "../ui/Button";
 import React from "react";
@@ -33,7 +28,6 @@ const LandingPage = () => {
                 <Button
                     onClick={() => goToLogin()}
 
-                    //  onClick={() => history.push('/game')}
                 >
                     Play
                 </Button>

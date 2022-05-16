@@ -1,12 +1,6 @@
 import React from "react";
-import {ReactLogo} from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
-import logout from "./Startpage";
-import goToHome from "./Waitingroom";
-import goToRulePage from "./Startpage";
-import doRegister from "./Login";
-import goToLogin from "./Registration";
 import TheGameLogo from "../../TheGameLogo.png";
 
 /**
@@ -18,27 +12,12 @@ import TheGameLogo from "../../TheGameLogo.png";
  * @FunctionalComponent
  */
 
-const getRouterInHeader = () => {
-    if (localStorage.getItem("token")) {
-        return "/login";
-    } else{
-        return "/startpage";
-    }
-}
 
 const hasToken = () => {
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
         return "/login";
     } else{
         return "/startpage";
-    }
-}
-
-const changeLocation = () =>{
-    if (hasToken() ==true){
-        goToRulePage();
-    } else{
-        doRegister();
     }
 }
 
@@ -53,10 +32,8 @@ const Header = props => (
         </div>
         <div className="header-right">
             <a href="/login"
-               //onClick={() => goToLogin()}
             >Login </a>
             <a href="/registration"
-               //onClick={() => doRegister()}
             >Register</a>
         </div>
     </div>
