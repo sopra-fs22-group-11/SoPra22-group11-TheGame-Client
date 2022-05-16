@@ -14,7 +14,7 @@ import {api2, handleError} from "../../helpers/api";
 
 
 
-export const getSignature = async (sessionTopic, sessionKey, name) => {
+export async function getSignature(sessionTopic, sessionKey, name) {
   try {
     let signature = '';
     const requestBody = JSON.stringify({
@@ -31,7 +31,7 @@ export const getSignature = async (sessionTopic, sessionKey, name) => {
     console.log("signature is: " + signature);
     return signature;
 
-  }catch(error){
+  } catch (error) {
     console.error(`Something went wrong while fetching the signature: \n${handleError(error)}`);
   }
 }

@@ -269,7 +269,10 @@ const Game = () => {
         console.log(sessionTopic);
         console.log(sessionKey);
 
-        const signature = getSignature(sessionTopic, sessionKey, name);
+        const signature =  await getSignature(sessionTopic, sessionKey, name);
+       // const signature = JSON.stringify(signatureResponse);
+
+        const newSignature = signature.slice(1,signature.length -1);
 /*
         const signature = generateSessionToken(
             sessionConfig.sdkKey,
@@ -281,11 +284,12 @@ const Game = () => {
         );
 
 */
-        console.log("signature that is passed by function: " + signature);
+
+        console.log("signature that is passed by function: " + newSignature);
         try {
             await client.join(
                 sessionTopic,
-                signature,
+                newSignature,
                 name,           //localStorage.getItem('username'),
                 sessionConfig.password
             );
