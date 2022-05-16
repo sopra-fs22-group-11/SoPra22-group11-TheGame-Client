@@ -64,3 +64,4 @@ export const subscribe = (channel, callback) => {
     stompClient.subscribe(channel, r => callback(stripResponse(r)));
 }
 
+

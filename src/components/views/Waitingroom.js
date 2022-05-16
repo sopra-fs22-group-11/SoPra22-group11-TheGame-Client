@@ -21,30 +21,36 @@ const Waitingroom = () => {
 
 
     useEffect(() => {
-        let isMounted = true;
             if (!isConnected()) {
-                if (isMounted){
                     connect(registerWaitingRoomSocket());
-                }
             }
             else {
-                if (isMounted){
                     registerWaitingRoomSocket();
-                }
             }
-            console.log(JSON.stringify(players));
 
         }, []);
 
 
 
     const registerWaitingRoomSocket = () => {
-            subscribe('/topic/players', msg => {
-                console.log(msg)
-                sessionStorage.setItem('playerList', JSON.stringify(msg))
-                setPlayers(msg);
-                //sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
-            });
+        subscribe('/topic/players', msg => {
+            console.log(msg)
+            sessionStorage.setItem('playerList', JSON.stringify(msg))
+            setPlayers(JSON.parse(sessionStorage.getItem('playerList')));
+            sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
+            //setPlayers(msg);
+            console.log(players)
+            /*
+            console.log(msg)
+            sessionStorage.setItem('playerList', JSON.stringify(msg))
+            setPlayers(msg);
+            console.log(players);
+            sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
+
+             */
+        });
+
+
             subscribe('/topic/start', msg => {
                 sessionStorage.setItem('gto', JSON.stringify(msg));
                 console.log(msg);
@@ -69,19 +75,8 @@ const Waitingroom = () => {
     }
 
 
-    //const sendNameToWS = async () => {
-    //    if (!registered) {
-    //        setRegistered(true);
-    //        await sendName(localStorage.getItem('username'));
-    //        alert("You have successfully enrolled in this game.");
-    //    } else {
-    //        alert("You are already enrolled")
-    //    }
-    //}
-
-
-    const leave = async () => {
-        await LeaveWaitingRoom(localStorage.getItem('username'));
+    const leave = () => {
+        LeaveWaitingRoom(localStorage.getItem('username'));
         history.push('/waitingroomOverview')
     }
 

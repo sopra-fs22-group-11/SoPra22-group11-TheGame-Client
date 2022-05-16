@@ -7,7 +7,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
-import {connect, isConnected, sendName, subscribe, checkNoOfPlayersWaitingRoom} from "../utils/sockClient";
+import {connect, isConnected, sendName, subscribe, checkNoOfPlayersWaitingRoom, unsubscribe} from "../utils/sockClient";
 import User from "../../models/User";
 
 
@@ -27,18 +27,28 @@ const WaitingroomOverview = () => {
 
     const WaitingRoomPlayersSocket = () => {
         subscribe('/topic/players', msg => {
-            console.log(msg.length);
-            setNoOfPlayers(msg);
-            //console.log(noOfPlayers);
+            console.log(msg)
             sessionStorage.setItem('playerList', JSON.stringify(msg))
+            setNoOfPlayers(JSON.parse(sessionStorage.getItem('playerList')));
+            //sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
+            console.log(noOfPlayers)
+
+            /*
+            console.log(msg);
+            setNoOfPlayers(msg);
+            console.log(noOfPlayers);
+            // console.log(noOfPlayers.length); --> this part does not work, gives 0 when leaving
+            sessionStorage.setItem('playerList', JSON.stringify(msg))
+
+             */
         });
     }
 
-    const joinWaitingRoom = () => {
+    const joinWaitingRoom = async () => {
         console.log(noOfPlayers)
         if (checkIfWaitingRoomHasSpace()) {
-            sendName(localStorage.getItem('username'));
-            history.push('/waitingroom/1'); //for the start we need the waitingroom 1
+            await sendName(localStorage.getItem('username'));
+            history.push('/waitingroom/1');
         } else {
             alert('Sorry, this waiting room is already full! :(')
         }
