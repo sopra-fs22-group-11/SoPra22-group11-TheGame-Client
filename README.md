@@ -50,6 +50,12 @@ add some websocket interfaces
 
 On the Server side we are using Java with bootRun. A detailed description you will find at the [server repository](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server)
 
+
+
+## High Level components
+
+## Launch & Deployment
+
 ### Prerequisites and Installation
 For your local development environment, you will need Node.js. You can download it [here](https://nodejs.org). All other dependencies, including React, get installed with:
 
@@ -61,11 +67,16 @@ Run this command before you start your application for the first time. Next, you
 
 Now you can open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## High Level components
-
 ## Illustrations
 
 ## Roadmap
+
+As described above, there are some features which are not scope of this project. The following features can be added to the tool:
+- playing different games on the same time
+- storing on a separate database all the users and scores
+- add on other voice API which is not chargeable
+
+We thank in advance to all the voluntary developer who have fun to improve our Game. Please make sure to tag us :)
 
 ## Authors and acknowledgment
 
