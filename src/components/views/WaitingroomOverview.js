@@ -14,6 +14,9 @@ import {
 } from "../utils/sockClient";
 import User from "../../models/User";
 import {useEffect, useState} from "react";
+import {string} from "sockjs-client/lib/utils/random";
+import {api, handleError} from "../../helpers/api";
+import game from "./Game";
 
 
 const WaitingroomOverview = () => {
@@ -21,6 +24,7 @@ const WaitingroomOverview = () => {
     const history = useHistory();
     const [noOfPlayers, setNoOfPlayers] = useState([]);
     const [counter, setCounter] = useState(0);
+
 
     useEffect(() => {
         if (!isConnected()) {
@@ -31,54 +35,52 @@ const WaitingroomOverview = () => {
         }
     }, []);
 
-    /*
-    if (counter === 0) {
-        getPlayers();
-        setCounter(1);
-    }
-
-     */
+    useEffect(() => {
+    }, [noOfPlayers]);
 
 
     const WaitingRoomPlayersSocket = () => {
+
         subscribe('/topic/players', msg => {
             console.log(msg)
             sessionStorage.setItem('playerList', JSON.stringify(msg))
+            //setNoOfPlayers(msg)
             setNoOfPlayers(JSON.parse(sessionStorage.getItem('playerList')));
             //sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
-            console.log(noOfPlayers)
+            console.log(JSON.stringify(noOfPlayers))
 
-            /*
-            console.log(msg);
-            setNoOfPlayers(msg);
-            console.log(noOfPlayers);
-            // console.log(noOfPlayers.length); --> this part does not work, gives 0 when leaving
-            sessionStorage.setItem('playerList', JSON.stringify(msg))
-
-             */
         });
 
-        /*
+
+
         subscribe('/topic/getPlayers', msg => {
             console.log(msg)
-            sessionStorage.setItem('playerList', JSON.stringify(msg))
-            setNoOfPlayers(JSON.parse(sessionStorage.getItem('playerList')));
-            //sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
-            console.log(noOfPlayers)
+            sessionStorage.setItem('overviewList', JSON.stringify(msg))
+            setNoOfPlayers(JSON.parse(sessionStorage.getItem('overviewList')));
+            //sessionStorage.removeItem('overviewList')//TODO figure out how to store the string array in a hook
+            console.log(JSON.stringify(noOfPlayers))
         });
 
-         */
+        subscribe('/topic/start', msg => {
+            sessionStorage.setItem('gameStarted', JSON.stringify(msg.gameRunning));
+        });
+
+        if (counter === 0) {
+            getPlayers();
+            setCounter(counter => (counter + 1));
+        }
     }
 
 
-    const joinWaitingRoom = async () => {
+    const joinWaitingRoom = () => {
         console.log(noOfPlayers)
         if (checkIfWaitingRoomHasSpace()) {
-            await sendName(localStorage.getItem('username'));
-            //getPlayers();
+            sendName(sessionStorage.getItem('username'));
+            getPlayers();
+            setCounter(counter => (counter - 1));
             history.push('/waitingroom/1');
         } else {
-            alert('Sorry, this waiting room is already full! :(')
+            alert('Sorry, this waiting room is already full! :(');
         }
     }
 
@@ -87,6 +89,23 @@ const WaitingroomOverview = () => {
                 return true;
             }
             return false;
+    }
+
+    const checkIfGameStarted = () => {
+        let gameStared
+        try {
+            gameStared = sessionStorage.getItem('gameStarted');
+        } catch (e) {}
+        finally {
+            gameStared = false;
+        }
+        console.log('game started: ' + gameStared)
+        if (gameStared) {
+            alert('Sorry you cannot join, a game is currently running.')
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -102,6 +121,7 @@ const WaitingroomOverview = () => {
                 <Button
                     width="100%"
                     height="50%"
+                    disabled={checkIfGameStarted()}
                     onClick={() => joinWaitingRoom()}
                 >
                     Waiting Room 1 - ({noOfPlayers.length}/4 players are in this Waiting Room)

@@ -38,7 +38,9 @@ const Startpage = () => {
 
 
     const goToWaitingroomOverview = () => {
-        history.push('/waitingroomOverview');
+        connect(()=> {
+            history.push('/waitingroomOverview');
+        })
     }
 
     //join directly the waitingroom

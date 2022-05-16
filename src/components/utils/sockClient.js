@@ -31,6 +31,7 @@ export const LeaveWaitingRoom = (username) => {
 }
 
 export const sendName = (username) => {
+    console.log('sending username '+username)
     stompClient.send("/app/game", {}, JSON.stringify(username));
 }
 

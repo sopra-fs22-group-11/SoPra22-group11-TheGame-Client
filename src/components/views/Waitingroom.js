@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
@@ -29,8 +29,13 @@ const LinkField = props => {
 
 const retrievePlayerList = () => {
     const pl = JSON.parse(sessionStorage.getItem('playerList'));
-    sessionStorage.removeItem('playerList');
-    return pl;
+    if (pl === null) {
+        return [];
+    } else {
+        console.log(pl);
+        sessionStorage.removeItem('playerList');
+        return pl;
+    }
 }
 
 const Waitingroom = () => {
@@ -39,6 +44,7 @@ const Waitingroom = () => {
     const history = useHistory();
     const [players, setPlayers] = useState(retrievePlayerList());
     //const [registered, setRegistered] = useState(false);
+    const helperReference = useRef(0);
 
 
     useEffect(() => {
@@ -52,23 +58,25 @@ const Waitingroom = () => {
         }, []);
 
 
+    useEffect(() => {
+    }, [helperReference]);
+
 
     const registerWaitingRoomSocket = () => {
-        subscribe('/topic/players', msg => {
-            console.log(msg)
-            sessionStorage.setItem('playerList', JSON.stringify(msg))
-            setPlayers(JSON.parse(sessionStorage.getItem('playerList')));
+        subscribe('/topic/players',   msg => {
+            helperReference.current = helperReference.current + 1;
+            console.log('helper: '+helperReference.current);
+            console.log(msg);
+            sessionStorage.setItem('playerList', JSON.stringify(msg));
+            console.log(JSON.stringify(sessionStorage.getItem('playerList')));
+            setTimeout(() => {setPlayers([...msg]);}, 0);
+            //setPlayers([...msg]);
+            //setPlayers((players) => [...players, msg]);
+            //setPlayers((players) => ({...msg}));
+            //setPlayers(JSON.parse(sessionStorage.getItem('playerList')));
             sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
-            //setPlayers(msg);
             console.log(players)
-            /*
-            console.log(msg)
-            sessionStorage.setItem('playerList', JSON.stringify(msg))
-            setPlayers(msg);
-            console.log(players);
-            sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
 
-             */
         });
 
 
@@ -78,6 +86,8 @@ const Waitingroom = () => {
             history.push('/game');
         });
     };
+
+
 
     const checkStartPossible = () => {
         if (players.length > 1 && players.length <= 4) {
@@ -97,7 +107,7 @@ const Waitingroom = () => {
 
 
     const leave = () => {
-        LeaveWaitingRoom(localStorage.getItem('username'));
+        LeaveWaitingRoom(sessionStorage.getItem('username'));
         history.push('/waitingroomOverview')
     }
 
@@ -153,6 +163,16 @@ const Waitingroom = () => {
             </Button>
 
             <h2> Players in this waiting-room: </h2>
+            {players===[] ? null :
+                <ul >
+                {players.map((player, index) =>
+                    <div >
+                        <div key={index}>{player}</div>
+                    </div>
+                )}
+            </ul>
+            }
+
 
         </div>)
 
@@ -174,7 +194,5 @@ const Waitingroom = () => {
     );
 
 }
-
-//
 
 export default Waitingroom;

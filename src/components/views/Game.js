@@ -74,11 +74,11 @@ const Game = () => {
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
-            if (msg == "won") {
+            if (msg === "won") {
                 onWon();
-            } else if (msg == "lost") {
+            } else if (msg === "lost") {
                 onLost();
-            } else if (msg == "left") {
+            } else if (msg === "left") {
                 onLeft();
             } else {
                 alert("There seems to be an error")
@@ -428,7 +428,7 @@ const Game = () => {
 
     console.log("list of Players" + listOfPlayers.length);
 
-    if (listOfPlayers.length + 1 == 2) {
+    if (listOfPlayers.length + 1 === 2) {
         playerTop = (
             <section className="wrapper">
                 <div className={gameObj.playerCards[listOfPlayers[0]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
@@ -460,7 +460,7 @@ const Game = () => {
                     <img src={TheGameLogo} alt="game Logo" height="60%"/>
                 </div>
             </section>)
-    } else if (listOfPlayers.length + 1 == 3) {
+    } else if (listOfPlayers.length + 1 === 3) {
         playerRight = (
             <section className="wrapper">
                 <div className={gameObj.playerCards[listOfPlayers[0]].length > 0 ? "cardPlayer" : "cardPlayer hidden"}
@@ -682,13 +682,13 @@ const Game = () => {
     );*/
 
     const getCssForPlayer = (player) => {
-        if (player == gameObj.whoseTurn & player == name) {
+        if (player === gameObj.whoseTurn & player === name) {
             return "user-game player selected"
-        } else if (player == gameObj.whoseTurn & player != name) {
+        } else if (player == gameObj.whoseTurn & player !== name) {
             return "user-game others selected"
-        } else if (player != gameObj.whoseTurn & player == name) {
+        } else if (player != gameObj.whoseTurn & player === name) {
             return "user-game player unselected"
-        } else if (player != gameObj.whoseTurn & player != name) {
+        } else if (player != gameObj.whoseTurn & player !== name) {
             return "user-game others unselected"
         }
     }
