@@ -1,8 +1,13 @@
 import axios from 'axios';
-import { getDomain } from 'helpers/getDomain';
+import {getDomain, getDomain2} from 'helpers/getDomain';
 
 export const api = axios.create({
   baseURL: getDomain(),
+  headers: { 'Content-Type': 'application/json' }
+});
+
+export const api2 = axios.create({
+  baseURL: getDomain2(),
   headers: { 'Content-Type': 'application/json' }
 });
 
