@@ -21,6 +21,7 @@ import {
     stompClient,
     subscribe
 } from "../utils/sockClient";
+import {getSignature} from "../../zoom/js/tool";
 import {connect, sendDraw, whyFinished} from "../utils/sockClient";
 import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
@@ -42,7 +43,6 @@ const Game = () => {
 
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
-
 
     let disableCards = false;
     let disableDrawCards = false;
@@ -262,21 +262,22 @@ const Game = () => {
         await client.init('en-US', 'Global');
         const date = new Date().toDateString();
         const sessionTopic = "theGame" + date;
+        const sessionKey = "session" + name;
         console.log(sessionTopic);
+        console.log(sessionKey);
 
-        const signature = generateSessionToken(
-            sessionConfig.sdkKey,
-            sessionConfig.sdkSecret,
-            sessionTopic,
-            sessionConfig.password,
-            sessionConfig.sessionKey,
-            sessionStorage.getItem('username')
-        );
+        const signature =  await getSignature(sessionTopic, sessionKey, name);
+       // const signature = JSON.stringify(signatureResponse);
+
+        const newSignature = signature.slice(1,signature.length -1);
+
+
+        console.log("signature that is passed by function: " + newSignature);
         try {
             await client.join(
                 sessionTopic,
-                signature,
-                sessionStorage.getItem('username'),
+                newSignature,
+                name,
                 sessionConfig.password
             );
             mediaStream = client.getMediaStream();
@@ -839,7 +840,7 @@ const Game = () => {
     //TODO
     //Comment the next line, when working on the gameObj
 
-    //joinMeeting(); // The Secrets do not work at the moments
+    joinMeeting();
 
 
     //*************************************************************************
