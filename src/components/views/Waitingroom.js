@@ -43,8 +43,7 @@ const Waitingroom = () => {
     //************************  Websocket  **************************************************
     const history = useHistory();
     const [players, setPlayers] = useState(retrievePlayerList());
-    //const [registered, setRegistered] = useState(false);
-    const helperReference = useRef(0);
+    const [counter, setCounter] = useState(0);
 
 
     useEffect(() => {
@@ -54,29 +53,15 @@ const Waitingroom = () => {
             else {
                     registerWaitingRoomSocket();
             }
-
         }, []);
 
-
-    useEffect(() => {
-    }, [helperReference]);
 
 
     const registerWaitingRoomSocket = () => {
         subscribe('/topic/players',   msg => {
-            helperReference.current = helperReference.current + 1;
-            console.log('helper: '+helperReference.current);
             console.log(msg);
-            sessionStorage.setItem('playerList', JSON.stringify(msg));
-            console.log(JSON.stringify(sessionStorage.getItem('playerList')));
-            setTimeout(() => {setPlayers([...msg]);}, 0);
-            //setPlayers([...msg]);
-            //setPlayers((players) => [...players, msg]);
-            //setPlayers((players) => ({...msg}));
-            //setPlayers(JSON.parse(sessionStorage.getItem('playerList')));
-            sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
-            console.log(players)
-
+            setPlayers(msg);
+            console.log('after set players: '+players);
         });
 
 
@@ -85,6 +70,11 @@ const Waitingroom = () => {
             console.log(msg);
             history.push('/game');
         });
+
+        if (counter === 0) {
+            sendName(sessionStorage.getItem('username'));
+            setCounter(1);
+        }
     };
 
 

@@ -35,6 +35,7 @@ const WaitingroomOverview = () => {
         }
     }, []);
 
+
     useEffect(() => {
     }, [noOfPlayers]);
 
@@ -44,10 +45,10 @@ const WaitingroomOverview = () => {
         subscribe('/topic/players', msg => {
             console.log(msg)
             sessionStorage.setItem('playerList', JSON.stringify(msg))
-            //setNoOfPlayers(msg)
-            setNoOfPlayers(JSON.parse(sessionStorage.getItem('playerList')));
+            setNoOfPlayers(msg);
+            //setNoOfPlayers(JSON.parse(sessionStorage.getItem('playerList')));
             //sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
-            console.log(JSON.stringify(noOfPlayers))
+            console.log(noOfPlayers);
 
         });
 
@@ -55,10 +56,11 @@ const WaitingroomOverview = () => {
 
         subscribe('/topic/getPlayers', msg => {
             console.log(msg)
+            setNoOfPlayers(msg);
             sessionStorage.setItem('overviewList', JSON.stringify(msg))
-            setNoOfPlayers(JSON.parse(sessionStorage.getItem('overviewList')));
+            //setNoOfPlayers(JSON.parse(sessionStorage.getItem('overviewList')));
             //sessionStorage.removeItem('overviewList')//TODO figure out how to store the string array in a hook
-            console.log(JSON.stringify(noOfPlayers))
+            console.log(noOfPlayers);
         });
 
         subscribe('/topic/start', msg => {
@@ -67,7 +69,7 @@ const WaitingroomOverview = () => {
 
         if (counter === 0) {
             getPlayers();
-            setCounter(counter => (counter + 1));
+            setCounter(1);
         }
     }
 
@@ -75,9 +77,7 @@ const WaitingroomOverview = () => {
     const joinWaitingRoom = () => {
         console.log(noOfPlayers)
         if (checkIfWaitingRoomHasSpace()) {
-            sendName(sessionStorage.getItem('username'));
             getPlayers();
-            setCounter(counter => (counter - 1));
             history.push('/waitingroom/1');
         } else {
             alert('Sorry, this waiting room is already full! :(');
@@ -92,15 +92,9 @@ const WaitingroomOverview = () => {
     }
 
     const checkIfGameStarted = () => {
-        let gameStared
-        try {
-            gameStared = sessionStorage.getItem('gameStarted');
-        } catch (e) {}
-        finally {
-            gameStared = false;
-        }
-        console.log('game started: ' + gameStared)
-        if (gameStared) {
+        let gameStarted = sessionStorage.getItem('gameStarted');
+        console.log('game started: ' + gameStarted)
+        if (gameStarted) {
             alert('Sorry you cannot join, a game is currently running.')
             return true;
         } else {
