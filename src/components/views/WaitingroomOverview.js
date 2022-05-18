@@ -64,7 +64,11 @@ const WaitingroomOverview = () => {
         });
 
         subscribe('/topic/start', msg => {
-            sessionStorage.setItem('gameStarted', JSON.stringify(msg.gameRunning));
+            sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
+        });
+
+        subscribe('/topic/game', msg => {
+            sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
         });
 
         if (counter === 0) {
@@ -91,10 +95,11 @@ const WaitingroomOverview = () => {
             return false;
     }
 
+
     const checkIfGameStarted = () => {
-        let gameStarted = sessionStorage.getItem('gameStarted');
-        console.log('game started: ' + gameStarted)
-        if (gameStarted) {
+        let gameStatus = sessionStorage.getItem('gameStatus');
+        console.log('game started: ' + gameStatus)
+        if (gameStatus) {
             alert('Sorry you cannot join, a game is currently running.')
             return true;
         } else {
@@ -115,7 +120,7 @@ const WaitingroomOverview = () => {
                 <Button
                     width="100%"
                     height="50%"
-                    disabled={checkIfGameStarted()}
+                    //disabled={checkIfGameStarted()}
                     onClick={() => joinWaitingRoom()}
                 >
                     Waiting Room 1 - ({noOfPlayers.length}/4 players are in this Waiting Room)

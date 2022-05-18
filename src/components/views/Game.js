@@ -15,10 +15,8 @@ import {generateSessionToken} from "../../zoom/js/tool";
 import {
     gameLost,
     isConnected,
-    LeaveWaitingRoom,
+    ClearWaitingRoom,
     sendDiscard,
-    sendName,
-    stompClient,
     subscribe
 } from "../utils/sockClient";
 import {getSignature} from "../../zoom/js/tool";
@@ -54,8 +52,6 @@ const Game = () => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [textToDisplay, setTextToDisplay] = useState("");
-
-    LeaveWaitingRoom(localStorage.getItem('username'));
 
 
     let playerRight;

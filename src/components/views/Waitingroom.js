@@ -4,7 +4,15 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
-import {connect, isConnected, sendName, startGame, subscribe, LeaveWaitingRoom} from "../utils/sockClient";
+import {
+    connect,
+    isConnected,
+    sendName,
+    startGame,
+    subscribe,
+    LeaveWaitingRoom,
+    ClearWaitingRoom
+} from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
 
@@ -90,6 +98,7 @@ const Waitingroom = () => {
     const start = () => {
         if (checkStartPossible()) {
             startGame();
+            ClearWaitingRoom();
         } else {
             alert('Game could not be started, you need between 2 and 4 players!');
         }
