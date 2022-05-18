@@ -857,6 +857,7 @@ const Game = () => {
                     <div className="game formGame">
                     <div className="gameBoard top">
                         <div className="gameBoard rotation180">
+
                             {playerTop}
                         </div>
                     </div>
@@ -915,6 +916,7 @@ const Game = () => {
 
             </BaseContainer>
             <BaseContainer className="right">
+                <div className="right-top" >
                 <h2> </h2>
 
                 {playerListAndCards.map(item => (
@@ -923,14 +925,15 @@ const Game = () => {
                                 <button id="js-mic-button" className="meeting-control-button">
                                     <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
                                 </button>
-                                {item[0]}
+                                {item[0] == gameObj.whoseTurn? "Playing: " +item[0]: item[0]}
                             </div>
-
                         </Button>
 
                 ))}
+                </div>
+                <div className="right-button">
 
-                <Button className ="game-button"
+                <Button className ="cannotplay-button"
                         disabled = {false}
                         onClick={() => {
                             // eslint-disable-next-line no-restricted-globals
@@ -943,6 +946,7 @@ const Game = () => {
                 >
                     No Moves Possible
                 </Button>
+                </div>
             </BaseContainer>
         </div>
 

@@ -92,6 +92,18 @@
 
 }
 
+.right-top{
+
+
+}
+.right-button{
+  //float: bottom;
+ padding-top: 400px;
+
+
+}
+
+
 .gameBoard{
   width:80%;
   float: left;
@@ -172,6 +184,8 @@
   }
 }
 
+
+
 .user {
   &.container {
     margin: 0.5em 0;
@@ -204,13 +218,13 @@
   position: center;
   display: flex;
   justify-content: space-between;
-  max-width:60%;
+  max-width:500px;
   //margin: 5px;
   //padding:20px;
-  margin-left: 25%;
+  margin-left: 30%;
 }
 .card{
-  display: flex;
+  //display: absolut;
   //justify-content: space-between;
   position: relative;
   font-weight: 300;
@@ -219,8 +233,8 @@
   //padding:20px;
   border-radius: $borderRadius;
   color: $accent;
-  width:100px;
-  height:150px;
+  min-width:80px;
+  height:120px;
   background:$background;
   //float: left;
   -webkit-border-radius: 10px;
@@ -316,7 +330,7 @@
 
 
 .cardPlayer{
-  display: flex;
+  //display: flex;
   //justify-content: space-between;
   position: relative;
   font-weight: 300;
@@ -325,7 +339,7 @@
   //padding:20px;
   border-radius: $borderRadius;
   color: $accent;
-  width:80px;
+  min-width:80px;
   height:120px;
   background:$accentDark;
   //float: left;
