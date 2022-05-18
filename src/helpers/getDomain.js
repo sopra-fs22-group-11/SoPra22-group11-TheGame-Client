@@ -13,7 +13,7 @@ export const getDomain = () => {
   return isProduction() ? prodUrl : devUrl;
 };
 export const getDomain2 = () => {
-  const prodUrl = 'https://zoomvideosdk-signature.herokuapp.com/'; //TODO zu heroku production url
+  const prodUrl = 'https://zoom-thegame-server.herokuapp.com/'; //TODO zu heroku production url
 
   return prodUrl;
 };

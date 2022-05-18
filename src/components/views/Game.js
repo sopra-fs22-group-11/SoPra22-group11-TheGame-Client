@@ -258,7 +258,7 @@ const Game = () => {
         await client.init('en-US', 'Global');
         const date = new Date().toDateString();
         const sessionTopic = "theGame" + date;
-        const sessionKey = "session" + name;
+        const sessionKey = "session" + date;
         console.log(sessionTopic);
         console.log(sessionKey);
 
@@ -918,16 +918,22 @@ const Game = () => {
                 {playerListAndCards.map(item => (
                         <Button className ={getCssForPlayer(item[0])} >
                             <div key={item}>
-                                <button id="js-mic-button" className="meeting-control-button">
-                                    <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
-                                </button>
+
                                 {item[0] == gameObj.whoseTurn? "Playing: " +item[0]: item[0]}
                             </div>
+
                         </Button>
 
                 ))}
+
+
                 </div>
+
+
                 <div className="right-button">
+                    <button id="js-mic-button" className="meeting-control-button">
+                        <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
+                    </button>
 
                 <Button className ="cannotplay-button"
                         disabled = {false}
