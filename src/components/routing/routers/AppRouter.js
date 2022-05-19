@@ -19,6 +19,7 @@ import {GameIdGuard} from "../routeProtectors/GameIdGuard";
 import Waitingroom from "../../views/Waitingroom";
 import {StartpageGuard} from "../routeProtectors/StartpageGuard";
 import LandingPage from "../../views/LandingPage";
+import {WaitingRoomGuard} from "../routeProtectors/WaitingRoomGuard";
 
 /**
  * Main router of your application.
@@ -93,7 +94,9 @@ const AppRouter = () => {
 
         <Route exact path ="/waitingroom/:gameId">
           <CheckLoggedIn>
+            <WaitingRoomGuard>
             <Waitingroom/>
+            </WaitingRoomGuard>
           </CheckLoggedIn>
         </Route>
 

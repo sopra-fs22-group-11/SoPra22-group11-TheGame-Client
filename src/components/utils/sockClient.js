@@ -34,6 +34,10 @@ export const ClearWaitingRoom = () => {
     stompClient.send("/app/clearWaitingRoom", {});
 }
 
+export const currentGameStatus = () => {
+    stompClient.send("/app/isRunning", {});
+}
+
 export const sendName = (username) => {
     console.log('sending username '+username)
     stompClient.send("/app/game", {}, JSON.stringify(username));

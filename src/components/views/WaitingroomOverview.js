@@ -9,8 +9,7 @@ import {
     sendName,
     subscribe,
     checkNoOfPlayersWaitingRoom,
-    unsubscribe,
-    getPlayers
+    getPlayers, currentGameStatus
 } from "../utils/sockClient";
 import User from "../../models/User";
 import {useEffect, useState} from "react";
@@ -52,8 +51,6 @@ const WaitingroomOverview = () => {
 
         });
 
-
-
         subscribe('/topic/getPlayers', msg => {
             console.log(msg)
             setNoOfPlayers(msg);
@@ -71,8 +68,14 @@ const WaitingroomOverview = () => {
             sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
         });
 
+        subscribe('/topic/isRunning', msg => {
+            console.log('isrunning: '+msg)
+            sessionStorage.setItem('gameStatus', JSON.stringify(msg));
+        });
+
         if (counter === 0) {
             getPlayers();
+            currentGameStatus();
             setCounter(1);
         }
     }
@@ -96,8 +99,8 @@ const WaitingroomOverview = () => {
     }
 
 
-    const checkIfGameStarted = () => {
-        let gameStatus = sessionStorage.getItem('gameStatus');
+    const checkIfGameRunning = () => {
+        let gameStatus = JSON.parse(sessionStorage.getItem('gameStatus'));
         console.log('game started: ' + gameStatus)
         if (gameStatus) {
             alert('Sorry you cannot join, a game is currently running.')
@@ -120,7 +123,7 @@ const WaitingroomOverview = () => {
                 <Button
                     width="100%"
                     height="50%"
-                    //disabled={checkIfGameStarted()}
+                    disabled={checkIfGameRunning()}
                     onClick={() => joinWaitingRoom()}
                 >
                     Waiting Room 1 - ({noOfPlayers.length}/4 players are in this Waiting Room)
