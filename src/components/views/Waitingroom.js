@@ -41,7 +41,6 @@ const retrievePlayerList = () => {
         return [];
     } else {
         console.log(pl);
-        sessionStorage.removeItem('playerList');
         return pl;
     }
 }
@@ -51,12 +50,12 @@ const Waitingroom = () => {
     //************************  Websocket  **************************************************
     const history = useHistory();
     const [players, setPlayers] = useState(retrievePlayerList());
-    const [counter, setCounter] = useState(0);
+    //const [counter, setCounter] = useState(0);
 
 
     useEffect(() => {
             if (!isConnected()) {
-                    connect(registerWaitingRoomSocket());
+                    connect(registerWaitingRoomSocket);
             }
             else {
                     registerWaitingRoomSocket();
@@ -69,19 +68,39 @@ const Waitingroom = () => {
         subscribe('/topic/players',   msg => {
             console.log(msg);
             setPlayers(msg);
+            sessionStorage.setItem('playerList', JSON.stringify(msg));
             console.log('after set players: '+players);
         });
+
 
 
         subscribe('/topic/start', msg => {
             sessionStorage.setItem('gto', JSON.stringify(msg));
             console.log(msg);
+            sessionStorage.removeItem('playerList');
             history.push('/game');
         });
 
-        if (counter === 0) {
+        subscribe('/topic/game', msg=>{
+            console.log(msg);
+            if (msg!=null){
+                alert("Sorry, the Game has already started :(")
+                history.push('/waitingroomOverview');
+            }
+        })
+
+        /*if (counter === 0) {
             sendName(sessionStorage.getItem('username'));
             setCounter(1);
+        }*/
+        if (players.length>=4 && !players.includes(sessionStorage.getItem('username'))){
+            alert("Sorry, The waiting Room is already full")
+            history.push('/waitingroomOverview');
+            return;
+        }
+        console.log("Players: " + JSON.stringify(players));
+        if (!players.includes(sessionStorage.getItem('username'))) {
+            sendName(sessionStorage.getItem('username'));
         }
     };
 
