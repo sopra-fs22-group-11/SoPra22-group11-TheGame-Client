@@ -67,7 +67,12 @@ const Login = props => {
       sessionStorage.setItem('username', user.username);
       sessionStorage.setItem('clickedStart', JSON.stringify(false));
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/startpage`);
+      if (sessionStorage.getItem('FromWaitingRoom')==true){
+        sessionStorage.removeItem('FromWaitingRoom');
+        history.push('/waitingroom/1');
+      }else {
+        history.push(`/startpage`);
+      }
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }

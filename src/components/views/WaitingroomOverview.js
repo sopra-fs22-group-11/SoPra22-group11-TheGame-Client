@@ -99,7 +99,7 @@ const WaitingroomOverview = () => {
         let gameStatus = JSON.parse(sessionStorage.getItem('gameStatus'));
         console.log('game started: ' + gameStatus)
         if (gameStatus) {
-            alert('Sorry you cannot join, a game is currently running.')
+            alert('Sorry you cannot join, a game is currently running. :( ')
             return true;
         } else {
             return false;

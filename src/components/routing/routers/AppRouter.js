@@ -20,6 +20,7 @@ import Waitingroom from "../../views/Waitingroom";
 import {StartpageGuard} from "../routeProtectors/StartpageGuard";
 import LandingPage from "../../views/LandingPage";
 import {WaitingRoomGuard} from "../routeProtectors/WaitingRoomGuard";
+import {CheckLoggedInForWaitingroom} from "../routeProtectors/CheckLoggedInForWaitingroom";
 
 /**
  * Main router of your application.
@@ -93,11 +94,11 @@ const AppRouter = () => {
         </Route>
 
         <Route exact path ="/waitingroom/:gameId">
-          <CheckLoggedIn>
+          <CheckLoggedInForWaitingroom>
             <WaitingRoomGuard>
             <Waitingroom/>
             </WaitingRoomGuard>
-          </CheckLoggedIn>
+          </CheckLoggedInForWaitingroom>
         </Route>
 
         <Route exact path ="/game">

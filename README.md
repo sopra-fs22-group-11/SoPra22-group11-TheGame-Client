@@ -2,8 +2,8 @@
 
 ## Introduction
 
-The Goal of this software is to be able to play the Game remote und in real time with your friends. 
 The Game is a card game invented by Steffen Benndorf where the Goal is to play all cards on the 4 decks in the right order.
+The Goal of this software is to be able to play The Game remote und in real time with your friends.
 
 This repository of the Client side of The Game and needs two servers to have a running Game ([main server](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server) and [Zoom server](https://zoomvideosdk-signature.herokuapp.com/))
 
@@ -23,7 +23,7 @@ Out of scope for this project:
 
 ### Client
 
-On the client side we used React and Node.js. For the UI we are using CSS and SCSS.
+On the client side is written in JavaScript using React and Node.js. For the UI we are using CSS and SCSS.
 
 Tutorials:
 
@@ -32,7 +32,7 @@ Tutorials:
 - [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) offers declarative routing for React. It is a collection of navigational components that fit nicely with the application. 
 - [react-hooks](https://reactrouter.com/web/api/Hooks) let you access the router's state and perform navigation from inside your components.
 
-For requesting data from the server the client uses two different ways. For the login and user organisation we have a REST Interface.
+For requesting data from the server, the client uses two different ways. For the login and user organisation we have a REST Interface.
 During the Game we are using a Websocket interface to have a bidirectional communication between client and server. There exist a second server for generating the Zoom signature. This request will be done as an HTTP-request.
 
 
@@ -48,11 +48,16 @@ add some websocket interfaces
 
 ### Server
 
-On the Server side we are using Java with bootRun. A detailed description you will find at the [server repository](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server)
-
+On the Server side we are using Java with bootRun. A detailed description you will find in the [server repository](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server)
 
 
 ## High Level components
+
+Header
+
+Game
+
+Sockclient
 
 ## Launch & Deployment
 
