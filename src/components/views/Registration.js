@@ -72,9 +72,14 @@ const Registration = props => {
             sessionStorage.setItem('username', user.username);
             sessionStorage.setItem('clickedStart', JSON.stringify(false));
 
-
-            // Registration successfully worked --> navigate to the route /game in the GameRouter
-            history.push(`/startpage`);
+            if (JSON.parse(sessionStorage.getItem('FormWaitingRoom'))==true){
+                console.log("hello From the If statement"+ JSON.parse(sessionStorage.getItem('FormWaitingRoom')));
+                sessionStorage.removeItem('FormWaitingRoom');
+                history.push("/waitingroom/1");
+                return;
+            }else {
+                history.push(`/startpage`);
+            }
         } catch (error) {
             alert(`Something went wrong during the registration: \n${handleError(error)}`);
         }

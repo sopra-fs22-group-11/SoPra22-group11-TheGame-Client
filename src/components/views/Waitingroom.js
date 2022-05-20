@@ -82,7 +82,7 @@ const Waitingroom = () => {
         });
 
         subscribe('/topic/game', msg=>{
-            console.log(msg);
+            console.log("this is the message in topic game:" + msg);
             if (msg!=null){
                 alert("Sorry, the Game has already started :(")
                 history.push('/waitingroomOverview');
