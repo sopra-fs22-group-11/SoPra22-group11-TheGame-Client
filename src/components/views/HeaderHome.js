@@ -57,15 +57,19 @@ const HeaderHome = props => (
         </div>
         <iv className="header-right">
             <a href="/startpage"
+               cursor="pointer"
                onClick={() => goToHome()}
             >Home </a>
             <a href="/editUser/"
+               cursor="pointer"
                onClick={() => goToUserPage()}
             >Edit Profile</a>
             <a href="/rulePage"
+               cursor="pointer"
                onClick={() => goToRulePage()}
             >Rules</a>
             <a href="/login"
+               cursor="pointer"
                onClick={() => logout()}
             >Logout</a>
         </iv>

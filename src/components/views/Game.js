@@ -916,13 +916,13 @@ const Game = () => {
                 <h2> </h2>
 
                 {playerListAndCards.map(item => (
-                        <Button className ={getCssForPlayer(item[0])} >
+                        <button className={getCssForPlayer(item[0])} >
                             <div key={item}>
 
                                 {item[0] == gameObj.whoseTurn? "Playing: " +item[0]: item[0]}
                             </div>
 
-                        </Button>
+                        </button>
 
                 ))}
 

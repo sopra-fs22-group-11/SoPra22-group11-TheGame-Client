@@ -131,18 +131,21 @@
     }
   }
   padding: 0px;
-  font-weight: 300;
+  font-weight: 600;
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
-  height: 70px;
+  height: 60px;
+  width: 120px;
+  margin-bottom: 10px;
   border: none;
   border-radius: $borderRadius;
-  cursor: pointer;
+  //cursor: pointer;
   opacity: 1;
   color: $accent;
   background-color: $accentDark;
   transition: all 0.3s ease;
+  line-height: 20px;
 }
 
 .game-button {
@@ -236,21 +239,18 @@
     cursor: default;
     opacity: 0.4;
   }
+
+  position: center;
+  text-align: center;
   padding: 0px;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 18px;
-  text-align: center;
   height: 40px;
   margin-bottom: 10px;
   border: none;
   border-radius: $borderRadius;
-  //cursor: pointer;
-  //opacity: 1;
   color: white;
-  //background-color: $accent;
-  //outline: $accent 2px solid;
-  //transition: all 0.3s ease;
 
   &.player{
     width : 100%;

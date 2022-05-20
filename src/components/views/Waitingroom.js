@@ -79,15 +79,9 @@ const Waitingroom = () => {
             console.log(msg);
             sessionStorage.removeItem('playerList');
             history.push('/game');
+            return;
         });
 
-        subscribe('/topic/game', msg=>{
-            console.log("this is the message in topic game:" + msg);
-            if (msg!=null){
-                alert("Sorry, the Game has already started :(")
-                history.push('/waitingroomOverview');
-            }
-        })
 
         /*if (counter === 0) {
             sendName(sessionStorage.getItem('username'));
