@@ -1,7 +1,10 @@
 import {Spinner} from 'components/ui/Spinner';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/RulePage.scss";
-import HeaderHome from "./HeaderHome";            //maybe change it later to Home.scss
+import HeaderHome from "./HeaderHome";
+import DiscardPiles from "../../DiscardPiles.png";
+import DrawPile from "../../DrawPile.png";
+import NoMovesButton from "../../NoMovesButton.png";
 
 
 const RulePage = () => {
@@ -27,6 +30,7 @@ const RulePage = () => {
                     Since you lay the card on the pile, only the top card of each pile is visible.
                     In a descending row of cards it‘s exactly the opposite: each card laid must always be smaller than the card before it, e.g. 94, 90, 78, 61, 60, 57. Or 98, 97, 88, 83, 81, etc.
                 </p>
+                <p><img src={DiscardPiles} alt="Discard Piles in the game" height="60px" /></p>
                 <b>How to play</b>
                 <p>
                     For a 3 or 4-player game, each player is dealt 6 cards (7 cards for a 2-player game), which make up his hand. The remaining number cards are on the draw pile.
@@ -42,9 +46,9 @@ const RulePage = () => {
                     You‘re free to choose which pile to lay your number cards on, as long as you follow the rules as described of laying in a descending or ascending order on the respective pile.  You can lay all your cards on the same pile, or on multiple piles in any sequence you like.
                 </p>
                 <p>
-                    Once you have finished your turn, click on the draw pile. Your cards fill up again, as long as the draw pile is not empty. The next player now takes his turn, lays his cards and picks up cards from the draw pile to complete his hand.
-
+                    Once you have finished your turn, click on the draw pile. Your cards fill up again, as long as the draw pile is not empty. The next player now takes his turn, lays his cards and picks up cards from the draw pile to complete his hand. The number of remaining cars is visible ond the draw pile.
                 </p>
+                <p><img src={DrawPile} alt="Draw Pile in the game" height="70px" /></p>
                 <b>The backwards trick!</b>
                 <p>
                     As the game carries on, the four piles will increase in size as you add more and more cards to the piles. The general rules for laying cards as described above must be followed at all times.
@@ -73,6 +77,7 @@ const RulePage = () => {
                     When the draw pile is empty, continue playing without drawing cards. Note: From this point on, each player only has to play a single card, but still may play more.
                     The game is over as soon as a player cannot play the minimum number of cards during his turn or all cards are played. When you think you can't make a move anymore, click on the button "no moves possible".
                 </p>
+                <img src={NoMovesButton} alt="Draw Pile in the game" height="55px" />
             </div>
 
         </div>

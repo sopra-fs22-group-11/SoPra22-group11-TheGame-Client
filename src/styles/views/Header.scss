@@ -18,6 +18,12 @@
     width: 70%;
     font-size: 27px;
   }
+  &.rules-overlay {
+    color: $textColor;
+    text-align: left;
+    width: 100%;
+    font-size: 18px;
+  }
   /* Style the header links */
   &.header a {
     float: left;
