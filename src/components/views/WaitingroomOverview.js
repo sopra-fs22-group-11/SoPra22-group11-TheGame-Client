@@ -45,8 +45,6 @@ const WaitingroomOverview = () => {
             console.log(msg)
             sessionStorage.setItem('playerList', JSON.stringify(msg))
             setNoOfPlayers(msg);
-            //setNoOfPlayers(JSON.parse(sessionStorage.getItem('playerList')));
-            //sessionStorage.removeItem('playerList')//TODO figure out how to store the string array in a hook
             console.log(noOfPlayers);
 
         });
@@ -54,9 +52,7 @@ const WaitingroomOverview = () => {
         subscribe('/topic/getPlayers', msg => {
             console.log(msg)
             setNoOfPlayers(msg);
-            sessionStorage.setItem('overviewList', JSON.stringify(msg))
-            //setNoOfPlayers(JSON.parse(sessionStorage.getItem('overviewList')));
-            //sessionStorage.removeItem('overviewList')//TODO figure out how to store the string array in a hook
+            sessionStorage.setItem('playerList', JSON.stringify(msg))
             console.log(noOfPlayers);
         });
 
