@@ -138,11 +138,13 @@ const Waitingroom = () => {
 
     let startGameUI = (
         <div>
-            <div className="home title"> Waiting-room</div>
+            <div className="home title">
+
+                Waiting-room</div>
             Wait for other players to join this Game
-            <div display = "flow" vertical-align= "middle" >
+            <div className="link-copy" >
                 <LinkField
-                    width = "300px"
+                    //width = "250px"
                     placeholder={getDomain() + "/waitingroom/1"}
                     value={getLink()}
                     disabled = {true}
@@ -158,15 +160,8 @@ const Waitingroom = () => {
                 </div>
 
             <h2> </h2>
-            <Button
-
-                width="100%"
-                onClick={() => leave()}
-            >
-                Leave Waiting Room
-
-            </Button>
             <Button className = "button-startPage"
+                    cursor="pointer"
                 onClick={() => start()}
             >
                 Let's play
@@ -197,6 +192,8 @@ const Waitingroom = () => {
             <HeaderHome height="100"/>
             <BaseContainer className="home container">
                 <div className="home form">
+                    <img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" className="backbutton-left"
+                         onClick={() => leave()}/>
                     {startGameUI}
                 </div>
             </BaseContainer>

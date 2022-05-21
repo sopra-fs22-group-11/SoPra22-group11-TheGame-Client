@@ -2,7 +2,7 @@
 
 .home {
   &.container {
-    margin-top: 2em;
+    margin-top: 10px;
     min-height: 200px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
@@ -260,4 +260,8 @@
     th: {background-color: $accentDark}
     tr:hover {background-color: $buttonColor}
   }
+}
+
+.link-copy{
+  display: flow;
 }

@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
-import goToHome from "./Waitingroom";
-import goToRulePage from "./Startpage";
-import doRegister from "./Login";
-import {api, handleError} from "../../helpers/api";
+//mport leave from "./Waitingroom";
+import {api} from "../../helpers/api";
 import TheGameLogo from "../../TheGameLogo.png";
+import {
+    LeaveWaitingRoom
+} from "../utils/sockClient";
+import {useHistory} from "react-router-dom";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -35,17 +37,18 @@ const logout = () => {
     sessionStorage.removeItem('gto')
     sessionStorage.removeItem('playerList')
 
-    //sessionStorage.clear();
 
     //TODO check correct removeItem
 }
-const goToUserPage = () => {
-    console.log("Hello")
-    //const response = fetchUser()
 
-    //console.log(response.id)
-
+const goToHome = () => {
+    try{
+        LeaveWaitingRoom(sessionStorage.getItem('username'));
+    } catch (e) {
+        console.log("it has not worked")
+    }
 }
+
 
 
 
@@ -56,17 +59,16 @@ const HeaderHome = props => (
             <img src={TheGameLogo} alt="game Logo" height="45px" />
         </div>
         <iv className="header-right">
-            <a href="/startpage"
+            <a
                cursor="pointer"
                onClick={() => goToHome()}
+               href="/startpage"
             >Home </a>
             <a href="/editUser/"
                cursor="pointer"
-               onClick={() => goToUserPage()}
             >Edit Profile</a>
             <a href="/rulePage"
                cursor="pointer"
-               onClick={() => goToRulePage()}
             >Rules</a>
             <a href="/login"
                cursor="pointer"

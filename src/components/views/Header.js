@@ -13,6 +13,8 @@ import TheGameLogo from "../../TheGameLogo.png";
  */
 
 
+<<<<<<< HEAD
+=======
 const hasToken = () => {
     if (localStorage.getItem("token")) {
         return "/login";
@@ -22,6 +24,7 @@ const hasToken = () => {
 }
 
 
+>>>>>>> 5e626d234b44aeea624b725098e054019d222542
 
 
 const Header = props => (
