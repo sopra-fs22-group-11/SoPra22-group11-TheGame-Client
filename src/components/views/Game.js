@@ -46,7 +46,7 @@ const Game = () => {
     let disableDrawCards = false;
     let listOfPlayers = [];
 
-    const name = sessionStorage.getItem('username');
+    const name = localStorage.getItem('username');
 
     const playerListAndCards = [];
 
@@ -221,7 +221,6 @@ const Game = () => {
 
     //do when leaving page
     window.onunload = function () { //TODO take care of those functions such that they differentiate finely
-        // eslint-disable-next-line no-restricted-globals
         closeAndRedirect()
         alert('Bye.');
     }
@@ -785,6 +784,7 @@ const Game = () => {
                 width = "33%"
             /* eslint-disable-next-line no-restricted-globals */
                 onClick={() => {close()
+                    console.log(localStorage.getItem('token'))
                     history.push('/waitingroomOverview')
                 }}
         >
@@ -814,6 +814,9 @@ const Game = () => {
         </div>);
     }
 
+    function test(){
+        client.leave();
+    }
 
 
     function onLeft () {
@@ -948,6 +951,19 @@ const Game = () => {
                 >
                     No Moves Possible
                 </Button>
+                    <Button className ="cannotplay-button"
+                            disabled = {false}
+                            onClick={() => {
+                                // eslint-disable-next-line no-restricted-globals
+                                let result = confirm("Are you sure you have no moves left, this will end the game for you and your teammates.")
+                                if(result){
+                                    test();
+                                }
+                            }
+                            }
+                    >
+                        Test Button
+                    </Button>
                 </div>
             </BaseContainer>
         </div>

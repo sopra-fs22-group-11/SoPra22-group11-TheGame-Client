@@ -33,7 +33,7 @@ const ProfileSettings = () => {
     const [updatedUsername, setUpdatedUsername] = useState("")
     const [updatedPassword, setUpdatedPassword] = useState("");
     const [score, setScore] = useState("")
-    const id = sessionStorage.getItem('loggedInUser')
+    const id = localStorage.getItem('loggedInUser')
 
 
     const editUser = (user) =>{
@@ -64,7 +64,7 @@ const ProfileSettings = () => {
                 //console.log(user)
                 // Put the updated user to the server
                 await api.put('/users/' + id, user);
-                sessionStorage.setItem('username', user.username)
+                localStorage.setItem('username', user.username)
                 if(updatedPassword){
                     alert("Password successfully updated")
                 }
