@@ -28,9 +28,9 @@ const logout = () => {
     catch (e){
         console.log(e)
     }
-    sessionStorage.removeItem('loggedInUser')
-    sessionStorage.removeItem('token')
-    sessionStorage.removeItem('username');
+    localStorage.removeItem('loggedInUser')
+    localStorage.removeItem('token')
+    localStorage.removeItem('username');
     sessionStorage.removeItem('clickedStart');
     sessionStorage.removeItem('gto')
     sessionStorage.removeItem('playerList')

@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
  * @param props
  */
 export const StartpageGuard = props => {
-    if (sessionStorage.getItem("token")) {
+    if (localStorage.getItem("token")) {
         return props.children;
     }
     return <Redirect to="/login"/>;

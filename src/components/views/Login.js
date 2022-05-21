@@ -62,9 +62,9 @@ const Login = props => {
       // Get the returned User and update a new object.
       const user = new User(response.data)
       // Store the token into the local storage.
-      sessionStorage.setItem('token', user.token)
-      sessionStorage.setItem('loggedInUser', user.id);
-      sessionStorage.setItem('username', user.username);
+      localStorage.setItem('token', user.token)
+      localStorage.setItem('loggedInUser', user.id);
+      localStorage.setItem('username', user.username);
       sessionStorage.setItem('clickedStart', JSON.stringify(false));
       // Login successfully worked --> navigate to the route /game in the GameRouter
       if (sessionStorage.getItem('FromWaitingRoom')==true){

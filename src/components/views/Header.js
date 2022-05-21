@@ -14,7 +14,7 @@ import TheGameLogo from "../../TheGameLogo.png";
 
 
 const hasToken = () => {
-    if (sessionStorage.getItem("token")) {
+    if (localStorage.getItem("token")) {
         return "/login";
     } else{
         return "/startpage";
