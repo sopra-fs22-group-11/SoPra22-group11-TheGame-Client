@@ -195,7 +195,7 @@ const ProfileSettings = () => {
             <div className="home form">
                 <div className="home title"> Profile
                     <text>     </text>
-                    <img width="37px"  src={isDisabled? "https://img.icons8.com/ios/50/FFFFFF/edit--v1.png": "https://img.icons8.com/ios-filled/50/FFFFFF/save--v1.png"}  onClick={isDisabled ? () => editUser(user): () => saveChanges()}/>
+                    <img className="edit-right"  src={isDisabled? "https://img.icons8.com/ios/50/FFFFFF/edit--v1.png": "https://img.icons8.com/ios-filled/50/FFFFFF/save--v1.png"}  onClick={isDisabled ? () => editUser(user): () => saveChanges()}/>
                     </div>
 
                 {content}

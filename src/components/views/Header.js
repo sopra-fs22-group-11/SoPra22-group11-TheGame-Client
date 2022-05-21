@@ -13,15 +13,6 @@ import TheGameLogo from "../../TheGameLogo.png";
  */
 
 
-const hasToken = () => {
-    if (sessionStorage.getItem("token")) {
-        return "/login";
-    } else{
-        return "/startpage";
-    }
-}
-
-
 
 
 const Header = props => (
