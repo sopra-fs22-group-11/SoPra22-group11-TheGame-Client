@@ -286,6 +286,17 @@
   transform: rotate(-15deg);
   top:20px;
   left: $startCard;
+
+  &.selected{
+    z-index:6;
+    min-width:88px;
+    height:132px;
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+
+  }
 }
 
 .card:nth-child(2){
@@ -296,6 +307,17 @@
   transform: rotate(-10deg);
   top:-0px;
   left: $startCard - 40px;
+
+  &.selected{
+    z-index:6;
+    min-width:88px;
+    height:132px;
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+
+  }
 }
 
 .card:nth-child(3){
@@ -307,12 +329,34 @@
   left: $startCard - 60px;
   //z-index:5;
   top:-10px;
+
+  &.selected{
+    z-index:6;
+    min-width:88px;
+    height:132px;
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+
+  }
 }
 
 .card:nth-child(4){
   left: $startCard - 80px;
   //z-index:5;
   top:-10px;
+
+  &.selected{
+    z-index:6;
+    min-width:88px;
+    height:132px;
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+
+  }
 }
 
 .card:nth-child(5){
@@ -323,6 +367,17 @@
   transform: rotate(5deg);
   top:-10px;
   left: $startCard - 100px;
+
+  &.selected{
+    z-index:6;
+    min-width:88px;
+    height:132px;
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+
+  }
 }
 .card:nth-child(6){
   -moz-transform: rotate(10deg);
@@ -332,6 +387,17 @@
   transform: rotate(10deg);
   top:-0px;
   left: $startCard - 130px;
+
+  &.selected{
+    z-index:6;
+    min-width:88px;
+    height:132px;
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+
+  }
 }
 .card:nth-child(7){
   -moz-transform: rotate(15deg);
@@ -341,6 +407,17 @@
   transform: rotate(15deg);
   top:20px;
   left: $startCard - 150px;
+
+  &.selected{
+    z-index:6;
+    min-width:88px;
+    height:132px;
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+
+  }
 }
 
 .card:hover{

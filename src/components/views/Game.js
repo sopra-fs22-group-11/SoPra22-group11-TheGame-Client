@@ -123,6 +123,9 @@ const Game = () => {
             if (gameObj.playerCards[name][i].value != chosenCard) { // Keep at two ==
                 newSpecificPlayerCards.push(gameObj.playerCards[name][i]);
             }
+
+            let id_unselected = "owncard " + (i+1).toString();
+            document.getElementById(id_unselected).className = "card";
         }
         gameObj.playerCards[name] = newSpecificPlayerCards;
         gameObj.pilesList[index].topCard.value = chosenCard;
@@ -153,6 +156,10 @@ const Game = () => {
 
     const draw = () => {
         setCounter(0);
+        for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+            let id_unselected = "owncard " + (i+1).toString();
+            document.getElementById(id_unselected).className = "card";
+        }
         disableCards = true;
         sendDraw();
     }
@@ -183,11 +190,11 @@ const Game = () => {
         } else {
             setChosenCard(JSON.stringify(val));
             const id_selected = "owncard " + (index+1).toString();
-            /*for (let i = 0; i < gameObj.playerCards[name].length; i++) {
-                let id_unselected = "owncard " + i;
-                document.getElementById(id_unselected).className = "selected-card"
-            }*/
-            document.getElementById(id_selected).className = "selected-card";
+            for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+                let id_unselected = "owncard " + (i+1).toString();
+                document.getElementById(id_unselected).className = "card";
+            }
+            document.getElementById(id_selected).className = "card nth-child("+index+1+") selected";
         }
     }
 
