@@ -5,6 +5,7 @@ import HeaderHome from "./HeaderHome";
 import DiscardPiles from "../../DiscardPiles.png";
 import DrawPile from "../../DrawPile.png";
 import NoMovesButton from "../../NoMovesButton.png";
+import BackwardsTrick from "../../BackwardsTrick.png";
 
 
 const RulePage = () => {
@@ -66,7 +67,7 @@ const RulePage = () => {
             </div>
 
             <div className="rules column">
-
+                <p><img src={BackwardsTrick} alt="Backwards trick" height="200px" /></p>
                 <b>Permissible communication</b>
                 <p>
                     During the game players are never allowed to ask the others for the exact number on their cards or reveal the numbers of their own cards. Mentioning concrete numbers in any way is strictly forbidden!
@@ -77,7 +78,7 @@ const RulePage = () => {
                     When the draw pile is empty, continue playing without drawing cards. Note: From this point on, each player only has to play a single card, but still may play more.
                     The game is over as soon as a player cannot play the minimum number of cards during his turn or all cards are played. When you think you can't make a move anymore, click on the button "no moves possible".
                 </p>
-                <img src={NoMovesButton} alt="Draw Pile in the game" height="55px" />
+                <img src={NoMovesButton} alt="No moves possible button" height="55px" />
             </div>
 
         </div>

@@ -49,8 +49,8 @@ const HeaderGame = props => {
         <div>
         <div className="header title">Rules</div>
         <div className="header rules-overlay">
-        <p>Pile with ▼: Only accepts smaller cards.</p>
-        <p>Pile with ▲: Only accepts bigger cards.</p>
+        <p>Pile with ▼: Accepts smaller cards.</p>
+        <p>Pile with ▲: Accepts bigger cards.</p>
         <p>You have to play at least two cards when it is your turn, but when the draw pile is empty you only have to play at least one card. </p>
         <p>You can go in the opposite direction of a pile, if you lay down a card with the difference of exactly 10.</p>
         <p>You are allowed to talk, but it is forbidden to mention concrete numbers.</p>
