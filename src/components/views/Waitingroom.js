@@ -158,7 +158,6 @@ const Waitingroom = () => {
                 <img src="https://img.icons8.com/material-rounded/24/FFFFFF/copy.png"/>
             </Button>
                 </div>
-
             <h2> </h2>
             <Button className = "button-startPage"
                     cursor="pointer"
