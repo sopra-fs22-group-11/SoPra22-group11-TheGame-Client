@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
-//import "styles/views/Home.scss";
 import "styles/views/Game.scss";
 import ZoomVideo from '@zoom/videosdk';
 import initClientEventListeners from "../../zoom/js/meeting/session/client-event-listeners";
@@ -41,6 +40,7 @@ const Game = () => {
 
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
+    const [indexChosenCard, setIndexChosenCard] = useState(null);
 
     let disableCards = false;
     let disableDrawCards = false;
@@ -177,11 +177,17 @@ const Game = () => {
 
     }
 
-    const chooseCard = (val) => {
+    const chooseCard = (index, val) => {
         if (checkWhoseTurn() === true) {
             alert("Sorry but is not your turn")
         } else {
             setChosenCard(JSON.stringify(val));
+            const id_selected = "owncard " + (index+1).toString();
+            /*for (let i = 0; i < gameObj.playerCards[name].length; i++) {
+                let id_unselected = "owncard " + i;
+                document.getElementById(id_unselected).className = "selected-card"
+            }*/
+            document.getElementById(id_selected).className = "selected-card";
         }
     }
 
@@ -330,6 +336,8 @@ const Game = () => {
 
     let listHiddenValues = [true, true, true, true, true, true, true];
     //const[showOwnCards, setShowOwenCards]=useState(listHiddenValues);
+    let listSelectedValues =[false, false, false, false, false, false];
+
 
     //by default, we enter 0 so that there is no null value at the start
     let cardValues = [0, 0, 0, 0, 0, 0, 0];
@@ -367,6 +375,7 @@ const Game = () => {
     }
 
 
+
     //check wheter it is players turn and ownCards should be shown
     checkWhoseTurn();
     checkForDraw();
@@ -378,45 +387,45 @@ const Game = () => {
 
     let ownCards = (
         <section className="wrapper">
-            <button className={gameObj.playerCards[name].length > 0 ? "card" : "card hidden"}
+            <button id="owncard 1"className={gameObj.playerCards[name].length > 0 ? "card" : "card hidden"}
                     display="none"
                     disabled={false}
-                    onClick={() => chooseCard(cardValues[0])}
+                    onClick={() => chooseCard(0, cardValues[0])}
             >
                 {cardValues[0]}
             </button>
-            <button className={gameObj.playerCards[name].length > 1 ? "card" : "card hidden"}
+            <button id="owncard 2" className={gameObj.playerCards[name].length > 1 ? "card" : "card hidden"}
                     disabled={false}
-                    onClick={() => chooseCard(cardValues[1])}
+                    onClick={() => chooseCard(1,cardValues[1])}
             >
                 {cardValues[1]}</button>
-            <button className={gameObj.playerCards[name].length > 2 ? "card" : "card hidden"}
+            <button id="owncard 3" className={gameObj.playerCards[name].length > 2 ? "card" : "card hidden"}
                     disabled={false}
-                    onClick={() => chooseCard(cardValues[2])}
+                    onClick={() => chooseCard(2,cardValues[2])}
             >
                 {cardValues[2]}
             </button>
-            <button className={gameObj.playerCards[name].length > 3 ? "card" : "card hidden"}
+            <button id="owncard 4" className={gameObj.playerCards[name].length > 3 ? "card" : "card hidden"}
                     disabled={false}
-                    onClick={() => chooseCard(cardValues[3])}
+                    onClick={() => chooseCard(3,cardValues[3])}
             >
                 {cardValues[3]}
             </button>
-            <button className={gameObj.playerCards[name].length > 4 ? "card" : "card hidden"}
+            <button id="owncard 5" className={gameObj.playerCards[name].length > 4 ? "card" : "card hidden"}
                     disabled={false}
-                    onClick={() => chooseCard(cardValues[4])}
+                    onClick={() => chooseCard(4,cardValues[4])}
             >
                 {cardValues[4]}
             </button>
-            <button className={gameObj.playerCards[name].length > 5 ? "card" : "card hidden"}
+            <button id="owncard 6" className={gameObj.playerCards[name].length > 5 ? "card" : "card hidden"}
                     disabled={false}
-                    onClick={() => chooseCard(cardValues[5])}
+                    onClick={() => chooseCard(5,cardValues[5])}
             >
                 {cardValues[5]}
             </button>
-            <button className={gameObj.playerCards[name].length > 6 ? "card" : "card hidden"}
+            <button id="owncard 7" className={gameObj.playerCards[name].length > 6 ? "card" : "card hidden"}
                     disabled={false}
-                    onClick={() => chooseCard(cardValues[6])}
+                    onClick={() => chooseCard(6,cardValues[6])}
             >
                 {cardValues[6]}
             </button>
@@ -931,12 +940,21 @@ const Game = () => {
 
 
                 </div>
+                <div className="right-middle">
+                    <div className="new-Label">
+                        Communication:
+                    </div>
 
-
-                <div className="right-button">
                     <button id="js-mic-button" className="meeting-control-button">
                         <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
                     </button>
+
+
+                </div>
+
+
+                <div className="right-button">
+
 
                 <Button className ="cannotplay-button"
                         disabled = {false}
@@ -951,19 +969,6 @@ const Game = () => {
                 >
                     No Moves Possible
                 </Button>
-                    <Button className ="cannotplay-button"
-                            disabled = {false}
-                            onClick={() => {
-                                // eslint-disable-next-line no-restricted-globals
-                                let result = confirm("Are you sure you have no moves left, this will end the game for you and your teammates.")
-                                if(result){
-                                    test();
-                                }
-                            }
-                            }
-                    >
-                        Test Button
-                    </Button>
                 </div>
             </BaseContainer>
         </div>
