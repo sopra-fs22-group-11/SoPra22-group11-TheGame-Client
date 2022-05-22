@@ -28,22 +28,12 @@ On the client side is written in JavaScript using React and Node.js. For the UI 
 Tutorials:
 
 - [React documentation](https://reactjs.org/)
-- [CSS](https://www.w3schools.com/Css/), [SCSS](https://sass-lang.com/documentation/syntax), and [HTML](https://www.w3schools.com/html/html_intro.asp)!
+- [CSS](https://www.w3schools.com/Css/), [SCSS](https://sass-lang.com/documentation/syntax), and [HTML](https://www.w3schools.com/html/html_intro.asp)
 - [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) offers declarative routing for React. It is a collection of navigational components that fit nicely with the application. 
 - [react-hooks](https://reactrouter.com/web/api/Hooks) let you access the router's state and perform navigation from inside your components.
 
 For requesting data from the server, the client uses two different ways. For the login and user organisation we have a REST Interface.
 During the Game we are using a Websocket interface to have a bidirectional communication between client and server. There exist a second server for generating the Zoom signature. This request will be done as an HTTP-request.
-
-
-#### REST Interface
-
-add some rest interfaces
-
-
-#### Websocket Interface
-
-add some websocket interfaces
 
 
 ### Server
@@ -55,24 +45,56 @@ On the Server side we are using Java with bootRun. A detailed description you wi
 
 Header
 
+Sockclient
+
+Waitingroom
+
 Game
 
-Sockclient
+
 
 ## Launch & Deployment
 
-### Prerequisites and Installation
 For your local development environment, you will need Node.js. You can download it [here](https://nodejs.org). All other dependencies, including React, get installed with:
 
 ```npm install```
 
-Run this command before you start your application for the first time. Next, you can start the app with:
+To run the app use:
 
-```npm run dev```
+`npm run dev`
+  
+It will open the app in [http://localhost:3000](http://localhost:3000) in your default browser
 
-Now you can open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Deployment will be done with [CLI](https://devcenter.heroku.com/articles/heroku-cli) from Heroku.
+When you are logged in you can run:
+
+`git heroku push master`
+
+The application will be deployed. Find more about it [here](https://stackoverflow.com/questions/71892543/heroku-and-github-items-could-not-be-retrieved-internal-server-error).
+
 
 ## Illustrations
+
+Before you can enter The Game you needs to Register or Login. 
+
+
+After that you will be redirected to the Start page where you have different options. You can see the Rules, check the scores, edit your profile
+or play a Game.
+
+
+When clicking on "Lets play" you will be redirected to the waitingroom, where you can see which player are also waiting 
+for The Game to start. When one of the other player clicks on start, the Game will beginn for all of them.
+
+
+In the Game, they can see all their cards displayed in front of them. You can also see how many cards the other players have. In the 
+middle there are the four piles and the draw pile. When clicking on one of you cards you the card is selected and you can chose on which pile 
+you want to play the card.
+
+When The Game is won, it will finish automatically and you will see that 100 point will be added to your score.
+
+
+You can decided if you want to play again or leave. When leaving you will be redirected to the start page.
+
 
 ## Roadmap
 
