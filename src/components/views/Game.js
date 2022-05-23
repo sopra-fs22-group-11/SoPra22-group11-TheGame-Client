@@ -284,13 +284,14 @@ const Game = () => {
         console.log(sessionTopic);
         console.log(sessionKey);
 
-        const signature =  await getSignature(sessionTopic, sessionKey, name);
+        const signature = await getSignature(sessionTopic, sessionKey, name);
        // const signature = JSON.stringify(signatureResponse);
 
+        console.log("seg: " + signature);
+
         const newSignature = signature.slice(1,signature.length -1);
+        console.log("new seg: " + newSignature);
 
-
-        console.log("signature that is passed by function: " + newSignature);
         try {
             await client.join(
                 sessionTopic,
