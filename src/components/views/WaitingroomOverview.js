@@ -83,6 +83,7 @@ const WaitingroomOverview = () => {
         if (checkIfWaitingRoomHasSpace()) {
             getPlayers();
             history.push('/waitingroom/1');
+            return;
         } else {
             alert('Sorry you cannot join, the waiting room is full! :(');
         }

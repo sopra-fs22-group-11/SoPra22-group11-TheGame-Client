@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
  */
 
 export  const CheckLoggedInForWaitingroom = props => {
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
         return props.children;
     }
     // if user is already registered, redirects to the main app

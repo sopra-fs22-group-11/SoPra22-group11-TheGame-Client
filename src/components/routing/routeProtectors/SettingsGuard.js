@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export const SettingsGuard = props => {
     let { userId } = useParams();
-    if( userId==localStorage.getItem("loggedInUser")){
+    if( userId==sessionStorage.getItem("loggedInUser")){
         return props.children;
     }
 

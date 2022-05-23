@@ -11,7 +11,7 @@ import {
     startGame,
     subscribe,
     LeaveWaitingRoom,
-    ClearWaitingRoom
+    ClearWaitingRoom, currentGameStatus
 } from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
@@ -82,19 +82,30 @@ const Waitingroom = () => {
             return;
         });
 
+        subscribe('/topic/isRunning', msg => {
+            sessionStorage.setItem('gameStatus', JSON.stringify(msg));
+        });
+
 
         /*if (counter === 0) {
             sendName(sessionStorage.getItem('username'));
             setCounter(1);
         }*/
-        if (players.length>=4 && !players.includes(localStorage.getItem('username'))){
+        if (players.length>=4 && !players.includes(sessionStorage.getItem('username'))){
             alert("Sorry, The waiting Room is already full")
             history.push('/waitingroomOverview');
             return;
         }
+        currentGameStatus();
+        console.log(sessionStorage.getItem('gameStatus'))
+        if (JSON.parse(sessionStorage.getItem('gameStatus'))){
+            alert("Sorry, The Game already started")
+            history.push('/waitingroomOverview');
+            return;
+        }
         console.log("Players: " + JSON.stringify(players));
-        if (!players.includes(localStorage.getItem('username'))) {
-            sendName(localStorage.getItem('username'));
+        if (!players.includes(sessionStorage.getItem('username'))) {
+            sendName(sessionStorage.getItem('username'));
         }
     };
 
@@ -119,8 +130,9 @@ const Waitingroom = () => {
 
 
     const leave = () => {
-        LeaveWaitingRoom(localStorage.getItem('username'));
+        LeaveWaitingRoom(sessionStorage.getItem('username'));
         history.push('/waitingroomOverview')
+        return;
     }
 
     //************************  Websocket  **************************************************
