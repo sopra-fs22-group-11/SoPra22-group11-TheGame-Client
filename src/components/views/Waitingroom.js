@@ -62,6 +62,24 @@ const Waitingroom = () => {
             }
         }, []);
 
+    useEffect(() => {
+        return history.listen(location => {
+            if (history.action === 'PUSH') {
+                setLocationKeys([ location.key ])
+            }
+
+            if (history.action === 'POP') {
+                if (locationKeys[1] === location.key) {
+                    setLocationKeys(([ _, ...keys ]) => keys)
+
+                } else {
+                    setLocationKeys((keys) => [ location.key, ...keys ])
+                    LeaveWaitingRoom(sessionStorage.getItem('username'));
+                }
+            }
+        })
+    }, [ locationKeys, ])
+
 
 
     const registerWaitingRoomSocket = () => {
