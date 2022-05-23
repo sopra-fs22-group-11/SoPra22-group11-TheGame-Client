@@ -6,16 +6,10 @@ import HeaderHome from "./HeaderHome";
 import {
     connect,
     isConnected,
-    sendName,
     subscribe,
-    checkNoOfPlayersWaitingRoom,
     getPlayers, currentGameStatus
 } from "../utils/sockClient";
-import User from "../../models/User";
 import {useEffect, useState} from "react";
-import {string} from "sockjs-client/lib/utils/random";
-import {api, handleError} from "../../helpers/api";
-import game from "./Game";
 
 
 const WaitingroomOverview = () => {
@@ -40,6 +34,7 @@ const WaitingroomOverview = () => {
     }, [noOfPlayers]);
 
     useEffect(() => {
+        WaitingRoomPlayersSocket();
     }, [gameStatus]);
 
 
@@ -50,7 +45,6 @@ const WaitingroomOverview = () => {
             sessionStorage.setItem('playerList', JSON.stringify(msg))
             setNoOfPlayers(msg);
             console.log(noOfPlayers);
-
         });
 
         subscribe('/topic/getPlayers', msg => {
@@ -61,18 +55,15 @@ const WaitingroomOverview = () => {
         });
 
         subscribe('/topic/start', msg => {
-            //sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
             setGameStatus(msg.gameRunning);
         });
 
         subscribe('/topic/game', msg => {
-            //sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
             setGameStatus(msg.gameRunning);
         });
 
         subscribe('/topic/isRunning', msg => {
             console.log('isrunning: '+msg)
-            //sessionStorage.setItem('gameStatus', JSON.stringify(msg));
             setGameStatus(msg);
         });
 
