@@ -69,9 +69,10 @@ const WaitingroomOverview = () => {
             sessionStorage.setItem('gameStatus', JSON.stringify(msg));
         });
 
+        currentGameStatus();
+
         if (counter === 0) {
             getPlayers();
-            currentGameStatus();
             setCounter(1);
         }
     }
@@ -83,7 +84,7 @@ const WaitingroomOverview = () => {
             getPlayers();
             history.push('/waitingroom/1');
         } else {
-            alert('Sorry, this waiting room is already full! :(');
+            alert('Sorry you cannot join, the waiting room is full! :(');
         }
     }
 
@@ -99,11 +100,18 @@ const WaitingroomOverview = () => {
         let gameStatus = JSON.parse(sessionStorage.getItem('gameStatus'));
         console.log('game started: ' + gameStatus)
         if (gameStatus) {
-            alert('Sorry you cannot join, a game is currently running. :( ')
+            //alert('Sorry you cannot join, a game is currently running. :( ')
             return true;
         } else {
             return false;
         }
+    }
+
+    const buttonDescription = () => {
+        if (checkIfGameRunning()) {
+            return "A game is currently running"
+        }
+        return "Waiting Room 1 - ("+noOfPlayers.length+"/4 players are in this Waiting Room)"
     }
 
 
@@ -122,7 +130,7 @@ const WaitingroomOverview = () => {
                     disabled={checkIfGameRunning()}
                     onClick={() => joinWaitingRoom()}
                 >
-                    Waiting Room 1 - ({noOfPlayers.length}/4 players are in this Waiting Room)
+                    {buttonDescription()}
                 </Button>
             </div>
         </BaseContainer>

@@ -50,7 +50,7 @@ const Waitingroom = () => {
     //************************  Websocket  **************************************************
     const history = useHistory();
     const [players, setPlayers] = useState(retrievePlayerList());
-    //const [counter, setCounter] = useState(0);
+    const [ locationKeys, setLocationKeys ] = useState([])
 
 
     useEffect(() => {
