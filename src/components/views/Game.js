@@ -76,16 +76,12 @@ const Game = () => {
 
     const registerGameSocket = () => {
         subscribe('/topic/game', msg => {
-<<<<<<< HEAD
             if (gameObj.whoseTurn.toString() == msg.whoseTurn.toString()){
 
             }
-            setGameObj(msg);
-
-=======
             setGameObj(msg)
             sessionStorage.setItem('gto', JSON.stringify(msg))
->>>>>>> 706705e05df40f3dc4d23823106bbcb628f4d77a
+
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);

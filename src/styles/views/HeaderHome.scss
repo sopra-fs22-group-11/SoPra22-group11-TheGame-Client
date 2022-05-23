@@ -29,6 +29,13 @@
     line-height: 25px;
     border-radius: 4px;
   }
+  &.header b {
+    font-weight: bold;
+    color: $accent;
+    text-align: left;
+    width: 70%;
+    font-size: 27px;
+  }
 
   /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
   &.header a.logo {

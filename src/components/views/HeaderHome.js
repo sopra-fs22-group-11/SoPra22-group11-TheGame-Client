@@ -26,8 +26,9 @@ const logout = () => {
     let id = sessionStorage.getItem('loggedInUser');
     console.log('/session/'+ id)
     try{
-        const response = api.get('/session/'+ id);}
-    catch (e){
+        const response = api.get('/session/'+ id);
+        LeaveWaitingRoom(sessionStorage.getItem('username'));
+    } catch (e){
         console.log(e)
     }
     sessionStorage.removeItem('loggedInUser')
@@ -55,7 +56,9 @@ const goToHome = () => {
 
 const HeaderHome = props => (
     <div className="header container">
-        <div className="header title">
+
+        <div className="header title"
+        >
             The Game |
             <img src={TheGameLogo} alt="game Logo" height="45px" />
         </div>
@@ -65,11 +68,14 @@ const HeaderHome = props => (
                onClick={() => goToHome()}
                href="/startpage"
             >Home </a>
-            <a href="/editUser/"
-               cursor="pointer"
+            <a cursor="pointer"
+                onClick={() => goToHome()}
+                href="/editUser/"
+
             >Edit Profile</a>
-            <a href="/rulePage"
-               cursor="pointer"
+            <a cursor="pointer"
+               onClick={() => goToHome()}
+                href="/rulePage"
             >Rules</a>
             <a href="/login"
                cursor="pointer"
