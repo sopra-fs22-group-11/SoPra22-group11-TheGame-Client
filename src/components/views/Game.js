@@ -212,7 +212,7 @@ const Game = () => {
 
     //add in this function all methods which need to be called when leaving the page/gameObj
     //TODO add close gameObj method and tell server to close the gameObj
-    const close = async () => {
+    const close = async (destination) => {
         let un = sessionStorage.getItem('username')
         let id = sessionStorage.getItem('loggedInUser')
         let token = sessionStorage.getItem('token')
@@ -227,14 +227,14 @@ const Game = () => {
             sessionStorage.setItem('username', un)
             sessionStorage.removeItem('playerList')
             sessionStorage.removeItem('gameStatus')
+            history.push(destination)
+            return;
 
         }
     }
 
     const closeAndRedirect = async () => {
-        close()
-        history.push('/startpage')
-        return;
+        await close('/startpage')
     }
 
     //show popup before leaving
@@ -799,9 +799,7 @@ const Game = () => {
             disabled = {false}
             width = "33%"
         /* eslint-disable-next-line no-restricted-globals */
-            onClick={() => {close()
-                history.push('/startpage')
-                return;}}
+            onClick={() => {close('/startpage')}}
     >
         Leave
     </Button>
@@ -811,9 +809,7 @@ const Game = () => {
                 disabled = {false}
                 width = "33%"
             /* eslint-disable-next-line no-restricted-globals */
-                onClick={() => {close()
-                    history.push('/waitingroom/1')
-                    return;
+                onClick={() => {close('/waitingroom/1')
                 }}
         >
             Play Again
@@ -831,9 +827,7 @@ const Game = () => {
                     disabled = {false}
                     width = "33%"
                 /* eslint-disable-next-line no-restricted-globals */
-                    onClick={() => {close()
-                        history.push('/scoreboard')
-                        return;
+                    onClick={() => {close('/scoreboard')
                     }}
             >
                 Score
@@ -851,7 +845,7 @@ const Game = () => {
     function onLeft () {
         setTextToDisplay(<div>
             <h2> Your game is over </h2>
-            <p>One of your Teammates left the Game. </p>
+            <p>Someone's leaving the Game. </p>
             {leaveButton}
             {playAgainButton}
         </div>);
