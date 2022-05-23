@@ -66,7 +66,7 @@ const ProfileSettings = () => {
                 await api.put('/users/' + id, user);
                 localStorage.setItem('username', user.username)
                 if(updatedPassword){
-                    alert("Password successfully updated")
+                    alert("User data successfully updated")
                 }
 
 
