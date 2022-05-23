@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export const GameIdGuard = props => {
     let { gameId } = useParams();
-    if( gameId==localStorage.getItem("gameId")){
+    if( gameId==sessionStorage.getItem("gameId")){
         return props.children;
     }
     return <Redirect to="/startpage"/>;

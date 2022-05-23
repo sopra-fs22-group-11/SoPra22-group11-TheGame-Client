@@ -40,6 +40,7 @@ const Startpage = () => {
     const goToWaitingroomOverview = () => {
         connect(()=> {
             history.push('/waitingroomOverview');
+            return;
         })
     }
 
@@ -106,7 +107,8 @@ const Startpage = () => {
                 <div display="block" justify-content="space-between">
                 <Button
                     width ="30%"
-                    onClick={() => history.push('/rulePage')}
+                    onClick={() => {history.push('/rulePage');
+                                    return;}}
 
 
                 >
@@ -116,7 +118,8 @@ const Startpage = () => {
                 </Button>
                 <Button
                     width ="30%"
-                    onClick={() => history.push('/scoreboard')}
+                    onClick={() => {history.push('/scoreboard')
+                                    return;}}
                 >
                     Scores
                     <img src="https://img.icons8.com/ios/50/FFFFFF/trophy--v1.png"/>

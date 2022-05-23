@@ -46,7 +46,7 @@ const Game = () => {
     let disableDrawCards = false;
     let listOfPlayers = [];
 
-    const name = localStorage.getItem('username');
+    const name = sessionStorage.getItem('username');
 
     const playerListAndCards = [];
 
@@ -213,18 +213,28 @@ const Game = () => {
     //add in this function all methods which need to be called when leaving the page/gameObj
     //TODO add close gameObj method and tell server to close the gameObj
     const close = async () => {
+        let un = sessionStorage.getItem('username')
+        let id = sessionStorage.getItem('loggedInUser')
+        let token = sessionStorage.getItem('token')
         try {
-            await client.leave();
+            client.leave()
             this.sock.close();
-
         } catch (e) {
             console.log(e);
+        }finally {
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('loggedInUser', id)
+            sessionStorage.setItem('username', un)
+            sessionStorage.removeItem('playerList')
+            sessionStorage.removeItem('gameStatus')
+
         }
     }
 
     const closeAndRedirect = async () => {
         close()
         history.push('/startpage')
+        return;
     }
 
     //show popup before leaving
@@ -790,7 +800,8 @@ const Game = () => {
             width = "33%"
         /* eslint-disable-next-line no-restricted-globals */
             onClick={() => {close()
-                history.push('/startpage')}}
+                history.push('/startpage')
+                return;}}
     >
         Leave
     </Button>
@@ -801,8 +812,8 @@ const Game = () => {
                 width = "33%"
             /* eslint-disable-next-line no-restricted-globals */
                 onClick={() => {close()
-                    console.log(localStorage.getItem('token'))
-                    history.push('/waitingroomOverview')
+                    history.push('/waitingroom/1')
+                    return;
                 }}
         >
             Play Again
@@ -822,6 +833,7 @@ const Game = () => {
                 /* eslint-disable-next-line no-restricted-globals */
                     onClick={() => {close()
                         history.push('/scoreboard')
+                        return;
                     }}
             >
                 Score

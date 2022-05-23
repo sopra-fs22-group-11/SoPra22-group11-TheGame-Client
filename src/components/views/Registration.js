@@ -67,9 +67,9 @@ const Registration = props => {
             const user = new User(response.data);
 
             // Store the token into the session storage.
-            localStorage.setItem('token', user.token);
-            localStorage.setItem('loggedInUser', user.id);
-            localStorage.setItem('username', user.username);
+            sessionStorage.setItem('token', user.token);
+            sessionStorage.setItem('loggedInUser', user.id);
+            sessionStorage.setItem('username', user.username);
             sessionStorage.setItem('clickedStart', JSON.stringify(false));
 
             if (JSON.parse(sessionStorage.getItem('FormWaitingRoom'))==true){
@@ -79,6 +79,7 @@ const Registration = props => {
                 return;
             }else {
                 history.push(`/startpage`);
+                return;
             }
         } catch (error) {
             alert(`Something went wrong during the registration: \n${handleError(error)}`);
@@ -87,6 +88,7 @@ const Registration = props => {
 
     const goToLogin = () => {
         history.push('/login');
+        return;
     }
 
     return (

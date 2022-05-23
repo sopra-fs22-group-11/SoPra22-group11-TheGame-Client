@@ -15,6 +15,7 @@ const LandingPage = () => {
 
     const goToLogin = () => {
         history.push('/login');
+        return;
     }
 
     return (

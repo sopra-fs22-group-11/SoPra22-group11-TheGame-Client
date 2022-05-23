@@ -30,12 +30,13 @@ const logout = () => {
     catch (e){
         console.log(e)
     }
-    localStorage.removeItem('loggedInUser')
-    localStorage.removeItem('token')
-    localStorage.removeItem('username');
+    sessionStorage.removeItem('loggedInUser')
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('username');
     sessionStorage.removeItem('clickedStart');
     sessionStorage.removeItem('gto')
     sessionStorage.removeItem('playerList')
+    sessionStorage.removeItem('gameStatus')
 
 
     //TODO check correct removeItem

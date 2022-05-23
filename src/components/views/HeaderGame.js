@@ -31,7 +31,7 @@ const HeaderGame = props => {
 
     const [modalIsOpen, setModalIsOpen]= useState(false);
     const [textToDisplay, setTextToDisplay]= useState();
-    const history = useHistory();
+    //const history = useHistory();
 
     function openModal(){
         setModalIsOpen(true);
@@ -59,7 +59,7 @@ const HeaderGame = props => {
         </div>
     )
 
-    function cannotPlay(){ // TODO notify websocket that gamerunning: lost
+    /*function cannotPlay(){ // TODO notify websocket that gamerunning: lost
         setTextToDisplay(lostText);
         openModal();
     }
@@ -75,10 +75,7 @@ const HeaderGame = props => {
                 OK
             </Button>
         </div>
-
-
-
-    )
+    )*/
     return(
         <div className="header container">
             <div className="header title">
