@@ -46,7 +46,7 @@ const goToHome = () => {
     try{
         LeaveWaitingRoom(sessionStorage.getItem('username'));
     } catch (e) {
-        console.log("it has not worked")
+        console.log("it did not work")
     }
 }
 
