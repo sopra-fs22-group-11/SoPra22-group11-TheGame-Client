@@ -50,7 +50,7 @@ const Waitingroom = () => {
     //************************  Websocket  **************************************************
     const history = useHistory();
     const [players, setPlayers] = useState(retrievePlayerList());
-    const [ locationKeys, setLocationKeys ] = useState([])
+    const [locationKeys, setLocationKeys] = useState([]);
 
 
     useEffect(() => {
@@ -87,10 +87,6 @@ const Waitingroom = () => {
         });
 
 
-        /*if (counter === 0) {
-            sendName(sessionStorage.getItem('username'));
-            setCounter(1);
-        }*/
         if (players.length>=4 && !players.includes(sessionStorage.getItem('username'))){
             alert("Sorry, The waiting Room is already full")
             history.push('/waitingroomOverview');

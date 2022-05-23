@@ -23,6 +23,7 @@ const WaitingroomOverview = () => {
     const history = useHistory();
     const [noOfPlayers, setNoOfPlayers] = useState([]);
     const [counter, setCounter] = useState(0);
+    const [gameStatus, setGameStatus] = useState(false)
 
 
     useEffect(() => {
@@ -37,6 +38,9 @@ const WaitingroomOverview = () => {
 
     useEffect(() => {
     }, [noOfPlayers]);
+
+    useEffect(() => {
+    }, [gameStatus]);
 
 
     const WaitingRoomPlayersSocket = () => {
@@ -57,19 +61,23 @@ const WaitingroomOverview = () => {
         });
 
         subscribe('/topic/start', msg => {
-            sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
+            //sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
+            setGameStatus(msg.gameRunning);
         });
 
         subscribe('/topic/game', msg => {
-            sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
+            //sessionStorage.setItem('gameStatus', JSON.stringify(msg.gameRunning));
+            setGameStatus(msg.gameRunning);
         });
 
         subscribe('/topic/isRunning', msg => {
             console.log('isrunning: '+msg)
-            sessionStorage.setItem('gameStatus', JSON.stringify(msg));
+            //sessionStorage.setItem('gameStatus', JSON.stringify(msg));
+            setGameStatus(msg);
         });
 
         currentGameStatus();
+        getPlayers();
 
         if (counter === 0) {
             getPlayers();
@@ -98,7 +106,7 @@ const WaitingroomOverview = () => {
 
 
     const checkIfGameRunning = () => {
-        let gameStatus = JSON.parse(sessionStorage.getItem('gameStatus'));
+        //let gameStatus = JSON.parse(sessionStorage.getItem('gameStatus'));
         console.log('game started: ' + gameStatus)
         if (gameStatus) {
             //alert('Sorry you cannot join, a game is currently running. :( ')
