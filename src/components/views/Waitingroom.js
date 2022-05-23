@@ -11,7 +11,7 @@ import {
     startGame,
     subscribe,
     LeaveWaitingRoom,
-    ClearWaitingRoom
+    ClearWaitingRoom, currentGameStatus
 } from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
@@ -82,6 +82,10 @@ const Waitingroom = () => {
             return;
         });
 
+        subscribe('/topic/isRunning', msg => {
+            sessionStorage.setItem('gameStatus', JSON.stringify(msg));
+        });
+
 
         /*if (counter === 0) {
             sendName(sessionStorage.getItem('username'));
@@ -89,6 +93,13 @@ const Waitingroom = () => {
         }*/
         if (players.length>=4 && !players.includes(sessionStorage.getItem('username'))){
             alert("Sorry, The waiting Room is already full")
+            history.push('/waitingroomOverview');
+            return;
+        }
+        currentGameStatus();
+        console.log(sessionStorage.getItem('gameStatus'))
+        if (JSON.parse(sessionStorage.getItem('gameStatus'))){
+            alert("Sorry, The Game already started")
             history.push('/waitingroomOverview');
             return;
         }
