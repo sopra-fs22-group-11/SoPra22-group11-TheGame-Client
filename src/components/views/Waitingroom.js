@@ -87,14 +87,14 @@ const Waitingroom = () => {
             sendName(sessionStorage.getItem('username'));
             setCounter(1);
         }*/
-        if (players.length>=4 && !players.includes(localStorage.getItem('username'))){
+        if (players.length>=4 && !players.includes(sessionStorage.getItem('username'))){
             alert("Sorry, The waiting Room is already full")
             history.push('/waitingroomOverview');
             return;
         }
         console.log("Players: " + JSON.stringify(players));
-        if (!players.includes(localStorage.getItem('username'))) {
-            sendName(localStorage.getItem('username'));
+        if (!players.includes(sessionStorage.getItem('username'))) {
+            sendName(sessionStorage.getItem('username'));
         }
     };
 
@@ -119,8 +119,9 @@ const Waitingroom = () => {
 
 
     const leave = () => {
-        LeaveWaitingRoom(localStorage.getItem('username'));
+        LeaveWaitingRoom(sessionStorage.getItem('username'));
         history.push('/waitingroomOverview')
+        return;
     }
 
     //************************  Websocket  **************************************************

@@ -10,7 +10,7 @@ import HeaderHome from "./HeaderHome";
 
 const Scoreboard = () => {
 
-    const history = useHistory();
+    //const history = useHistory();
 
     const [users, setUsers] = useState(null);
 

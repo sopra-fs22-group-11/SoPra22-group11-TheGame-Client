@@ -61,17 +61,19 @@ const Login = props => {
       const response = await api.post('/session', requestBody)
       // Get the returned User and update a new object.
       const user = new User(response.data)
-      // Store the token into the local storage.
-      localStorage.setItem('token', user.token)
-      localStorage.setItem('loggedInUser', user.id);
-      localStorage.setItem('username', user.username);
+      // Store the token into the session storage.
+      sessionStorage.setItem('token', user.token)
+      sessionStorage.setItem('loggedInUser', user.id);
+      sessionStorage.setItem('username', user.username);
       sessionStorage.setItem('clickedStart', JSON.stringify(false));
       // Login successfully worked --> navigate to the route /game in the GameRouter
       if (sessionStorage.getItem('FromWaitingRoom')==true){
         sessionStorage.removeItem('FromWaitingRoom');
         history.push('/waitingroom/1');
+        return;
       }else {
         history.push(`/startpage`);
+        return;
       }
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
@@ -110,6 +112,7 @@ const Login = props => {
 // moves to the registration page
   const doRegister = () =>{
       history.push(`/registration`);
+      return;
   }
   //  <!-- Kopie von oben -->
   return (
