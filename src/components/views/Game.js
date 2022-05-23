@@ -22,9 +22,15 @@ import {getSignature} from "../../zoom/js/tool";
 import {connect, sendDraw, whyFinished} from "../utils/sockClient";
 import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
+import TheGameLogoDrawPile from '../../TheGameLogoDrawPile.png';
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
 import {api, handleError} from "../../helpers/api";
+import useSound from "use-sound";
+import changePlayerSound from '../../sound/changePlayerSound.mp3';
+import losingSound from "../../sound/losingSound.mp3";
+import winningSound from "../../sound/winningSound.mp3";
+import playCardSound from "../../sound/playCardSound.mp3";
 
 
 const retrieveGTO = () => {
@@ -41,6 +47,9 @@ const Game = () => {
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
     const [indexChosenCard, setIndexChosenCard] = useState(null);
+    //const [playChangPlayer] = useSound(changePlayerSound);
+    const [playWinningSound] = useSound(winningSound);
+    const [playLosingSound] = useSound(losingSound);
 
     let disableCards = false;
     let disableDrawCards = false;
@@ -66,13 +75,19 @@ const Game = () => {
 
     const registerGameSocket = () => {
         subscribe('/topic/game', msg => {
-            setGameObj(msg)
+            if (gameObj.whoseTurn.toString() == msg.whoseTurn.toString()){
+
+            }
+            setGameObj(msg);
+
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
             if (msg === "won") {
+                playWinningSound();
                 onWon();
             } else if (msg === "lost") {
+                playLosingSound();
                 onLost();
             } else if (msg === "left") {
                 onLeft();
@@ -651,7 +666,7 @@ const Game = () => {
     let drawPile = (
         <section className="wrapper">
             <button className="drawPile"
-                    disabled={disableDrawCards}
+                    hidden={disableDrawCards}
                     onClick={() => draw()}
             >
                 Finished Move
@@ -660,35 +675,35 @@ const Game = () => {
                     disabled={disableDrawCards}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 2 ? "drawPile" : "drawPile hidden"}
                     disabled={disableDrawCards}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 3 ? "drawPile" : "drawPile hidden"}
                     disabled={disableDrawCards}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 4 ? "drawPile" : "drawPile hidden"}
                     disabled={disableDrawCards}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 5 ? "drawPile" : "drawPile hidden"}
-                    disabled={disableDrawCards}
+                    disabled={true}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogo} alt="game Logo" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
 

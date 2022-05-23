@@ -47,11 +47,11 @@ const HeaderGame = props => {
     }
     const rulesText = (
         <div>
-        <div className="header title">Rules</div>
+        <div className="header title">Help</div>
         <div className="header rules-overlay">
         <p>Pile with ▼: Accepts smaller cards.</p>
         <p>Pile with ▲: Accepts bigger cards.</p>
-        <p>You have to play at least two cards when it is your turn, but when the draw pile is empty you only have to play at least one card. </p>
+        <p>You have to play at least <b >two cards</b> when it is your turn, but when the draw pile is empty you only have to play at least <b>one card </b>. </p>
         <p>You can go in the opposite direction of a pile, if you lay down a card with the difference of exactly 10.</p>
         <p>You are allowed to talk, but it is forbidden to mention concrete numbers.</p>
         <p>The game is over, when there are no cards left or a player can't make any move.</p>
@@ -86,7 +86,7 @@ const HeaderGame = props => {
             <div className="header-right">
                 <a
                     onClick={() => clickRules()} /*gotoRulesPage()}*/
-                > Rules
+                > Help
                     <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
 
                 </a>
