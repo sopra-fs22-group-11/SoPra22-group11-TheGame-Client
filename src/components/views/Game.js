@@ -29,7 +29,6 @@ import {api, handleError} from "../../helpers/api";
 
 const retrieveGTO = () => {
     const gto = JSON.parse(sessionStorage.getItem('gto'));
-    sessionStorage.removeItem('gto');
     return gto;
 }
 
@@ -67,6 +66,7 @@ const Game = () => {
     const registerGameSocket = () => {
         subscribe('/topic/game', msg => {
             setGameObj(msg)
+            sessionStorage.setItem('gto', JSON.stringify(msg))
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
@@ -227,6 +227,7 @@ const Game = () => {
             sessionStorage.setItem('username', un)
             sessionStorage.removeItem('playerList')
             sessionStorage.removeItem('gameStatus')
+            sessionStorage.removeItem('gto');
             history.push(destination)
             return;
 
@@ -237,7 +238,7 @@ const Game = () => {
         await close('/startpage')
     }
 
-    //show popup before leaving
+    /*//show popup before leaving
     window.onbeforeunload = function () {
         return 'We do not recommend reloading the page, additionally leaving the page like this (not using Leave Game) is not recommended';
     };
@@ -246,7 +247,7 @@ const Game = () => {
     window.onunload = function () { //TODO take care of those functions such that they differentiate finely
         closeAndRedirect()
         alert('Bye.');
-    }
+    }*/
 
     //************************  GameLogic  **************************************************
 
