@@ -11,7 +11,7 @@ import {
     startGame,
     subscribe,
     LeaveWaitingRoom,
-    ClearWaitingRoom
+    ClearWaitingRoom, currentGameStatus
 } from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
@@ -50,7 +50,7 @@ const Waitingroom = () => {
     //************************  Websocket  **************************************************
     const history = useHistory();
     const [players, setPlayers] = useState(retrievePlayerList());
-    //const [counter, setCounter] = useState(0);
+    const [locationKeys, setLocationKeys] = useState([]);
 
 
     useEffect(() => {
@@ -82,13 +82,20 @@ const Waitingroom = () => {
             return;
         });
 
+        subscribe('/topic/isRunning', msg => {
+            sessionStorage.setItem('gameStatus', JSON.stringify(msg));
+        });
 
-        /*if (counter === 0) {
-            sendName(sessionStorage.getItem('username'));
-            setCounter(1);
-        }*/
+
         if (players.length>=4 && !players.includes(sessionStorage.getItem('username'))){
             alert("Sorry, The waiting Room is already full")
+            history.push('/waitingroomOverview');
+            return;
+        }
+        currentGameStatus();
+        console.log(sessionStorage.getItem('gameStatus'))
+        if (JSON.parse(sessionStorage.getItem('gameStatus'))){
+            alert("Sorry, The Game already started")
             history.push('/waitingroomOverview');
             return;
         }

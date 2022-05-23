@@ -1,6 +1,4 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import {GameGuard} from "components/routing/routeProtectors/GameGuard";
-import GameRouter from "components/routing/routers/GameRouter";
 import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
 import Login from "components/views/Login";
 import {RegistrationGuard} from "components/routing/routeProtectors/RegistrationGuard";
@@ -10,7 +8,6 @@ import Scoreboard from "../../views/Scoreboard";
 import RulePage from "../../views/RulePage";
 import Startpage from "../../views/Startpage";
 import Profile from "../../views/Profile";
-import {SettingsGuard} from "../routeProtectors/SettingsGuard";
 import ProfileSettings from "../../views/ProfileSettings";
 import Game from "../../views/Game";
 import GameResult from "../../views/GameResult";

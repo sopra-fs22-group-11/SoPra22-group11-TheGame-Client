@@ -55,8 +55,10 @@ const Registration = props => {
     const history = useHistory();
     const [Password, setPassword] = useState(null);
     const [username, setUsername] = useState(null);
+    const [buttonPressed, setButtonPressed] = useState(false);
 
     const doRegister = async () => { //Registers the user
+        if (!buttonPressed) {
         try {
 
             const requestBody = JSON.stringify({username,  password: Password});
@@ -83,6 +85,8 @@ const Registration = props => {
             }
         } catch (error) {
             alert(`Something went wrong during the registration: \n${handleError(error)}`);
+        }
+        setButtonPressed(true)
         }
     };
 

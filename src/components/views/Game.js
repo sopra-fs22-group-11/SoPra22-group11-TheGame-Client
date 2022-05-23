@@ -35,7 +35,6 @@ import playCardSound from "../../sound/playCardSound.mp3";
 
 const retrieveGTO = () => {
     const gto = JSON.parse(sessionStorage.getItem('gto'));
-    sessionStorage.removeItem('gto');
     return gto;
 }
 
@@ -75,11 +74,16 @@ const Game = () => {
 
     const registerGameSocket = () => {
         subscribe('/topic/game', msg => {
+<<<<<<< HEAD
             if (gameObj.whoseTurn.toString() == msg.whoseTurn.toString()){
 
             }
             setGameObj(msg);
 
+=======
+            setGameObj(msg)
+            sessionStorage.setItem('gto', JSON.stringify(msg))
+>>>>>>> 706705e05df40f3dc4d23823106bbcb628f4d77a
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
@@ -227,7 +231,7 @@ const Game = () => {
 
     //add in this function all methods which need to be called when leaving the page/gameObj
     //TODO add close gameObj method and tell server to close the gameObj
-    const close = async () => {
+    const close = async (destination) => {
         let un = sessionStorage.getItem('username')
         let id = sessionStorage.getItem('loggedInUser')
         let token = sessionStorage.getItem('token')
@@ -242,17 +246,18 @@ const Game = () => {
             sessionStorage.setItem('username', un)
             sessionStorage.removeItem('playerList')
             sessionStorage.removeItem('gameStatus')
+            sessionStorage.removeItem('gto');
+            history.push(destination)
+            return;
 
         }
     }
 
     const closeAndRedirect = async () => {
-        close()
-        history.push('/startpage')
-        return;
+        await close('/startpage')
     }
 
-    //show popup before leaving
+    /*//show popup before leaving
     window.onbeforeunload = function () {
         return 'We do not recommend reloading the page, additionally leaving the page like this (not using Leave Game) is not recommended';
     };
@@ -261,7 +266,7 @@ const Game = () => {
     window.onunload = function () { //TODO take care of those functions such that they differentiate finely
         closeAndRedirect()
         alert('Bye.');
-    }
+    }*/
 
     //************************  GameLogic  **************************************************
 
@@ -814,9 +819,7 @@ const Game = () => {
             disabled = {false}
             width = "33%"
         /* eslint-disable-next-line no-restricted-globals */
-            onClick={() => {close()
-                history.push('/startpage')
-                return;}}
+            onClick={() => {close('/startpage')}}
     >
         Leave
     </Button>
@@ -826,9 +829,7 @@ const Game = () => {
                 disabled = {false}
                 width = "33%"
             /* eslint-disable-next-line no-restricted-globals */
-                onClick={() => {close()
-                    history.push('/waitingroom/1')
-                    return;
+                onClick={() => {close('/waitingroom/1')
                 }}
         >
             Play Again
@@ -846,9 +847,7 @@ const Game = () => {
                     disabled = {false}
                     width = "33%"
                 /* eslint-disable-next-line no-restricted-globals */
-                    onClick={() => {close()
-                        history.push('/scoreboard')
-                        return;
+                    onClick={() => {close('/scoreboard')
                     }}
             >
                 Score
@@ -866,7 +865,7 @@ const Game = () => {
     function onLeft () {
         setTextToDisplay(<div>
             <h2> Your game is over </h2>
-            <p>One of your Teammates left the Game. </p>
+            <p>Someone's leaving the Game. </p>
             {leaveButton}
             {playAgainButton}
         </div>);
