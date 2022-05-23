@@ -53,30 +53,34 @@ const Login = props => {
   const history = useHistory();
   const [password, setPassword] = useState(null);
   const [username, setUsername] = useState(null);
+  const [buttonPressed, setButtonPressed] = useState(false);
 
 
   const doLogin = async () => {
-    try {
-      const requestBody = JSON.stringify({username, password});
-      const response = await api.post('/session', requestBody)
-      // Get the returned User and update a new object.
-      const user = new User(response.data)
-      // Store the token into the session storage.
-      sessionStorage.setItem('token', user.token)
-      sessionStorage.setItem('loggedInUser', user.id);
-      sessionStorage.setItem('username', user.username);
-      sessionStorage.setItem('clickedStart', JSON.stringify(false));
-      // Login successfully worked --> navigate to the route /game in the GameRouter
-      if (sessionStorage.getItem('FromWaitingRoom')==true){
-        sessionStorage.removeItem('FromWaitingRoom');
-        history.push('/waitingroom/1');
-        return;
-      }else {
-        history.push(`/startpage`);
-        return;
+    if (!buttonPressed) {
+      try {
+        const requestBody = JSON.stringify({username, password});
+        const response = await api.post('/session', requestBody)
+        // Get the returned User and update a new object.
+        const user = new User(response.data)
+        // Store the token into the session storage.
+        sessionStorage.setItem('token', user.token)
+        sessionStorage.setItem('loggedInUser', user.id);
+        sessionStorage.setItem('username', user.username);
+        sessionStorage.setItem('clickedStart', JSON.stringify(false));
+        // Login successfully worked --> navigate to the route /game in the GameRouter
+        if (sessionStorage.getItem('FromWaitingRoom') == true) {
+          sessionStorage.removeItem('FromWaitingRoom');
+          history.push('/waitingroom/1');
+          return;
+        } else {
+          history.push(`/startpage`);
+          return;
+        }
+      } catch (error) {
+        alert(`Something went wrong during the login: \n${handleError(error)}`);
       }
-    } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      setButtonPressed(true);
     }
   };
 
