@@ -265,7 +265,6 @@ const Game = () => {
             sessionStorage.removeItem('gameStatus')
             sessionStorage.removeItem('gto');
             history.push(destination)
-            return;
 
         }
     }
