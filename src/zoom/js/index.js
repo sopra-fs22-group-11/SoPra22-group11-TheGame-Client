@@ -1,4 +1,4 @@
-import '../css/index.css';
+import "../../styles/ui/zoom.scss";
 import initPreviewButtons from './meeting/preview/preview';
 
 window.addEventListener('DOMContentLoaded', async () => {

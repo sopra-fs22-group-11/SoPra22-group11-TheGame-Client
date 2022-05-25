@@ -1,6 +1,5 @@
-import { switchSessionToEndingView } from "../simple-view-switcher";
-import { toggleSelfVideo, toggleParticipantVideo } from "./video/video-toggler";
-import ZoomVideo from "@zoom/videosdk";
+
+import "styles/ui/zoom.scss";
 
 /**
  * Initializes the mic and webcam toggle buttons
@@ -27,16 +26,16 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
 
         const isMutedSanityCheck = () => {
             const mediaStreamIsMuted = mediaStream.isAudioMuted();
-            console.log('Sanity check: is muted? ', mediaStreamIsMuted);
-            console.log('Does this match button state? ', mediaStreamIsMuted === isMuted);
+            //console.log('Sanity check: is muted? ', mediaStreamIsMuted);
+            //console.log('Does this match button state? ', mediaStreamIsMuted === isMuted);
         }
 
 
         const onClick = async (event) => {
             event.preventDefault();
-
             if (!isButtonAlreadyClicked) {
                 // Blocks logic from executing again if already in progress
+                console.log("mute button was clicked and we are" + isMuted? "muted": "unmuted")
                 isButtonAlreadyClicked = true;
 
                 try {
@@ -53,46 +52,12 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
                 console.log('=== WARNING: already toggling mic ===');
             }
         }
-        console.log("just before onClick will be run")
         micButton.addEventListener("click", onClick);
-        console.log("Hello from the end of initMicClick");
     };
 
     // Once webcam is started, the client will receive an event notifying that a video has started
     // At that point, video should be rendered. The reverse is true for stopping video
-    const initWebcamClick = () => {
-        const webcamButton = document.getElementById('js-webcam-button');
 
-        let isWebcamOn = false;
-        let isButtonAlreadyClicked = false;
-
-        const toggleWebcamButtonStyle = () => webcamButton.classList.toggle('meeting-control-button__off');
-
-        const onClick = async (event) => {
-            event.preventDefault();
-            if (!isButtonAlreadyClicked) {
-                // Blocks logic from executing again if already in progress
-                isButtonAlreadyClicked = true;
-
-                try {
-                    isWebcamOn = !isWebcamOn;
-                    console.log(isWebcamOn)
-                    await toggleSelfVideo(mediaStream, isWebcamOn); //Here we have a problem (somethig with mediastream is not working //changed Mediastream to ZoomClient
-                    console.log("we are after togglerSelfVideo")
-                    toggleWebcamButtonStyle();
-                } catch (e) {
-                    isWebcamOn = !isWebcamOn;
-                    console.error('Error toggling video', e);
-                }
-
-                isButtonAlreadyClicked = false;
-            } else {
-                console.log('=== WARNING: already toggling webcam ===');
-            }
-        }
-
-        webcamButton.addEventListener("click", onClick);
-    }
 
     const initLeaveSessionClick = () => {
         console.log("we try to leave the session");
@@ -101,13 +66,7 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
         const onClick = async (event) => {
             event.preventDefault();
             try {
-                console.log("in try to leave session")
-                /*await Promise.all([
-                    toggleSelfVideo(mediaStream, false),
-                    toggleParticipantVideo(mediaStream, false)
-                ]);*/
                 await zoomClient.leave();
-                //switchSessionToEndingView();
             } catch (e) {
                 console.error('Error leaving session', e);
             }
@@ -118,11 +77,9 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
 
 
     initMicClick();
-    console.log("initMicClick is finsihed")
-    initWebcamClick();
-    console.log("initWebcamClick is finsihed")
+    //console.log("initMicClick is finsihed");
     initLeaveSessionClick();
-    console.log("initLeaveSessionClick is finsihed")
+    //console.log("initLeaveSessionClick is finsihed")
 };
 
 export default initButtonClickHandlers;

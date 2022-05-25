@@ -78,6 +78,7 @@ const HeaderGame = props => {
                        if(result){
                            playerLeaves();
                            closeAndRedirect();
+
                        }}}
                 >Leave Game
                     <img src="https://img.icons8.com/emoji/48/000000/leaf-fluttering-in-wind.png" />

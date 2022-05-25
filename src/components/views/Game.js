@@ -3,11 +3,11 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Game.scss";
+import "styles/ui/zoom.scss";
 import ZoomVideo from '@zoom/videosdk';
 import initClientEventListeners from "../../zoom/js/meeting/session/client-event-listeners";
 import initButtonClickHandlers from "../../zoom/js/meeting/session/button-click-handlers";
 import state from "../../zoom/js/meeting/session/simple-state";
-import sessionConfig from "../../zoom/js/config";
 import HeaderGame from "./HeaderGame";
 import {
     gameLost,
@@ -104,7 +104,7 @@ const Game = () => {
             } else if (msg === "left") {
                 onLeft();
             } else {
-                alert("There seems to be an error")
+                alert("There seems to be an error. ")
             }
         })
     };
@@ -310,8 +310,6 @@ const Game = () => {
     //************************  Zoom  *******************************************************
 
 
-
-
     const joinMeeting = async () => {
 
         await initAndJoinSession();
@@ -342,7 +340,7 @@ const Game = () => {
                 sessionTopic,
                 newSignature,
                 name,
-                sessionConfig.password
+                ""
             );
             mediaStream = client.getMediaStream();
             state.selfId = client.getSessionInfo().userId;
@@ -366,6 +364,12 @@ const Game = () => {
         if (!mediaStream.isAudioMuted()) {
             mediaStream.muteAudio();
         }
+    }
+
+    const getClients = () => {
+        let participants = client.getAllUser();
+        console.log("Below you see the active Zoom clients:")
+        console.log(participants)
     }
 
 
@@ -851,6 +855,7 @@ const Game = () => {
     joinMeeting();
 
 
+
     //*************************************************************************
 
     return (
@@ -948,6 +953,14 @@ const Game = () => {
                     <button id="js-mic-button" className="meeting-control-button">
                         <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
                     </button>
+                    <button
+                            onClick={() => getClients()}>
+                        Get Players
+                    </button>
+                    <button id="js-leave-button"
+                            className="meeting-control-button meeting-control-button__leave-session">
+                        <i id="js-leave-session-icon" className="fas fa-phone"></i>
+                    </button>
 
 
                 </div>
@@ -962,7 +975,12 @@ const Game = () => {
                             // eslint-disable-next-line no-restricted-globals
                             let result = confirm("Are you sure you have no moves left, this will end the game for you and your teammates.")
                             if(result){
+                                client.leave();
+                                console.log("left zoom call");
+
                                 gameLost();
+
+
                         }
                         }
                 }
