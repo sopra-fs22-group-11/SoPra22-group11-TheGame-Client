@@ -17,6 +17,7 @@ const LandingPage = () => {
         history.push('/login');
         return;
     }
+    console.log(" Welcome to the new version 1 of the Game")
 
     return (
         <div>

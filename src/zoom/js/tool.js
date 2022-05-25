@@ -28,7 +28,6 @@ export async function getSignature(sessionTopic, sessionKey, name) {
     const data = await JSON.parse(JSON.stringify(response.data));
 
     signature = JSON.stringify(data.signature);
-    console.log("signature is: " + signature);
     return signature;
 
   } catch (error) {
