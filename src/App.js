@@ -1,5 +1,8 @@
 import Header from "components/views/Header";
 import AppRouter from "components/routing/routers/AppRouter";
+import {useEffect} from 'react';
+import {logout} from "./components/views/HeaderHome";
+
 
 /**
  * Happy coding!
@@ -7,7 +10,8 @@ import AppRouter from "components/routing/routers/AppRouter";
  * Overhauled by Kyrill Hux
  */
 const App = () => {
-  return (
+
+    return (
     <div>
 
       <AppRouter/>

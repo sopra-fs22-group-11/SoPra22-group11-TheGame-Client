@@ -33,6 +33,7 @@ import winningSound from "../../sound/winningSound.mp3";
 import playCardSound from "../../sound/playCardSound.mp3";
 
 
+
 const retrieveGTO = () => {
     const gto = JSON.parse(sessionStorage.getItem('gto'));
     return gto;
@@ -126,6 +127,29 @@ const Game = () => {
             }
         })
     }, [ locationKeys, ])
+
+
+    useEffect(() => {
+        const handleTabClose = event => {
+            event.preventDefault();
+
+            console.log('beforeunload event triggered');
+            event.returnValue = 'See you the next time :)'
+
+            playerLeaves();
+            client.leave();
+            return ;
+        };
+
+
+        window.addEventListener('beforeunload', handleTabClose);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleTabClose);
+        };
+    }, []);
+
+
 
 
     //************************  Websocket  **************************************************
@@ -273,14 +297,15 @@ const Game = () => {
         await close('/startpage')
     }
 
-    /*//show popup before leaving
-    window.onbeforeunload = function () {
+    //show popup before leaving
+    /*window.onbeforeunload = function () {
         return 'We do not recommend reloading the page, additionally leaving the page like this (not using Leave Game) is not recommended';
     };
 
     //do when leaving page
     window.onunload = function () { //TODO take care of those functions such that they differentiate finely
-        closeAndRedirect()
+        closeAndRedirect();
+        playerLeaves();
         alert('Bye.');
     }*/
 
