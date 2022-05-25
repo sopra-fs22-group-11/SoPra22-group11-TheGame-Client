@@ -22,7 +22,6 @@ import {
 export const logout = () => {
     //get a token
     let id = sessionStorage.getItem('loggedInUser');
-    console.log('/session/'+ id)
     try{
         const response = api.get('/session/'+ id);
         LeaveWaitingRoom(sessionStorage.getItem('username'));

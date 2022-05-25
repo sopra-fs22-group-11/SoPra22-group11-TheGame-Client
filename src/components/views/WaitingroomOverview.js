@@ -41,17 +41,13 @@ const WaitingroomOverview = () => {
     const WaitingRoomPlayersSocket = () => {
 
         subscribe('/topic/players', msg => {
-            console.log(msg)
             sessionStorage.setItem('playerList', JSON.stringify(msg))
             setNoOfPlayers(msg);
-            console.log(noOfPlayers);
         });
 
         subscribe('/topic/getPlayers', msg => {
-            console.log(msg)
             setNoOfPlayers(msg);
             sessionStorage.setItem('playerList', JSON.stringify(msg))
-            console.log(noOfPlayers);
         });
 
         subscribe('/topic/start', msg => {
@@ -63,7 +59,6 @@ const WaitingroomOverview = () => {
         });
 
         subscribe('/topic/isRunning', msg => {
-            console.log('isrunning: '+msg)
             setGameStatus(msg);
         });
 
@@ -78,7 +73,6 @@ const WaitingroomOverview = () => {
 
 
     const joinWaitingRoom = () => {
-        console.log(noOfPlayers)
         if (checkIfWaitingRoomHasSpace()) {
             getPlayers();
             history.push('/waitingroom/1');

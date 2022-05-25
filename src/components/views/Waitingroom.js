@@ -102,17 +102,14 @@ const Waitingroom = () => {
 
     const registerWaitingRoomSocket = () => {
         subscribe('/topic/players',   msg => {
-            console.log(msg);
             setPlayers(msg);
             sessionStorage.setItem('playerList', JSON.stringify(msg));
-            console.log('after set players: '+players);
         });
 
 
 
         subscribe('/topic/start', msg => {
             sessionStorage.setItem('gto', JSON.stringify(msg));
-            console.log(msg);
             sessionStorage.removeItem('playerList');
             history.push('/game');
             return;
@@ -129,7 +126,6 @@ const Waitingroom = () => {
             return;
         }
         currentGameStatus();
-        console.log("Players: " + JSON.stringify(players));
         if (!players.includes(sessionStorage.getItem('username'))) {
             sendName(sessionStorage.getItem('username'));
         }

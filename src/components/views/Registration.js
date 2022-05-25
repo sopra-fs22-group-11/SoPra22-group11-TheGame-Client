@@ -75,7 +75,6 @@ const Registration = props => {
             sessionStorage.setItem('clickedStart', JSON.stringify(false));
 
             if (JSON.parse(sessionStorage.getItem('FormWaitingRoom'))==true){
-                console.log("hello From the If statement"+ JSON.parse(sessionStorage.getItem('FormWaitingRoom')));
                 sessionStorage.removeItem('FormWaitingRoom');
                 history.push("/waitingroom/1");
 
