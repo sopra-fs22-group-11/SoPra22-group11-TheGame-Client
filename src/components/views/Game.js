@@ -27,6 +27,7 @@ import {api, handleError} from "../../helpers/api";
 import useSound from "use-sound";
 import losingSound from "../../sound/losingSound.mp3";
 import winningSound from "../../sound/winningSound.mp3";
+import {Spinner} from "../ui/Spinner";
 
 
 
@@ -109,7 +110,7 @@ const Game = () => {
                 onLeft();
                 sock.close();
             } else {
-                alert("There seems to be an error")
+                alert("There seems to be an error, please close the tab and open the game again.")
             }
         })
     };
@@ -730,7 +731,6 @@ const Game = () => {
         try {
             const response = await api.get('/users');
 
-
             await new Promise(resolve => setTimeout(resolve, 700));
 
             // Get the returned users and update the state.
@@ -810,7 +810,14 @@ const Game = () => {
     )
 
     function onLostOrWon(headerText, descriptionText, score){
-        setTextToDisplay(<div>
+        setTextToDisplay(
+            <div>
+            <Spinner/>
+    </div>
+        )
+        setTimeout(() =>{
+        setTextToDisplay(
+            <div>
             <h2> {headerText}</h2>
             <p>{descriptionText}</p>
               {score}
@@ -827,7 +834,8 @@ const Game = () => {
             </Button>
             {leaveButton}
             {playAgainButton}
-        </div>);
+        </div>)}, 500
+        );
     }
 
 
