@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
-//mport leave from "./Waitingroom";
 import {api} from "../../helpers/api";
 import TheGameLogo from "../../TheGameLogo.png";
 import {
@@ -21,7 +20,7 @@ import {useHistory} from "react-router-dom";
 
 
 
-const logout = () => {
+export const logout = () => {
     //get a token
     let id = sessionStorage.getItem('loggedInUser');
     console.log('/session/'+ id)

@@ -11,7 +11,7 @@ import {
     startGame,
     subscribe,
     LeaveWaitingRoom,
-    ClearWaitingRoom, currentGameStatus
+    ClearWaitingRoom, currentGameStatus, playerLeaves
 } from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
@@ -79,6 +79,25 @@ const Waitingroom = () => {
             }
         })
     }, [ locationKeys, ])
+
+    useEffect(() => {
+        const handleTabClose = event => {
+            event.preventDefault();
+
+            console.log('beforeunload event triggered');
+            event.returnValue = 'See you the next time :)'
+
+            leave();
+            return ;
+        };
+
+
+        window.addEventListener('beforeunload', handleTabClose);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleTabClose);
+        };
+    }, []);
 
 
 
