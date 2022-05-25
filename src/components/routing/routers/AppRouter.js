@@ -7,10 +7,8 @@ import {CheckLoggedIn} from "../routeProtectors/CheckLoggedIn";
 import Scoreboard from "../../views/Scoreboard";
 import RulePage from "../../views/RulePage";
 import Startpage from "../../views/Startpage";
-import Profile from "../../views/Profile";
 import ProfileSettings from "../../views/ProfileSettings";
 import Game from "../../views/Game";
-import GameResult from "../../views/GameResult";
 import WaitingroomOverview from "../../views/WaitingroomOverview";
 import {GameIdGuard} from "../routeProtectors/GameIdGuard";
 import Waitingroom from "../../views/Waitingroom";
@@ -72,12 +70,6 @@ const AppRouter = () => {
           </CheckLoggedIn>
         </Route>
 
-        <Route exact path ="/user/:userId">
-          <CheckLoggedIn>
-            <Profile/>
-          </CheckLoggedIn>
-        </Route>
-
         <Route exact path ="/editUser/">
           <CheckLoggedIn>
             <ProfileSettings/>
@@ -106,13 +98,6 @@ const AppRouter = () => {
           </CheckLoggedIn>
         </Route>
 
-        <Route exact path ="/gameResults">
-          <CheckLoggedIn>
-          <GameIdGuard>
-            <GameResult/>
-          </GameIdGuard>
-          </CheckLoggedIn>
-        </Route>
 
         <Route path="*">
           <CheckLoggedIn>
