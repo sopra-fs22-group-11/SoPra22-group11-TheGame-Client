@@ -14,7 +14,7 @@ import {
     isConnected,
     ClearWaitingRoom,
     sendDiscard,
-    subscribe, LeaveWaitingRoom, playerLeaves
+    subscribe, LeaveWaitingRoom, playerLeaves, sock
 } from "../utils/sockClient";
 import {getSignature} from "../../zoom/js/tool";
 import {connect, sendDraw, whyFinished} from "../utils/sockClient";
@@ -98,11 +98,16 @@ const Game = () => {
             if (msg === "won") {
                 playWinningSound();
                 onWon();
+                sock.close();
             } else if (msg === "lost") {
                 playLosingSound();
                 onLost();
+                sock.close();
+                console.log("After close lost")
+
             } else if (msg === "left") {
                 onLeft();
+                sock.close();
             } else {
                 alert("There seems to be an error")
             }

@@ -3,24 +3,26 @@ import {getDomain} from "../../helpers/getDomain";
 import {over} from "stompjs";
 
 export var stompClient = null;
+export var sock = null;
 
 let connected = false;
 export const isConnected = () => connected;
 
 export const connect = (callback) => {
-    //Todo Make sure there is not too many websocket connections open, use the connected boolean
+
     const url = getDomain();
-    var sock = new SockJS(url + '/ws');
+    sock = new SockJS(url + '/ws');
     stompClient = over(sock);
     stompClient.connect({}, () => {
         connected = true;
         callback();
     });
-    stompClient.onclose = reason => {
+    sock.onclose = reason => {
         console.log("Socket closed!", reason);
         connected = false;
     }
 }
+
 
 export const getPlayers = () => {
     stompClient.send("/app/getPlayers", {});
