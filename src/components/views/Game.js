@@ -80,7 +80,6 @@ const Game = () => {
     let mediaStream;
 
 
-
     //************************  Websocket  **************************************************
 
 
@@ -109,6 +108,7 @@ const Game = () => {
             }
         })
     };
+
 
     useEffect(() => {
         if (!isConnected()) {
