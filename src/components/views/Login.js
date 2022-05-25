@@ -77,10 +77,12 @@ const Login = props => {
           history.push(`/startpage`);
           return;
         }
+        setButtonPressed(true);
       } catch (error) {
         alert(`Something went wrong during the login: \n${handleError(error)}`);
+        setButtonPressed(false);
       }
-      setButtonPressed(true);
+
     }
   };
 

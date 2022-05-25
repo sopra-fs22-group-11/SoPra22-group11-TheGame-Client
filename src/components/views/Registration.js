@@ -78,15 +78,18 @@ const Registration = props => {
                 console.log("hello From the If statement"+ JSON.parse(sessionStorage.getItem('FormWaitingRoom')));
                 sessionStorage.removeItem('FormWaitingRoom');
                 history.push("/waitingroom/1");
+
                 return;
             }else {
                 history.push(`/startpage`);
                 return;
             }
+            setButtonPressed(true)
         } catch (error) {
             alert(`Something went wrong during the registration: \n${handleError(error)}`);
+            setButtonPressed(false)
         }
-        setButtonPressed(true)
+
         }
     };
 
