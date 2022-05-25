@@ -59,6 +59,7 @@ const Login = props => {
   const doLogin = async () => {
     if (!buttonPressed) {
       try {
+        setButtonPressed(true);
         const requestBody = JSON.stringify({username, password});
         const response = await api.post('/session', requestBody)
         // Get the returned User and update a new object.
@@ -77,7 +78,6 @@ const Login = props => {
           history.push(`/startpage`);
           return;
         }
-        setButtonPressed(true);
       } catch (error) {
         alert(`Something went wrong during the login: \n${handleError(error)}`);
         setButtonPressed(false);

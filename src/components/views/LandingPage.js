@@ -19,6 +19,7 @@ const LandingPage = () => {
     }
     console.log(" Welcome to the new version 1 of the Game")
 
+
     return (
         <div>
             <Header height="100"/>

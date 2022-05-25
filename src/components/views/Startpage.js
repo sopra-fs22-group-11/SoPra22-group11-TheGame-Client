@@ -138,6 +138,7 @@ const Startpage = () => {
                 {content}
             </div>
             <a target="_blank" href="https://icons8.com/icon/LVtMPps1ASuP/spielen" >Spielen icon by Icons8</a>
+            <a target="_blank" href="https://toppng.com/free-image/svg-logo-punisher-punisher-skull-PNG-free-PNG-Images_180739" >Image credit: Marvel Studios</a>
         </BaseContainer>
         </div>
     );

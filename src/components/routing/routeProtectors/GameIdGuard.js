@@ -2,8 +2,8 @@ import {Redirect, useParams} from "react-router-dom";
 import PropTypes from "prop-types";
 
 export const GameIdGuard = props => {
-    let { gameId } = useParams();
-    if( gameId==sessionStorage.getItem("gameId")){
+   // let { gameId } = useParams();
+    if( null!=sessionStorage.getItem("gto")){
         return props.children;
     }
     return <Redirect to="/startpage"/>;

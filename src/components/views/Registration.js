@@ -60,7 +60,7 @@ const Registration = props => {
     const doRegister = async () => { //Registers the user
         if (!buttonPressed) {
         try {
-
+            setButtonPressed(true)
             const requestBody = JSON.stringify({username,  password: Password});
             const response = await api.post('/users', requestBody);
 
@@ -76,6 +76,7 @@ const Registration = props => {
 
             if (JSON.parse(sessionStorage.getItem('FormWaitingRoom'))==true){
                 sessionStorage.removeItem('FormWaitingRoom');
+
                 history.push("/waitingroom/1");
 
                 return;
@@ -83,7 +84,7 @@ const Registration = props => {
                 history.push(`/startpage`);
                 return;
             }
-            setButtonPressed(true)
+
         } catch (error) {
             alert(`Something went wrong during the registration: \n${handleError(error)}`);
             setButtonPressed(false)

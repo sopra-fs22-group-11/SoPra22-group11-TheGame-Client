@@ -6,7 +6,7 @@ export const WaitingRoomGuard = props => {
         return props.children;
     }
     return <Redirect to="/waitingroomOverview"/>;
-    return props.children;
+
 };
 
 WaitingRoomGuard.propTypes = {

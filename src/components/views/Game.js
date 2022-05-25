@@ -168,7 +168,9 @@ const Game = () => {
     const checkForDraw = () => {
         if (counter < 2 && (gameObj.noCardsOnDeck > 0 || counter < 1)) { //This does look silly, but I double-checked, it is fine
             disableDrawCards = true;
+            return true;
         }
+        return false;
     }
 
     const checkWhoseTurn = () => {
@@ -652,6 +654,7 @@ const Game = () => {
 
     }
 
+    //hidden={disableDrawCards}
 
     let drawPile = (
         <section className="wrapper">
@@ -690,7 +693,7 @@ const Game = () => {
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 5 ? "drawPile" : "drawPile hidden"}
-                    disabled={true}
+                    disabled={disableDrawCards}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
