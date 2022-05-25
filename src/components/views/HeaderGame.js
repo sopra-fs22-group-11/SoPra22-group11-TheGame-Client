@@ -2,13 +2,10 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import closeAndRedirect from "./Game";
-
 import BaseContainer from "../ui/BaseContainer";
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
 import {playerLeaves, terminate} from "../utils/sockClient";
-import {Button} from "../ui/Button";
-import {useHistory} from "react-router-dom";
 import TheGameLogo from "../../TheGameLogo.png";
 
 
@@ -31,7 +28,6 @@ const HeaderGame = props => {
 
     const [modalIsOpen, setModalIsOpen]= useState(false);
     const [textToDisplay, setTextToDisplay]= useState();
-    //const history = useHistory();
 
     function openModal(){
         setModalIsOpen(true);
@@ -59,23 +55,7 @@ const HeaderGame = props => {
         </div>
     )
 
-    /*function cannotPlay(){ // TODO notify websocket that gamerunning: lost
-        setTextToDisplay(lostText);
-        openModal();
-    }
-    const lostText =(
-        <div>
-            <p>You have lost the game. Click "OK" to see your results</p>
 
-            <Button className ="player-button"
-                    disabled = {false}
-                    width = "10%"
-                    onClick={() => history.push('/gameResults')}
-            >
-                OK
-            </Button>
-        </div>
-    )*/
     return(
         <div className="header container">
             <div className="header title">

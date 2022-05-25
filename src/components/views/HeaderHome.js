@@ -6,7 +6,6 @@ import TheGameLogo from "../../TheGameLogo.png";
 import {
     LeaveWaitingRoom
 } from "../utils/sockClient";
-import {useHistory} from "react-router-dom";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.

@@ -44,15 +44,6 @@ const Startpage = () => {
         })
     }
 
-    //join directly the waitingroom
-    /*
-    const joinWaitingroom = async () => {
-        connect(()=> {
-            history.push('/waitingroom/1'); //for the start we need the waitingroom 1
-        })
-    }
-
-     */
 
     // the effect hook can be used to react to change in your component.
     // in this case, the effect hook is only run once, the first time the component is mounted
@@ -93,12 +84,6 @@ const Startpage = () => {
 
     let content = <Spinner/>;
 
-    //put away the users
-   /* <ul className="home user-list">
-        {users.map(user => (
-            <User user={user} key={user.id}/>
-        ))}
-    </ul>*/
 
     if (users) {
         content = (
@@ -129,7 +114,6 @@ const Startpage = () => {
                         margine-top ="10px"
                     onClick={() => goToWaitingroomOverview()}
 
-                    //  onClick={() => history.push('/game')}
                 >
                     Let's play
                     <img src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/play--v1.png"/>

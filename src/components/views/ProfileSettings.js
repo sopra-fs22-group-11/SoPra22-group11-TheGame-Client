@@ -61,7 +61,6 @@ const ProfileSettings = () => {
                     user.password = updatedPassword
                 }
 
-                //console.log(user)
                 // Put the updated user to the server
                 await api.put('/users/' + id, user);
                 sessionStorage.setItem('username', user.username)
@@ -73,7 +72,6 @@ const ProfileSettings = () => {
 
             } catch (error) {
                 // Handle errors
-
                 console.error(`Something went wrong while editing the user: \n${handleError(error)}`);
                 console.error("Details:", error);
                 alert(`Something went wrong during the editing: \n${handleError(error)}`);
@@ -108,8 +106,7 @@ const ProfileSettings = () => {
 
                 setUser(response.data);
                 setScore(score.data)
-                //console.log(user)
-                //console.log(score)
+
 
             } catch (error) {
                 // Handle occuring errors
@@ -179,14 +176,6 @@ const ProfileSettings = () => {
         );
     }
 
-    /*<Button className =""
-
-            width="10%"
-            onClick={isDisabled ? () => editUser(user): () => saveChanges()}
-
-    >
-        <img src="https://img.icons8.com/ios-glyphs/30/000000/edit--v1.png"/>
-    </Button>*/
 
     return (
     <div>

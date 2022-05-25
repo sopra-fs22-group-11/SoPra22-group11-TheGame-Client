@@ -84,7 +84,6 @@ const Waitingroom = () => {
         const handleTabClose = event => {
             event.preventDefault();
 
-            console.log('beforeunload event triggered');
             event.returnValue = 'See you the next time :)'
 
             leave();
@@ -183,7 +182,6 @@ const Waitingroom = () => {
             Wait for other players to join this Game
             <div className="link-copy" >
                 <LinkField
-                    //width = "250px"
                     placeholder={getDomain() + "/waitingroom/1"}
                     value={getLink()}
                     disabled = {true}

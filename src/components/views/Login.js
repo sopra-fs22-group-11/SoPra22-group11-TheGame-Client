@@ -98,8 +98,6 @@ const Login = props => {
       // Get the returned users and update the state.
       //setUsers(response.data);
 
-      // This is just some data for you to see what is available.
-      // Feel free to remove it.
       console.log('request to:', response.request.responseURL);
       console.log('status code:', response.status);
       console.log('status text:', response.statusText);
@@ -120,7 +118,7 @@ const Login = props => {
       history.push(`/registration`);
       return;
   }
-  //  <!-- Kopie von oben -->
+
   return (
       <div>
         <Header height="100"/>

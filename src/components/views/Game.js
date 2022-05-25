@@ -145,7 +145,6 @@ const Game = () => {
             event.returnValue = 'See you the next time :)'
 
             playerLeaves();
-            //client.leave();
             return ;
         };
 
