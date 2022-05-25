@@ -8,9 +8,7 @@ import initClientEventListeners from "../../zoom/js/meeting/session/client-event
 import initButtonClickHandlers from "../../zoom/js/meeting/session/button-click-handlers";
 import state from "../../zoom/js/meeting/session/simple-state";
 import sessionConfig from "../../zoom/js/config";
-import VideoSDK from "@zoom/videosdk";
 import HeaderGame from "./HeaderGame";
-import {generateSessionToken} from "../../zoom/js/tool";
 import {
     gameLost,
     isConnected,
@@ -27,10 +25,8 @@ import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
 import {api, handleError} from "../../helpers/api";
 import useSound from "use-sound";
-import changePlayerSound from '../../sound/changePlayerSound.mp3';
 import losingSound from "../../sound/losingSound.mp3";
 import winningSound from "../../sound/winningSound.mp3";
-import playCardSound from "../../sound/playCardSound.mp3";
 
 
 
@@ -46,8 +42,6 @@ const Game = () => {
 
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
-    const [indexChosenCard, setIndexChosenCard] = useState(null);
-    //const [playChangPlayer] = useSound(changePlayerSound);
     const [playWinningSound] = useSound(winningSound);
     const [playLosingSound] = useSound(losingSound);
 
@@ -64,17 +58,32 @@ const Game = () => {
 
     const [locationKeys, setLocationKeys] = useState([]);
 
+    let listHiddenValues = [true, true, true, true, true, true, true];
+    //let listSelectedValues =[false, false, false, false, false, false];
+
+
+    //by default, we enter 0 so that there is no null value at the start
+    let cardValues = [0, 0, 0, 0, 0, 0, 0];
+
+    const listHiddenValues2 = [true, true, true, true, true, true, true];
+
+    //by default, we enter 0 so that there is no null value at the start
+    const cardValues2 = [0, 0, 0, 0, 0, 0, 0];
+
 
     let playerRight;
     let playerTop;
     let playerLeft;
 
+    //for Zoom setup
+    const client = ZoomVideo.createClient();
+    let mediaStream;
+
 
     //************************  Websocket  **************************************************
 
 
-    console.log("game render!", gameObj);
-
+    // subscribe to the used chanels in websocket
     const registerGameSocket = () => {
         subscribe('/topic/game', msg => {
             if (gameObj.whoseTurn.toString() == msg.whoseTurn.toString()){
@@ -133,11 +142,10 @@ const Game = () => {
         const handleTabClose = event => {
             event.preventDefault();
 
-            console.log('beforeunload event triggered');
             event.returnValue = 'See you the next time :)'
 
             playerLeaves();
-            client.leave();
+            //client.leave();
             return ;
         };
 
@@ -260,10 +268,8 @@ const Game = () => {
 
     // Create list of players and their ownCards
     for (const [player, noOfCards] of Object.entries(gameObj.playerCards)) {
-        console.log(player, noOfCards.length);
         let data = [player, noOfCards.length];
         playerListAndCards.push(data);
-        console.log(playerListAndCards);
         if (name != player) {
             listOfPlayers.push(player);
         }
@@ -271,7 +277,6 @@ const Game = () => {
 
 
     //add in this function all methods which need to be called when leaving the page/gameObj
-    //TODO add close gameObj method and tell server to close the gameObj
     const close = async (destination) => {
         let un = sessionStorage.getItem('username')
         let id = sessionStorage.getItem('loggedInUser')
@@ -297,33 +302,15 @@ const Game = () => {
         await close('/startpage')
     }
 
-    //show popup before leaving
-    /*window.onbeforeunload = function () {
-        return 'We do not recommend reloading the page, additionally leaving the page like this (not using Leave Game) is not recommended';
-    };
-
-    //do when leaving page
-    window.onunload = function () { //TODO take care of those functions such that they differentiate finely
-        closeAndRedirect();
-        playerLeaves();
-        alert('Bye.');
-    }*/
 
     //************************  GameLogic  **************************************************
 
     //************************  Zoom  *******************************************************
 
-    //for Zoom setup
-    const client = ZoomVideo.createClient();
-    //const audioTrack = VideoSDK.createLocalAudioTrack();
-    //const videoTrack = VideoSDK.createLocalVideoTrack();
-    let mediaStream;
-    //const canvas = document.querySelector('.video-canvas');
+
 
 
     const joinMeeting = async () => {
-        console.log("Let's see our client:")
-        console.log(client)
 
         await initAndJoinSession();
 
@@ -342,16 +329,11 @@ const Game = () => {
         const date = new Date().toDateString();
         const sessionTopic = "theGame" + date;
         const sessionKey = "session" + date;
-        console.log(sessionTopic);
-        console.log(sessionKey);
 
         const signature = await getSignature(sessionTopic, sessionKey, name);
-       // const signature = JSON.stringify(signatureResponse);
 
-        console.log("seg: " + signature);
 
         const newSignature = signature.slice(1,signature.length -1);
-        console.log("new seg: " + newSignature);
 
         try {
             await client.join(
@@ -368,28 +350,6 @@ const Game = () => {
         }
     };
 
-    const getClients = () => {
-        let participants = client.getAllUser();
-        console.log("Below you see the active Zoom clients:")
-        console.log(participants)
-    }
-
-    const doChatExample = () => {
-        const chat = client.getChatClient();
-        chat.sendToAll('hello everyone'); // send message to everyone
-        //We don't even plan to support private chats therefore only for completeness: chat.send('hello', userId); // send message to someone
-        client.on('chat-on-message', (payload) => {
-            const {
-                message,
-                sender: {name: senderName},
-                receiver: {name: receiverName},
-                timestamp,
-            } = payload;
-            console.log(
-                `Message: ${message}, from ${senderName} to ${receiverName}`
-            );
-        });
-    }
 
 
     const startAudioMuted = async () => {
@@ -406,25 +366,12 @@ const Game = () => {
         }
     }
 
-    //TODO localStorage.setItem('gameId', ); Hier noch herausfinden wie wir schauen, dass leute nur in ihr spiel können
-    // siehe gameIdGuard in RouteProtectors
 
     //************************  Zoom  *******************************************************
 
     //************************  HTML  *******************************************************
 
-    let listHiddenValues = [true, true, true, true, true, true, true];
-    //const[showOwnCards, setShowOwenCards]=useState(listHiddenValues);
-    let listSelectedValues =[false, false, false, false, false, false];
 
-
-    //by default, we enter 0 so that there is no null value at the start
-    let cardValues = [0, 0, 0, 0, 0, 0, 0];
-
-    const listHiddenValues2 = [true, true, true, true, true, true, true];
-
-    //by default, we enter 0 so that there is no null value at the start
-    const cardValues2 = [0, 0, 0, 0, 0, 0, 0];
 
 
     //here we fill our ownCards with the right value
@@ -436,7 +383,6 @@ const Game = () => {
     for (let i = 0; i < gameObj.playerCards[name].length; i++) {
         listHiddenValues[i] = false;
     }
-    //setShowOwenCards(listHiddenValues);
 
 
     //here we fill the ownCards of the other player
@@ -449,9 +395,9 @@ const Game = () => {
         listHiddenValues2[i] = false;
     }
 
-    function closeModal() {
+    /*function closeModal() {
         setModalIsOpen(false);
-    }
+    }*/
 
 
 
@@ -461,7 +407,6 @@ const Game = () => {
     checkForFinishedGame();
 
 
-    //idee um zu zeigen das ein button ausgewählt wurde: { cardSelected?"ownCards-button selected": "ownCards-button unselected"}
 
 
     let ownCards = (
@@ -510,7 +455,6 @@ const Game = () => {
             </button>
         </section>);
 
-    console.log("list of Players" + listOfPlayers.length);
 
     if (listOfPlayers.length + 1 === 2) {
         playerTop = (
@@ -756,14 +700,6 @@ const Game = () => {
         </section>)
 
 
-    /*let informationBox = (
-        <div>
-            <h3> Information for {localStorage.getItem('username')}</h3>
-            <div> Whose Turn: {gameObj.whoseTurn}</div>
-            <div> {"Played ownCards: " + counter}</div>
-            <div> {"Chosen card:" + chosenCard}</div>
-        </div>
-    );*/
 
     const getCssForPlayer = (player) => {
         if (player === gameObj.whoseTurn & player === name) {
@@ -785,17 +721,14 @@ const Game = () => {
 
         try {
             const response = await api.get('/users');
-            console.log("get request happened")
+
 
             await new Promise(resolve => setTimeout(resolve, 700));
 
             // Get the returned users and update the state.
             getRequestResult = response.data;
 
-            console.log('requested data:', response.data);
 
-            // See here to get more data.
-            console.log(response);
         } catch (error) {
             console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
             console.error("Details:", error);
@@ -806,18 +739,12 @@ const Game = () => {
         //setTimeout( function () {
         let go = JSON.parse(sessionStorage.getItem('go'))
         let names = Object.keys(go.playerCards);
-        console.log(names);
         const usersAndScores = [];
-        console.log("print users hook:")
-        console.log(getRequestResult)
         for (const user of getRequestResult) {
-            console.log(user.username)
             if (names.includes(user.username)) {
                 usersAndScores.push(user)
             }
         }
-
-        console.log("users and scores:" + JSON.stringify(usersAndScores[0]))
 
         const scorelist = (
             <table className="score user-table">
@@ -840,19 +767,16 @@ const Game = () => {
 
         onLostOrWon(title, text, scorelist)
         return scorelist
-        //}, 2000)
 
     }
 
 
     function onLost() {
         getScoreOfCurrentPlayers("Better luck next time :(","You have lost the Game.");
-        // onLostOrWon("Better luck next time :(", "You have lost the Game.", scoretable)
     }
 
     function onWon() {
         getScoreOfCurrentPlayers("Congratulations :)","You have won the Game.");
-        // onLostOrWon("Congratulations :)", "You have won the Game.", scoretable)
     }
 
     const leaveButton = (
@@ -898,9 +822,6 @@ const Game = () => {
         </div>);
     }
 
-    function test(){
-        client.leave();
-    }
 
 
     function onLeft () {

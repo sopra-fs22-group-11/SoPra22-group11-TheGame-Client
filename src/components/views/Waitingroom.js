@@ -130,12 +130,6 @@ const Waitingroom = () => {
             return;
         }
         currentGameStatus();
-        console.log(sessionStorage.getItem('gameStatus'))
-        if (JSON.parse(sessionStorage.getItem('gameStatus'))){
-            alert("Sorry, The Game already started")
-            history.push('/waitingroomOverview');
-            return;
-        }
         console.log("Players: " + JSON.stringify(players));
         if (!players.includes(sessionStorage.getItem('username'))) {
             sendName(sessionStorage.getItem('username'));
