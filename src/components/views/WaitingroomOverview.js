@@ -115,6 +115,9 @@ const WaitingroomOverview = () => {
                 <div className="home title">
                     Game Room Overview
                 </div>
+                <div className="home label">
+                    Join the waiting-room and wait for other players to join, before you will start The Game.
+                </div>
                 <Button
                     width="100%"
                     height="50%"

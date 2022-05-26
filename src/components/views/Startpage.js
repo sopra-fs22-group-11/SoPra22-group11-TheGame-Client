@@ -98,7 +98,7 @@ const Startpage = () => {
 
                 >
 
-                    Rules
+                    Rules<br />
                     <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
                 </Button>
                 <Button
@@ -106,7 +106,7 @@ const Startpage = () => {
                     onClick={() => {history.push('/scoreboard')
                                     return;}}
                 >
-                    Scores
+                    Scores <br />
                     <img src="https://img.icons8.com/ios/50/FFFFFF/trophy--v1.png"/>
                 </Button>
                 </div>
@@ -115,7 +115,7 @@ const Startpage = () => {
                     onClick={() => goToWaitingroomOverview()}
 
                 >
-                    Let's play
+                    Let's play <br />
                     <img src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/play--v1.png"/>
                 </Button>
             </div>
