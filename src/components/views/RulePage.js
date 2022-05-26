@@ -28,13 +28,13 @@ const RulePage = () => {
                 <b>Rules for Laying Cards</b>
                 <p>
                     In an ascending pile of cards the card number of each card played must always be greater than the card played before it. How much space left between the cards does not matter, e.g. 3, 11, 12, 13, 18, 20, 34, 35, 51. Or 2, 7, 19, 25, 28, 29, 49, etc. The smaller the space left between cards the better, so that you can play as many cards as possible.
-                    Since you play the card on the pile, only the top card of each pile is visible.
+                    Only the top card of each pile is visible.
                     In a descending row of cards it‘s exactly the opposite: each card must always be smaller than the card before, e.g. 94, 90, 78, 61, 60, 57. Or 98, 97, 88, 83, 81, etc.
                 </p>
                 <p><img src={DiscardPiles} alt="Discard Piles in the game" height="60px" /></p>
                 <b>How to play</b>
                 <p>
-                    For a 3- or 4-player game, each player is dealt 6 cards (7 cards for a 2-player game), which make up his hand. The remaining cards are on the draw pile.
+                    For a 3- or 4-player game, each player is dealt 6 cards (7 cards for a 2-player game), which make up their hand. The remaining cards are on the draw pile.
                 </p>
                 <p>
                     On your turn you have to play at least two cards from your hand to any of the four piles. When the draw pile is empty you need to play at least one card.
@@ -44,10 +44,10 @@ const RulePage = () => {
             <div className="rules column">
                 <p>
                     If possible, you can play as many more cards as you like, even until you have no cards left in your hand. Play the cards individually, one after the other.
-                    You‘re free to choose which pile to play your number cards on, as long as you follow the rules as described of laying in a descending or ascending order on the respective pile.  You can play all your cards on the same pile, or on multiple piles in any sequence you like.
+                    You‘re free to choose which pile to play your cards on, as long as you follow the rules as described of laying in a descending or ascending order on the respective pile.  You can play all your cards on the same pile, or on multiple piles in any sequence you like.
                 </p>
                 <p>
-                    Once you have finished your turn, click on the draw pile. Your cards fill up again, as long as the draw pile is not empty. The next player now takes his turn, plays his cards and picks up cards from the draw pile to complete his hand. The number of remaining cards is visible on the draw pile.
+                    Once you have finished your turn, click on the draw pile. Your cards fill up again, as long as the draw pile is not empty. The next player now takes their turn, plays their cards and picks up cards from the draw pile to complete their hand. The number of remaining cards is visible on the draw pile.
                 </p>
                 <p><img src={DrawPile} alt="Draw Pile in the game" height="70px" /></p>
                 <b>The backwards trick!</b>
@@ -76,7 +76,7 @@ const RulePage = () => {
                 <b>End of the game</b>
                 <p>
                     When the draw pile is empty, continue playing without drawing cards. Note: From this point on, each player only has to play a single card, but still may play more.
-                    The game is over as soon as a player cannot play the minimum number of cards during his turn. If all cards are played, the game is won. When you think you can't make a move anymore, click on the button "no moves possible".
+                    The game is over as soon as a player cannot play the minimum number of cards during their turn. If all cards are played, the game is won. When you think you can't make a move anymore, click on the button "no moves possible".
                 </p>
                 <img src={NoMovesButton} alt="No moves possible button" height="55px" />
             </div>
