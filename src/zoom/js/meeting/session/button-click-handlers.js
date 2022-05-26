@@ -16,10 +16,29 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
         let isButtonAlreadyClicked = false;
 
 
+
+
+
         const toggleMicButtonStyle = () => {
-            micIcon.classList.toggle('fa-microphone');
-            micIcon.classList.toggle('fa-microphone-slash');
-            micButton.classList.toggle('meeting-control-button__off');
+            if (isMuted){
+                //document.getElementById('js-mic-icon').className = 'fas fa-microphone-slash"';
+                document.getElementById('js-mic-button').className = "meeting-control-button meeting-control-button__off";
+                document.getElementById('zoom-mic').className = 'mic-image hidden';
+                document.getElementById('zoom-mic-off').className = 'mic-image';
+                //micIcon.classList.toggle('fa-microphone-slash')
+            } else {
+                //document.getElementById('js-mic-icon').className = 'fas fa-microphone';
+                document.getElementById('js-mic-button').className = "meeting-control-button";
+                document.getElementById('zoom-mic').className = 'mic-image';
+                document.getElementById('zoom-mic-off').className = 'mic-image hidden';
+                //micIcon.classList.toggle('fa-microphone');
+
+            }
+
+
+            ;
+            //micButton.classList.toggle('meeting-control-button__off');
+            //document.getElementById('js-mic-button').className = "meeting-control-button meeting-control-button__off";
         }
 
         const toggleMuteUnmute = () => isMuted ? mediaStream.muteAudio() : mediaStream.unmuteAudio();
@@ -54,6 +73,7 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
         }
         micButton.addEventListener("click", onClick);
     };
+
 
     // Once webcam is started, the client will receive an event notifying that a video has started
     // At that point, video should be rendered. The reverse is true for stopping video

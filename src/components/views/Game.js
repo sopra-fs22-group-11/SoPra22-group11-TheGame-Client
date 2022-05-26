@@ -86,9 +86,7 @@ const Game = () => {
     // subscribe to the used chanels in websocket
     const registerGameSocket = () => {
         subscribe('/topic/game', msg => {
-            if (gameObj.whoseTurn.toString() == msg.whoseTurn.toString()){
 
-            }
             setGameObj(msg)
             sessionStorage.setItem('gto', JSON.stringify(msg))
 
@@ -950,16 +948,9 @@ const Game = () => {
                         Communication:
                     </div>
 
-                    <button id="js-mic-button" className="meeting-control-button">
-                        <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
-                    </button>
-                    <button
-                            onClick={() => getClients()}>
-                        Get Players
-                    </button>
-                    <button id="js-leave-button"
-                            className="meeting-control-button meeting-control-button__leave-session">
-                        <i id="js-leave-session-icon" className="fas fa-phone"></i>
+                    <button id="js-mic-button" className="meeting-control-button meeting-control-button__off">
+                        <img id="zoom-mic" className="mic-image hidden" src="https://img.icons8.com/ios-glyphs/30/000000/microphone.png"/>
+                        <img id="zoom-mic-off" className="mic-image"src="https://img.icons8.com/ios-glyphs/30/FFFFFF/no-microphone.png"/>
                     </button>
 
 
@@ -994,6 +985,8 @@ const Game = () => {
     );
 
 }
+
+// <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
 
 
 export default Game;
