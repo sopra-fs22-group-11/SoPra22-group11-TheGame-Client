@@ -87,9 +87,6 @@ const Game = () => {
     // subscribe to the used chanels in websocket
     const registerGameSocket = () => {
         subscribe('/topic/game', msg => {
-            if (gameObj.whoseTurn.toString() == msg.whoseTurn.toString()){
-
-            }
             setGameObj(msg)
             sessionStorage.setItem('gto', JSON.stringify(msg))
 
