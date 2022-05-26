@@ -3,11 +3,11 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Game.scss";
+import "styles/ui/Zoom.scss";
 import ZoomVideo from '@zoom/videosdk';
 import initClientEventListeners from "../../zoom/js/meeting/session/client-event-listeners";
 import initButtonClickHandlers from "../../zoom/js/meeting/session/button-click-handlers";
 import state from "../../zoom/js/meeting/session/simple-state";
-import sessionConfig from "../../zoom/js/config";
 import HeaderGame from "./HeaderGame";
 import {
     gameLost,
@@ -348,7 +348,7 @@ const Game = () => {
                 sessionTopic,
                 newSignature,
                 name,
-                sessionConfig.password
+                " "
             );
             mediaStream = client.getMediaStream();
             state.selfId = client.getSessionInfo().userId;
@@ -958,8 +958,9 @@ const Game = () => {
                         Communication:
                     </div>
 
-                    <button id="js-mic-button" className="meeting-control-button">
-                        <i id="js-mic-icon" className="fas fa-microphone-slash"></i>
+                    <button id="js-mic-button" className="meeting-control-button meeting-control-button__off">
+                        <img id="zoom-mic" className="mic-image hidden" src="https://img.icons8.com/ios-glyphs/30/000000/microphone.png"/>
+                        <img id="zoom-mic-off" className="mic-image"src="https://img.icons8.com/ios-glyphs/30/FFFFFF/no-microphone.png"/>
                     </button>
 
 
