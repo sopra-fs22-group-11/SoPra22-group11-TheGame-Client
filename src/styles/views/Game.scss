@@ -96,6 +96,11 @@
   margin-bottom: 10px;
   //text-transform: lowercase;
   font-weight: 300;
+  font-size: 20px;
+
+  &.information{
+    margin-bottom: 30%;
+  }
 
 
 }
@@ -126,7 +131,8 @@
 }
 .right-button{
   //float: bottom;
- padding-top: 400px;
+ padding-top: 20%;
+
  margin-left: 40px;
 
 

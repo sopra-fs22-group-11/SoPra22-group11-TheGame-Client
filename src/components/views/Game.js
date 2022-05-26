@@ -97,11 +97,11 @@ const Game = () => {
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
             if (msg === "won") {
-                playWinningSound();
+                //playWinningSound();
                 onWon();
                 sock.close();
             } else if (msg === "lost") {
-                playLosingSound();
+                //playLosingSound();
                 onLost();
                 sock.close();
                 console.log("After close lost")
@@ -151,6 +151,7 @@ const Game = () => {
 
             event.returnValue = 'See you the next time :)'
 
+            //sessionStorage.setItem('gto', JSON.stringify(gameObj));
             playerLeaves();
             return ;
         };
@@ -231,6 +232,10 @@ const Game = () => {
 
 
     const draw = () => {
+        if (disableDrawCards ==true){
+            alert("You need to play more cards, before you can finish your move.")
+            return;
+        }
         setCounter(0);
         for (let i = 0; i < gameObj.playerCards[name].length; i++) {
             let id_unselected = "owncard " + (i+1).toString();
@@ -660,46 +665,46 @@ const Game = () => {
 
     }
 
-    //hidden={disableDrawCards}
+
 
     let drawPile = (
         <section className="wrapper">
             <button className="drawPile"
-                    hidden={disableDrawCards}
+                    disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
                 Finished Move
             </button>
             <button className={gameObj.noCardsOnDeck > 1 ? "drawPile" : "drawPile hidden"}
-                    disabled={disableDrawCards}
+                    disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 2 ? "drawPile" : "drawPile hidden"}
-                    disabled={disableDrawCards}
+                    disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 3 ? "drawPile" : "drawPile hidden"}
-                    disabled={disableDrawCards}
+                    disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 4 ? "drawPile" : "drawPile hidden"}
-                    disabled={disableDrawCards}
+                    disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 5 ? "drawPile" : "drawPile hidden"}
-                    disabled={disableDrawCards}
+                    disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
                 <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
@@ -959,15 +964,19 @@ const Game = () => {
                     </div>
 
                     <button id="js-mic-button" className="meeting-control-button meeting-control-button__off">
-                        <img id="zoom-mic" className="mic-image hidden" src="https://img.icons8.com/ios-glyphs/30/000000/microphone.png"/>
+                        <img id="zoom-mic" className="mic-image hidden" src="https://img.icons8.com/ios-glyphs/30/000000/microphone.png" />
                         <img id="zoom-mic-off" className="mic-image"src="https://img.icons8.com/ios-glyphs/30/FFFFFF/no-microphone.png"/>
                     </button>
+                    <h2> </h2>
 
 
                 </div>
 
 
                 <div className="right-button">
+                    <div className="new-Label information">
+                        {gameObj.whoseTurn + " needs to play"}
+                    </div>
 
 
                 <Button className ="cannotplay-button"

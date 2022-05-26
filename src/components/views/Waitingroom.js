@@ -191,12 +191,12 @@ const Waitingroom = () => {
                 <img src="https://img.icons8.com/material-rounded/24/FFFFFF/copy.png"/>
             </Button>
                 </div>
-            <h2> </h2>
+            <h3> When all your team players are in the waiting-room, <br /> you can start The Game for everybody </h3>
             <Button className = "button-startPage"
                     cursor="pointer"
                 onClick={() => start()}
             >
-                Let's play
+                Let's start <br /> for everybody <br />
                 <img src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/play--v1.png"/>
 
             </Button>

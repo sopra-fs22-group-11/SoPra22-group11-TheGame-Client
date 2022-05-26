@@ -66,9 +66,10 @@ const HeaderGame = props => {
             <div className="header-right">
                 <a
                     onClick={() => clickRules()} /*gotoRulesPage()}*/
-                > Help
-                    <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
-
+                >
+                    <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="40px"/>
+                    <br />
+                    Help
                 </a>
                 <a
                    onClick={() => {
@@ -79,8 +80,10 @@ const HeaderGame = props => {
                            playerLeaves();
                            closeAndRedirect();
                        }}}
-                >Leave Game
-                    <img src="https://img.icons8.com/emoji/48/000000/leaf-fluttering-in-wind.png" />
+                >
+                    <img src="https://img.icons8.com/emoji/48/000000/leaf-fluttering-in-wind.png" width="40px" />
+                    <br />
+                    Leave Game
                 </a>
             </div>
             <div>
