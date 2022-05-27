@@ -1,8 +1,7 @@
-import {Redirect, useParams} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import PropTypes from "prop-types";
 
 export const GameIdGuard = props => {
-   // let { gameId } = useParams();
     if( null!=sessionStorage.getItem("gto")){
         return props.children;
     }
@@ -13,5 +12,3 @@ GameIdGuard.propTypes = {
     children: PropTypes.node
 };
 
-
-// Hier muss noch entschieden werden, wie wir kontrollieren, dass Spieler nur in ihr eigenes game können

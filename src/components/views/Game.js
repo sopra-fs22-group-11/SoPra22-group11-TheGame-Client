@@ -13,10 +13,14 @@ import {
     gameLost,
     isConnected,
     sendDiscard,
-    subscribe, playerLeaves, sock
+    subscribe,
+    playerLeaves,
+    sock,
+    connect,
+    sendDraw,
+    whyFinished
 } from "../utils/sockClient";
 import {getSignature} from "../../zoom/js/tool";
-import {connect, sendDraw, whyFinished} from "../utils/sockClient";
 import "../views/Waitingroom";
 import TheGameLogo from '../../TheGameLogo.png';
 import TheGameLogoDrawPile from '../../TheGameLogoDrawPile.png';

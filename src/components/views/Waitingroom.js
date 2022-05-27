@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
@@ -11,7 +11,8 @@ import {
     startGame,
     subscribe,
     LeaveWaitingRoom,
-    ClearWaitingRoom, currentGameStatus, playerLeaves, sock, getPlayers
+    ClearWaitingRoom,
+    sock
 } from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
@@ -156,8 +157,6 @@ const Waitingroom = () => {
         sock.close();
         setTimeout(() => {
             history.push('/waitingroomOverview')}, 700);
-        //history.push('/waitingroomOverview')
-        //return;
     }
 
     //************************  Websocket  **************************************************

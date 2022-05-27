@@ -87,6 +87,32 @@
   transition: all 0.3s ease;
 
 }
+.button-informationBox{
+
+  &:disabled {
+    cursor: default;
+    //opacity: 0.4;
+
+  }
+  padding: 0px;
+  font-weight: 600;
+  //text-transform: uppercase;
+  font-size: 18px;
+  text-align: center;
+  height: 100px;
+  width: 200px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: $borderRadius;
+  opacity: 1;
+  color: white;
+  background-color: $buttonColor;
+  //outline: $accent 2px solid;
+  transition: all 0.3s ease;
+
+}
+
+
 .button-startPage{
   &:hover {
     transform: translateY(-2px);
