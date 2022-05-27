@@ -103,6 +103,8 @@ const RulePage = () => {
                 Rules for The Game</div>
 
             <div className="rules form">
+                <img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" width="30px" className="rules backbutton-left"
+                     onClick={() => goToHome()}/>
 
 
             {content}
