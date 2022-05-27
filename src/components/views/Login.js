@@ -73,7 +73,7 @@ const Login = props => {
         if (JSON.parse(sessionStorage.getItem('FromWaitingRoom'))==true){
           sessionStorage.removeItem('FromWaitingRoom');
 
-          history.push("/waitingroom/1");
+          history.push("/waitingroomOverview");
 
           return;
         }else {
@@ -87,39 +87,7 @@ const Login = props => {
 
     }
   };
-
-  async function fetchData() {
-    try {
-      const response = await api.put('/users');
-
-      // delays continuous execution of an async operation for 1 second.
-      // This is just a fake async call, so that the spinner can be displayed
-      // feel free to remove it :)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Get the returned users and update the state.
-      //setUsers(response.data);
-
-      console.log('request to:', response.request.responseURL);
-      console.log('status code:', response.status);
-      console.log('status text:', response.statusText);
-      console.log('requested data:', response.data);
-
-      // See here to get more data.
-      console.log(response);
-
-    } catch (error) {
-      console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
-      console.error("Details:", error);
-      alert("Something went wrong while fetching the users! See the console for details.");
-    }
-  }
-
-// moves to the registration page
-  const doRegister = () =>{
-      history.push(`/registration`);
-      return;
-  }
+  
 
   return (
       <div>

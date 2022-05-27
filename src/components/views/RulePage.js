@@ -1,4 +1,3 @@
-import {Spinner} from 'components/ui/Spinner';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/RulePage.scss";
 import HeaderHome from "./HeaderHome";
@@ -6,7 +5,6 @@ import DiscardPiles from "../../DiscardPiles.png";
 import DrawPile from "../../DrawPile.png";
 import NoMovesButton from "../../NoMovesButton.png";
 import BackwardsTrick from "../../BackwardsTrick.png";
-import {connect} from "../utils/sockClient";
 import {useHistory} from "react-router-dom";
 
 
@@ -20,9 +18,7 @@ const RulePage = () => {
 
 
 
-    let content = <Spinner/>;
-
-    content = (
+    let content = (
         <div className="rules">
 
             <div class = "rules column">
@@ -116,8 +112,5 @@ const RulePage = () => {
 
 }
 
-/*<img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" width="30px" className="rules backbutton-left"
-     onClick={() => goToHome()}/>
-<text> </text>*/
 
 export default RulePage;

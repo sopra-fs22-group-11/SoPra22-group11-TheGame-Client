@@ -104,11 +104,8 @@ const ProfileSettings = () => {
                 const response = await api.get('/users/'+ id);
                 const score = await api.get('/users/'+ id + '/score')
 
-
-
                 setUser(response.data);
                 setScore(score.data)
-
 
             } catch (error) {
                 // Handle occuring errors

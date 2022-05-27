@@ -6,10 +6,6 @@ import {Button} from "../ui/Button";
 import React from "react";
 
 
-
-
-
-
 const LandingPage = () => {
     const history = useHistory();
 

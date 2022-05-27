@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
@@ -11,7 +11,8 @@ import {
     startGame,
     subscribe,
     LeaveWaitingRoom,
-    ClearWaitingRoom, currentGameStatus, playerLeaves, sock
+    ClearWaitingRoom,
+    sock
 } from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
@@ -55,6 +56,9 @@ const Waitingroom = () => {
     const [spinner, setSpinner] = useState(false);
 
     useEffect(() => {
+            if(JSON.parse(sessionStorage.getItem('clickedButton')) != true){
+                history.push("/waitingroomOverview")
+            }
             if (!isConnected()) {
                     connect(registerWaitingRoomSocket);
             }
@@ -119,12 +123,6 @@ const Waitingroom = () => {
         });
 
 
-        if (players.length>=4 && !players.includes(sessionStorage.getItem('username'))){
-            alert("Sorry, The waiting Room is already full")
-            history.push('/waitingroomOverview');
-            return;
-        }
-        currentGameStatus();
         if (!players.includes(sessionStorage.getItem('username'))) {
             sendName(sessionStorage.getItem('username'));
         }
@@ -145,6 +143,7 @@ const Waitingroom = () => {
         if (checkStartPossible()) {
             startGame();
             ClearWaitingRoom();
+            sessionStorage.removeItem('clickedButton')
         } else {
             alert('Game could not be started, you need between 2 and 4 players!');
         }
@@ -153,12 +152,11 @@ const Waitingroom = () => {
 
     const leave = () => {
         setSpinner(true);
+        sessionStorage.removeItem('clickedButton')
         LeaveWaitingRoom(sessionStorage.getItem('username'));
         sock.close();
         setTimeout(() => {
             history.push('/waitingroomOverview')}, 700);
-        //history.push('/waitingroomOverview')
-        //return;
     }
 
     //************************  Websocket  **************************************************
@@ -168,7 +166,7 @@ const Waitingroom = () => {
     //************************ UI  *******************************************************************
 
     const getLink = () => {
-         let value = isProduction() ? "https://sopra22-group11-thegame-client.herokuapp.com/waitingroom/1": "http://localhost:3000/waitingroom/1";
+         let value = isProduction() ? "https://sopra22-group11-thegame-client.herokuapp.com/waitingroomOverview": "http://localhost:3000/waitingroomOverview";
          return value;
     }
 
