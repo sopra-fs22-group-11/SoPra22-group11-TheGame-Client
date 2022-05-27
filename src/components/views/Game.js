@@ -845,8 +845,8 @@ const Game = () => {
         </div>);
     }
 
-    function clickHelp(){
-        setModalHelpIsOpen(true);
+    function closeHelpModal(){
+        setModalHelpIsOpen(false);
     }
     const helpText = (
         <div>
@@ -883,7 +883,7 @@ const Game = () => {
                 </BaseContainer>
                 <BaseContainer className = "overlay">
                     {modalHelpIsOpen && <Modal text ={helpText}/>}
-                    {modalHelpIsOpen && <Backdrop clicked ={setModalHelpIsOpen(false)}/>}
+                    {modalHelpIsOpen && <Backdrop clicked = {closeHelpModal} />}
 
                 </BaseContainer>
                     <div className="game formGame">
@@ -968,7 +968,7 @@ const Game = () => {
                     <div className="new-Label">
                         Communication:
                             <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="40px"
-                                 onClick={() => clickHelp()}
+                                 onClick={() => setModalHelpIsOpen(true)}
                             />
 
                     </div>
