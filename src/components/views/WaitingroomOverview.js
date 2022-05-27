@@ -10,6 +10,7 @@ import {
     getPlayers, currentGameStatus
 } from "../utils/sockClient";
 import {useEffect, useState} from "react";
+import {Spinner} from "../ui/Spinner";
 
 
 const WaitingroomOverview = () => {
@@ -18,25 +19,7 @@ const WaitingroomOverview = () => {
     const [noOfPlayers, setNoOfPlayers] = useState([]);
     const [counter, setCounter] = useState(0);
     const [gameStatus, setGameStatus] = useState(false)
-
-
-    useEffect(() => {
-        if (!isConnected()) {
-            connect(WaitingRoomPlayersSocket);
-        }
-        else {
-            WaitingRoomPlayersSocket();
-        }
-    }, []);
-
-
-    useEffect(() => {
-    }, [noOfPlayers]);
-
-    useEffect(() => {
-        WaitingRoomPlayersSocket();
-    }, [gameStatus]);
-
+    const [button, setButton] = useState(<div> <Spinner/> </div>)
 
     const WaitingRoomPlayersSocket = () => {
 
@@ -49,10 +32,6 @@ const WaitingroomOverview = () => {
             setNoOfPlayers(msg);
             sessionStorage.setItem('playerList', JSON.stringify(msg))
         });
-
-        //subscribe('/topic/start', msg => {
-          //  setGameStatus(msg.gameRunning);
-        //});
 
         subscribe('/topic/game', msg => {
             setGameStatus(msg.gameRunning);
@@ -69,7 +48,45 @@ const WaitingroomOverview = () => {
             getPlayers();
             setCounter(1);
         }
+
+        setButton(<div>
+            <Button
+                width="100%"
+                height="50%"
+                disabled={checkIfGameRunning()}
+                onClick={() => joinWaitingRoom()}
+            >
+                {buttonDescription()}
+            </Button>
+        </div>)
+
     }
+
+
+    useEffect(() => {
+        if (!isConnected()) {
+            connect(WaitingRoomPlayersSocket);
+        }
+        else {
+            WaitingRoomPlayersSocket();
+        }
+    }, []);
+
+
+    useEffect(() => {
+    }, [noOfPlayers]);
+
+    useEffect(() => {
+        if (!isConnected()) {
+            connect(WaitingRoomPlayersSocket);
+        }
+        else {
+            WaitingRoomPlayersSocket();
+        }
+    }, [gameStatus]);
+
+
+
 
 
     const joinWaitingRoom = () => {
@@ -106,7 +123,6 @@ const WaitingroomOverview = () => {
     }
 
 
-
     return (
         <div>
             <HeaderHome height="100"/>
@@ -118,14 +134,8 @@ const WaitingroomOverview = () => {
                 <div className="home label">
                     Join the waiting-room and wait for other players to join, before you start The Game.
                 </div>
-                <Button
-                    width="100%"
-                    height="50%"
-                    disabled={checkIfGameRunning()}
-                    onClick={() => joinWaitingRoom()}
-                >
-                    {buttonDescription()}
-                </Button>
+                {button}
+
             </div>
         </BaseContainer>
         </div>
