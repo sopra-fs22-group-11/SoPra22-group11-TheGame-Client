@@ -161,6 +161,7 @@ const ProfileSettings = () => {
 
                 <Button
                     disabled= {!isDisabled && !updatedUsername}
+                    cursor = "pointer"
                     width="20%"
                     onClick={isDisabled ? () => editUser(user): () => saveChanges()}
 
