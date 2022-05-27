@@ -133,9 +133,8 @@ const Game = () => {
                     setLocationKeys(([ _, ...keys ]) => keys)
 
                 } else {
-                    setLocationKeys((keys) => [ location.key, ...keys ])
                     playerLeaves();
-                    closeAndRedirect();
+                    close("/startpage");
                 }
             }
         })
@@ -147,7 +146,6 @@ const Game = () => {
             event.preventDefault();
 
             event.returnValue = 'See you the next time :)'
-
 
             playerLeaves()
             return;
