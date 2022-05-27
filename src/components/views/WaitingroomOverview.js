@@ -9,7 +9,7 @@ import {
     subscribe,
     getPlayers, currentGameStatus
 } from "../utils/sockClient";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Spinner} from "../ui/Spinner";
 
 
@@ -19,7 +19,7 @@ const WaitingroomOverview = () => {
     const [noOfPlayers, setNoOfPlayers] = useState([]);
     const [counter, setCounter] = useState(0);
     const [gameStatus, setGameStatus] = useState(false)
-    const [button, setButton] = useState(<div> <Spinner/> </div>)
+
 
     const WaitingRoomPlayersSocket = () => {
 
@@ -36,6 +36,9 @@ const WaitingroomOverview = () => {
         subscribe('/topic/game', msg => {
             setGameStatus(msg.gameRunning);
         });
+        subscribe('/topic/start', msg => {
+            setGameStatus(msg.gameRunning);
+        });
 
         subscribe('/topic/isRunning', msg => {
             setGameStatus(msg);
@@ -48,17 +51,6 @@ const WaitingroomOverview = () => {
             getPlayers();
             setCounter(1);
         }
-
-        setButton(<div>
-            <Button
-                width="100%"
-                height="50%"
-                disabled={checkIfGameRunning()}
-                onClick={() => joinWaitingRoom()}
-            >
-                {buttonDescription()}
-            </Button>
-        </div>)
 
     }
 
@@ -74,6 +66,7 @@ const WaitingroomOverview = () => {
 
 
     useEffect(() => {
+
     }, [noOfPlayers]);
 
     useEffect(() => {
@@ -122,6 +115,21 @@ const WaitingroomOverview = () => {
         return "Waiting Room 1 - ("+noOfPlayers.length+"/4 players are in this Waiting Room)"
     }
 
+    let content = <div> <Spinner/> </div>
+    if(isConnected()) {
+        content = (
+            <div>
+              <Button
+                  width="100%"
+                  height="50%"
+                  disabled={checkIfGameRunning()}
+                  onClick={() => joinWaitingRoom()}
+              >
+                  {buttonDescription()}
+              </Button>
+          </div>)
+    }
+
 
     return (
         <div>
@@ -134,7 +142,7 @@ const WaitingroomOverview = () => {
                 <div className="home label">
                     Join the waiting-room and wait for other players to join, before you start The Game.
                 </div>
-                {button}
+                {content}
 
             </div>
         </BaseContainer>

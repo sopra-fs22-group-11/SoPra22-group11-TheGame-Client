@@ -15,6 +15,7 @@ import {
 } from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
+import {Spinner} from "../ui/Spinner";
 
 const LinkField = props => {
     return (
@@ -51,7 +52,7 @@ const Waitingroom = () => {
     const history = useHistory();
     const [players, setPlayers] = useState(retrievePlayerList());
     const [locationKeys, setLocationKeys] = useState([]);
-
+    const [spinner, setSpinner] = useState(false);
 
     useEffect(() => {
             if (!isConnected()) {
@@ -151,9 +152,13 @@ const Waitingroom = () => {
 
 
     const leave = () => {
+        setSpinner(true);
         LeaveWaitingRoom(sessionStorage.getItem('username'));
-        history.push('/waitingroomOverview')
-        return;
+        sock.close();
+        setTimeout(() => {
+            history.push('/waitingroomOverview')}, 700);
+        //history.push('/waitingroomOverview')
+        //return;
     }
 
     //************************  Websocket  **************************************************
@@ -213,6 +218,9 @@ const Waitingroom = () => {
 
 
         </div>)
+    if(spinner){
+        startGameUI  = (<div><Spinner/></div>)
+    }
 
 
     //************************ UI  *******************************************************************
