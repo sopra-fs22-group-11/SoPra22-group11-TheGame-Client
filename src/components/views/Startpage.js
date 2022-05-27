@@ -66,7 +66,7 @@ const Startpage = () => {
         <div>
             <HeaderHome height="100"/>
         <BaseContainer className="home container">
-            <h2> Welcome to</h2>
+            <h2> Hi {sessionStorage.getItem('username')}, <br/> Welcome to </h2>
             <div className="home form">
                 <div className="home title">
                     The Game
@@ -77,7 +77,10 @@ const Startpage = () => {
                 {content}
             </div>
             <a target="_blank" href="https://icons8.com/icon/LVtMPps1ASuP/spielen" >Spielen icon by Icons8</a>
+            <h3> </h3>
             <a target="_blank" href="https://toppng.com/free-image/svg-logo-punisher-punisher-skull-PNG-free-PNG-Images_180739" >Image credit: Marvel Studios</a>
+            <h3> </h3>
+            <a target="_blank" href="https://boardgamegeek.com/boardgamedesigner/11781/steffen-benndorf" >This Game was designed by Steffen Benndorf and published by IDW Games.</a>
         </BaseContainer>
         </div>
     );

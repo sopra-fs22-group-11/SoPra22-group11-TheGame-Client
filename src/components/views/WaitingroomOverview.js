@@ -114,6 +114,9 @@ const WaitingroomOverview = () => {
         }
         return "Waiting Room 1 - ("+noOfPlayers.length+"/4 players are in this Waiting Room)"
     }
+    const goToHome = () => {
+        history.push('/startpage');
+    }
 
     let content = <div> <Spinner/> </div>
     if(isConnected()) {
@@ -137,6 +140,8 @@ const WaitingroomOverview = () => {
         <BaseContainer className = "home container">
             <div className="home form">
                 <div className="home title">
+                    <img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" className="rules backbutton-left"
+                         onClick={() => goToHome()}/>
                     Game Room Overview
                 </div>
                 <div className="home label">

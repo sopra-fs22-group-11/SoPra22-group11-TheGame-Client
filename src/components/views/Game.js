@@ -94,7 +94,6 @@ const Game = () => {
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
-            console.log("thisis the stomp client: " + stompClient);
             if (msg === "won") {
                 //playWinningSound();
                 onWon();

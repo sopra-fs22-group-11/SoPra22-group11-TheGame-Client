@@ -5,6 +5,7 @@ import {Button} from 'components/ui/Button';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Home.scss";
 import HeaderHome from "./HeaderHome";
+import {useHistory} from "react-router-dom";
 
 
 const PlayerInformationField = props => {
@@ -34,6 +35,7 @@ const ProfileSettings = () => {
     const [updatedPassword, setUpdatedPassword] = useState("");
     const [score, setScore] = useState("")
     const id = sessionStorage.getItem('loggedInUser')
+    const history = useHistory();
 
 
     const editUser = (user) =>{
@@ -120,6 +122,10 @@ const ProfileSettings = () => {
 
     }, []);
 
+    const goToHome = () => {
+        history.push('/startpage');
+    }
+
 
 
     let content = <Spinner/>;
@@ -182,7 +188,10 @@ const ProfileSettings = () => {
         <HeaderHome height="100"/>
         <BaseContainer className="home container">
             <div className="home form">
-                <div className="home title"> Profile
+                <div className="home title">
+                    <img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" className="rules backbutton-left"
+                         onClick={() => goToHome()}/>
+                    Profile
                     <text>     </text>
                     <img className="edit-right"  src={isDisabled? "https://img.icons8.com/ios/50/FFFFFF/edit--v1.png": "https://img.icons8.com/ios-filled/50/FFFFFF/save--v1.png"}  onClick={isDisabled ? () => editUser(user): () => saveChanges()}/>
                     </div>

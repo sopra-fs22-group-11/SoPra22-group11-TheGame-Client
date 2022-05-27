@@ -297,7 +297,7 @@
   left: $startCard;
 
   &.selected{
-    z-index:6;
+    z-index:3;
     min-width:100px;
     height:150px;
     -moz-transform: scale(1.1);
@@ -318,7 +318,7 @@
   left: $startCard - 40px;
 
   &.selected{
-    z-index:6;
+    z-index:3;
     min-width:100px;
     height:150px;
     -moz-transform: scale(1.1);
@@ -340,7 +340,7 @@
   top:-10px;
 
   &.selected{
-    z-index:6;
+    z-index:3;
     min-width:100px;
     height:150px;
     -moz-transform: scale(1.1);
@@ -357,7 +357,7 @@
   top:-10px;
 
   &.selected{
-    z-index:6;
+    z-index:3;
     min-width:100px;
     height:150px;
     -moz-transform: scale(1.1);
@@ -378,7 +378,7 @@
   left: $startCard - 100px;
 
   &.selected{
-    z-index:6;
+    z-index:3;
     min-width:100px;
     height:150px;
     -moz-transform: scale(1.1);
@@ -398,7 +398,7 @@
   left: $startCard - 130px;
 
   &.selected{
-    z-index:6;
+    z-index:3;
     min-width:100px;
     height:150px;
     -moz-transform: scale(1.1);
@@ -418,7 +418,7 @@
   left: $startCard - 150px;
 
   &.selected{
-    z-index:6;
+    z-index:3;
     min-width:100px;
     height:150px;
     -moz-transform: scale(1.1);
@@ -431,7 +431,7 @@
 
 
 .card:hover{
-  z-index:6;
+  z-index:3;
   cursor:pointer;
   -moz-transform: scale(1.1);
   -webkit-transform: scale(1.1);
@@ -439,7 +439,7 @@
   transform: scale(1.1);
 }
 .card:active{
-  z-index:6;
+  z-index:3;
   position: relative;
   font-weight: 300;
   font-size: 20px;
@@ -690,7 +690,7 @@
   padding: 1rem;
   text-align: left;
   width: 30rem;
-  z-index: 7;
+  z-index: 1000;
   position: fixed;
   top: 20vh;
   left: calc(50% - 15rem);
