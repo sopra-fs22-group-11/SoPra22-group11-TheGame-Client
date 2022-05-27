@@ -79,11 +79,9 @@ const WaitingroomOverview = () => {
     }, [gameStatus]);
 
 
-
-
-
     const joinWaitingRoom = () => {
         if (checkIfWaitingRoomHasSpace()) {
+            sessionStorage.setItem("clickedButton", true)
             getPlayers();
             history.push('/waitingroom/1');
             return;
@@ -99,7 +97,6 @@ const WaitingroomOverview = () => {
             return false;
     }
 
-
     const checkIfGameRunning = () => {
         if (gameStatus) {
             return true;
@@ -112,8 +109,12 @@ const WaitingroomOverview = () => {
         if (checkIfGameRunning()) {
             return "A game is currently running"
         }
+        if (!checkIfWaitingRoomHasSpace()) {
+            return "The waiting room is already full"
+        }
         return "Waiting Room 1 - ("+noOfPlayers.length+"/4 players are in this Waiting Room)"
     }
+
     const goToHome = () => {
         history.push('/startpage');
     }
@@ -125,7 +126,7 @@ const WaitingroomOverview = () => {
               <Button
                   width="100%"
                   height="50%"
-                  disabled={checkIfGameRunning()}
+                  disabled={checkIfGameRunning() || !checkIfWaitingRoomHasSpace()}
                   onClick={() => joinWaitingRoom()}
               >
                   {buttonDescription()}

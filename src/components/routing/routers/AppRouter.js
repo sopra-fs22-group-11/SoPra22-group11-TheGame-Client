@@ -77,17 +77,17 @@ const AppRouter = () => {
         </Route>
 
         <Route exact path ="/waitingroomOverview">
+          <CheckLoggedInForWaitingroom>
           <CheckLoggedIn>
             <WaitingroomOverview/>
           </CheckLoggedIn>
+          </CheckLoggedInForWaitingroom>
         </Route>
 
         <Route exact path ="/waitingroom/:gameId">
-          <CheckLoggedInForWaitingroom>
             <WaitingRoomGuard>
             <Waitingroom/>
             </WaitingRoomGuard>
-          </CheckLoggedInForWaitingroom>
         </Route>
 
         <Route exact path ="/game">

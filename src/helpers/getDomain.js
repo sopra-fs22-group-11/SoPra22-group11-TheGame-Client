@@ -1,11 +1,5 @@
 import { isProduction } from 'helpers/isProduction';
 
-/**
- * This helper function returns the current domain of the API.
- * If the environment is production, the production Heroku URL will be returned.
- * Otherwise, the link localhost:8080 will be returned (Spring server default port).
- * @returns {string}
- */
 export const getDomain = () => {
   const prodUrl = 'https://sopra22-group11-thegame-server.herokuapp.com/';
   const devUrl = 'http://localhost:8081';
@@ -13,11 +7,7 @@ export const getDomain = () => {
   return isProduction() ? prodUrl : devUrl;
 };
 export const getDomain2 = () => {
-  const prodUrl = 'https://zoom-thegame-server.herokuapp.com/'; //TODO zu heroku production url
+  const prodUrl = 'https://zoom-thegame-server.herokuapp.com/';
 
   return prodUrl;
 };
-
-//https://zoomvideosdk-signature.herokuapp.com/
-
-// https://zoom-thegame-server.herokuapp.com/ (zweiter server)

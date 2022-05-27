@@ -12,9 +12,8 @@ import HeaderGame from "./HeaderGame";
 import {
     gameLost,
     isConnected,
-    ClearWaitingRoom,
     sendDiscard,
-    subscribe, LeaveWaitingRoom, playerLeaves, sock, stompClient
+    subscribe, playerLeaves, sock
 } from "../utils/sockClient";
 import {getSignature} from "../../zoom/js/tool";
 import {connect, sendDraw, whyFinished} from "../utils/sockClient";
@@ -24,9 +23,6 @@ import TheGameLogoDrawPile from '../../TheGameLogoDrawPile.png';
 import Modal from "../ui/Modal";
 import Backdrop from "../ui/Backdrop";
 import {api, handleError} from "../../helpers/api";
-import useSound from "use-sound";
-import losingSound from "../../sound/losingSound.mp3";
-import winningSound from "../../sound/winningSound.mp3";
 import {Spinner} from "../ui/Spinner";
 
 
@@ -43,11 +39,7 @@ const Game = () => {
 
     const [counter, setCounter] = useState(0);
     const [chosenCard, setChosenCard] = useState(null);
-    const [playWinningSound] = useSound(winningSound);
-    const [playLosingSound] = useSound(losingSound);
 
-    //let disableCards = false;
-    let disableDrawCards = false;
     let listOfPlayers = [];
 
     const name = sessionStorage.getItem('username');
@@ -61,7 +53,7 @@ const Game = () => {
     const [locationKeys, setLocationKeys] = useState([]);
 
     let listHiddenValues = [true, true, true, true, true, true, true];
-    //let listSelectedValues =[false, false, false, false, false, false];
+
 
 
     //by default, we enter 0 so that there is no null value at the start
@@ -95,14 +87,11 @@ const Game = () => {
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
             if (msg === "won") {
-                //playWinningSound();
                 onWon();
                 sock.close();
             } else if (msg === "lost") {
-                //playLosingSound();
                 onLost();
                 sock.close();
-                console.log("After close lost")
 
             } else if (msg === "left") {
                 onLeft();
@@ -168,13 +157,7 @@ const Game = () => {
     //************************  GameLogic  **************************************************
 
     const checkForDraw = () => {
-        /*if (counter < 2 && (gameObj.noCardsOnDeck > 0 || counter < 1)) { //This does look silly, but I double-checked, it is fine
-            disableDrawCards = true;
-            return true;
-        }
-        return false;*/
-        if ((counter>1 && gameObj.noCardsOnDeck > 0) || (counter>0 && gameObj.noCardsOnDeck==0) ){
-            //disableCards = false;
+        if((counter>1 && gameObj.noCardsOnDeck > 0) || (counter>0 && gameObj.noCardsOnDeck==0) ){
             return true;
         }
         return false;
@@ -190,10 +173,9 @@ const Game = () => {
         sessionStorage.setItem('go', JSON.stringify(gameObj))
         if (!gameObj.gameRunning) {
             try {
-
                 whyFinished()
             } catch (e) {
-                console.log (e + "we are why finsihed not working")
+                console.log (e)
                 client.leave();
                 alert("Reload is not allowed. See you next time :)")
                 history.push("/startpage");
@@ -251,7 +233,6 @@ const Game = () => {
             let id_unselected = "owncard " + (i+1).toString();
             document.getElementById(id_unselected).className = "card";
         }
-        //disableCards = true;
         sendDraw();
     }
 
@@ -418,13 +399,9 @@ const Game = () => {
         listHiddenValues2[i] = false;
     }
 
-    /*function closeModal() {
-        setModalIsOpen(false);
-    }*/
 
 
-
-    //check wheter it is players turn and ownCards should be shown
+    //check whether it is players turn and ownCards should be shown
     checkWhoseTurn();
     checkForDraw();
     checkForFinishedGame();
@@ -675,8 +652,6 @@ const Game = () => {
 
     }
 
-
-
     let drawPile = (
         <section className="wrapper">
             <button className="drawPile"
@@ -749,7 +724,6 @@ const Game = () => {
         )
         setTimeout( async () => {
             try {
-                //
                 const response = await api.get('/users');
 
                 await new Promise(resolve => setTimeout(resolve, 700));
@@ -765,7 +739,7 @@ const Game = () => {
             }
 
 
-        //setTimeout( function () {
+
         let go = JSON.parse(sessionStorage.getItem('go'))
         let names = Object.keys(go.playerCards);
         const usersAndScores = [];
@@ -824,7 +798,7 @@ const Game = () => {
                 disabled = {false}
                 width = "33%"
             /* eslint-disable-next-line no-restricted-globals */
-                onClick={() => {close('/waitingroom/1')
+                onClick={() => {close('/waitingroomOverview')
                 }}
         >
             Play Again
@@ -890,14 +864,6 @@ const Game = () => {
 
 
     //************************  HTML  *******************************************************
-
-
-
-
-
-    //*************************************************************************
-
-    //Comment the next line, when working on the gameObj
 
 
     joinMeeting();

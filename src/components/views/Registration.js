@@ -77,7 +77,7 @@ const Registration = props => {
             if (JSON.parse(sessionStorage.getItem('FromWaitingRoom'))==true){
                 sessionStorage.removeItem('FromWaitingRoom');
 
-                history.push("/waitingroom/1");
+                history.push("/waitingroomOverview");
 
                 return;
             }else {
@@ -92,11 +92,6 @@ const Registration = props => {
 
         }
     };
-
-    const goToLogin = () => {
-        history.push('/login');
-        return;
-    }
 
     return (
         <div>
