@@ -108,15 +108,15 @@ We thank in advance to all the voluntary developer who have fun to improve our G
 ## Authors and acknowledgment
 
 Authors of this project:
-- [najma98](https://github.com/najma98)
-- [saro7890](https://github.com/Saro7890) 
-- [mariinja](https://github.com/Mariinja)
-- [Desteb](https://github.com/Desteb)
-- [tikost](https://github.com/tikost)
+- [Najma Christen](https://github.com/najma98)
+- [Sandra Rosch](https://github.com/Saro7890)
+- [Marinja Principe](https://github.com/Mariinja)
+- [Deborah Stebler](https://github.com/Desteb)
+- [Tijana Kostovic](https://github.com/tikost)
 
 We thank the whole TA Team of the SoPra 2022 course which helped us during the creation on this project and our TA Jan Kreischer for supporting us.
 > A Special thanks to Lucas Pelloni and Kyrill Hux for working on the template and answering our questions.
 
 ## License 
 
-
+This project is licensed under [Apache-2.0](LICENSE).
