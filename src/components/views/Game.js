@@ -970,10 +970,10 @@ const Game = () => {
                 </div>
                 <div className="right-middle">
                     <div className="new-Label">
-                        Communication:
-                            <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="40px"
-                                 onClick={() => setModalHelpIsOpen(true)}
-                            />
+                        <h3>Communication: <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="40px"
+                                                onClick={() => setModalHelpIsOpen(true)}
+                        /> </h3>
+
 
                     </div>
 
@@ -988,9 +988,16 @@ const Game = () => {
 
 
                 <div className="right-button">
+
                     <div className="new-Label information">
-                        {gameObj.whoseTurn + " needs to play"}
+                        <h3>Game Information:</h3>
+                        Current turn: {gameObj.whoseTurn}<br />
+                        Played cards: {counter}<br />
                     </div>
+
+
+
+
 
 
                 <Button className ="cannotplay-button"
@@ -1013,6 +1020,7 @@ const Game = () => {
     );
 
 }
+
 
 
 export default Game;
