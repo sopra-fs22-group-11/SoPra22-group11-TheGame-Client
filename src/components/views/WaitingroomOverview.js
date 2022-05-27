@@ -138,23 +138,48 @@ const WaitingroomOverview = () => {
     return (
         <div>
             <HeaderHome height="100"/>
-        <BaseContainer className = "home container">
-            <div className="home form">
-                <div className="home title">
-                    <img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" className="rules backbutton-left"
-                         onClick={() => goToHome()}/>
-                    Game Room Overview
-                </div>
-                <div className="home label">
-                    Join the waiting-room and wait for other players to join, before you start The Game.
-                </div>
-                {content}
+            <BaseContainer className = "home container">
+                <div className="home form">
+                    <div className="home title">
+                        <img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" className="rules backbutton-left"
+                             onClick={() => goToHome()}/>
+                        Join a Game Room
+                    </div>
+                    <h2> Before we start The Game:</h2>
 
-            </div>
-        </BaseContainer>
+                    <div className="home label">
+                        When entering The Game, you need to wait some seconds for the audio communication to start. <br/>
+                        Please make sure that you have enabled your microphone access before you start the game. <br/>
+                        The communication system is running, when you see the red point on the tab. <br/>
+
+                        <h2> Need help? </h2>
+
+                        If you have not yet looked at the rules, we strongly suggest you to have a quick look.<br />
+                        <h2>  </h2>
+
+                        <Button
+                            width ="20%"
+                            onClick={() => {history.push('/rulePage');
+                                return;}}
+                        >
+                            Rules<br />
+                            <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="50px"/>
+                        </Button> <br/>
+
+
+                        <h2> Are you ready?</h2>
+                        Join the waiting-room and wait for other players to join, before you start The Game.
+                    </div>
+                    {content}
+
+
+                    <div>
+
+                    </div>
+
+                </div>
+            </BaseContainer>
         </div>
-
-
     ) ;
 
 }
