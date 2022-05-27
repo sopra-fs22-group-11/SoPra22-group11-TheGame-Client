@@ -14,7 +14,7 @@ import {
     isConnected,
     ClearWaitingRoom,
     sendDiscard,
-    subscribe, LeaveWaitingRoom, playerLeaves, sock
+    subscribe, LeaveWaitingRoom, playerLeaves, sock, stompClient
 } from "../utils/sockClient";
 import {getSignature} from "../../zoom/js/tool";
 import {connect, sendDraw, whyFinished} from "../utils/sockClient";
@@ -93,6 +93,7 @@ const Game = () => {
         });
         subscribe('/topic/status', msg => {
             setModalIsOpen(true);
+            console.log("thisis the stomp client: " + stompClient);
             if (msg === "won") {
                 //playWinningSound();
                 onWon();
@@ -147,11 +148,8 @@ const Game = () => {
 
             event.returnValue = 'See you the next time :)'
 
-            //localStorage.setItem('gto', JSON.stringify(gameObj));
-            //sessionStorage.setItem('gto', JSON.stringify(gameObj));
-            connect(registerGameSocket);
+
             playerLeaves()
-            checkForFinishedGame();
             return;
         };
 
@@ -187,6 +185,7 @@ const Game = () => {
     const checkForFinishedGame = () => {
         sessionStorage.setItem('go', JSON.stringify(gameObj))
         if (!gameObj.gameRunning) {
+
             whyFinished()
         }
     }
@@ -294,8 +293,8 @@ const Game = () => {
         let id = sessionStorage.getItem('loggedInUser')
         let token = sessionStorage.getItem('token')
         try {
-            client.leave()
-            this.sock.close();
+            client.leave();
+            sock.close();
         } catch (e) {
             console.log(e);
         }finally {
