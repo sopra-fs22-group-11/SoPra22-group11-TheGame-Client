@@ -46,7 +46,7 @@ const Game = () => {
     const [playWinningSound] = useSound(winningSound);
     const [playLosingSound] = useSound(losingSound);
 
-    let disableCards = false;
+    //let disableCards = false;
     let disableDrawCards = false;
     let listOfPlayers = [];
 
@@ -170,15 +170,21 @@ const Game = () => {
     //************************  GameLogic  **************************************************
 
     const checkForDraw = () => {
-        if (counter < 2 && (gameObj.noCardsOnDeck > 0 || counter < 1)) { //This does look silly, but I double-checked, it is fine
+        /*if (counter < 2 && (gameObj.noCardsOnDeck > 0 || counter < 1)) { //This does look silly, but I double-checked, it is fine
             disableDrawCards = true;
             return true;
         }
+        return false;*/
+        if ((counter>1 && gameObj.noCardsOnDeck > 0) || (counter>0 && gameObj.noCardsOnDeck==0) ){
+            //disableCards = false;
+            return true;
+        }
         return false;
+
     }
 
     const checkWhoseTurn = () => {
-        disableCards = name !== gameObj.whoseTurn;
+        let disableCards = name !== gameObj.whoseTurn;
         return disableCards;
     }
 
@@ -247,7 +253,7 @@ const Game = () => {
             let id_unselected = "owncard " + (i+1).toString();
             document.getElementById(id_unselected).className = "card";
         }
-        disableCards = true;
+        //disableCards = true;
         sendDraw();
     }
 
@@ -685,35 +691,35 @@ const Game = () => {
                     disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/> <br />
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 2 ? "drawPile" : "drawPile hidden"}
                     disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/> <br />
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 3 ? "drawPile" : "drawPile hidden"}
                     disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/> <br />
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 4 ? "drawPile" : "drawPile hidden"}
                     disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/> <br />
                 {gameObj.noCardsOnDeck}
             </button>
             <button className={gameObj.noCardsOnDeck > 5 ? "drawPile" : "drawPile hidden"}
                     disabled={name != gameObj.whoseTurn}
                     onClick={() => draw()}
             >
-                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/>
+                <img src={TheGameLogoDrawPile} alt="game LogoDrawPile" height="60%"/> <br />
                 {gameObj.noCardsOnDeck}
             </button>
 
