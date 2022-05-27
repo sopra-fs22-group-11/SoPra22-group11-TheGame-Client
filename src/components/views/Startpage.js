@@ -80,7 +80,8 @@ const Startpage = () => {
             <h3> </h3>
             <a target="_blank" href="https://toppng.com/free-image/svg-logo-punisher-punisher-skull-PNG-free-PNG-Images_180739" >Image credit: Marvel Studios</a>
             <h3> </h3>
-            <a target="_blank" href="https://boardgamegeek.com/boardgamedesigner/11781/steffen-benndorf" >This Game was designed by Steffen Benndorf and published by IDW Games.</a>
+            <a target="_blank" href="https://boardgamegeek.com/boardgamedesigner/11781/steffen-benndorf" >The original card Game was designed by Steffen Benndorf and published by IDW Games, <br/>
+                this online version is a university project</a>
         </BaseContainer>
         </div>
     );
