@@ -2,28 +2,28 @@
 
 ## Introduction
 
-The Game is a card game invented by Steffen Benndorf where the Goal is to play all cards on the 4 decks in the right order.
-The Goal of this software is to be able to play The Game remote und in real time with your friends.
+The Game is a card game invented by Steffen Benndorf where the Goal is to play all cards on 4 decks in the right order.
+The Goal of this software is to be able to play The Game remote and in real time with your friends.
 
-This repository of the Client side of The Game and needs two servers to have a running Game ([main server](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server) and [Zoom server](https://zoomvideosdk-signature.herokuapp.com/))
+This repository of the Client side of The Game needs two servers to have a running Game ([main server](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server) and [Zoom server](https://zoomvideosdk-signature.herokuapp.com/))
 
 The scope of this project is to have a running application and a playable Game, specifically:
 - you can login and adjust your profile
-- you can waite in a waiting room until are your friends have joined 
+- you can wait in a waiting room until your friends have joined 
 - in the game, all restrictions from the rules are implemented
-- a User is able to leave the game at any time
+- a user is able to leave the game at any time
 - the users are able to have a voice call during the Game
 
 Out of scope for this project:
 - having a bug free application
-- playing different games on the same time
-- storing on a separate database all the users and scores
+- playing different games at the same time
+- storing all the users and scores on a separate database
 
 ## Technologies
 
 ### Client
 
-On the client side is written in JavaScript using React and Node.js. For the UI we are using CSS and SCSS.
+The client side is written in JavaScript using React and Node.js. For the UI we are using CSS and SCSS.
 
 Tutorials:
 
@@ -75,35 +75,35 @@ The application will be deployed. Find more about it [here](https://stackoverflo
 
 ## Illustrations
 
-Before you can enter The Game you needs to Register or Login. 
+Before you can enter The Game you need to register or login. 
 
 
-After that you will be redirected to the Start page where you have different options. You can see the Rules, check the scores, edit your profile
-or play a Game.
+After that you will be redirected to the startpage where you have different options. You can see the rules, check the scores, edit your profile
+or play a game.
 
 
-When clicking on "Lets play" you will be redirected to the waitingroom, where you can see which player are also waiting 
-for The Game to start. When one of the other player clicks on start, the Game will beginn for all of them.
+When clicking on "Let's play" you will be redirected to the waitingroom, where you can see which players are also waiting 
+for the game to start. When one of the other players clicks on start, the game will begin for all of them.
 
 
-In the Game, they can see all their cards displayed in front of them. You can also see how many cards the other players have. In the 
-middle there are the four piles and the draw pile. When clicking on one of you cards you the card is selected and you can chose on which pile 
-you want to play the card.
+In the game, they can see all their cards displayed in front of them. You can also see how many cards the other players have. In the 
+middle there are the four piles and the draw pile. When clicking on one of your cards, the card is selected and you can choose on which pile 
+you want to play it.
 
-When The Game is won, it will finish automatically and you will see that 100 point will be added to your score.
+When The Game is won, it will finish automatically and you will see that 100 points will be added to your score.
 
 
-You can decided if you want to play again or leave. When leaving you will be redirected to the start page.
+You can decide if you want to play again or leave. When leaving you will be redirected to the start page.
 
 
 ## Roadmap
 
-As described above, there are some features which are not scope of this project. The following features can be added to the tool:
-- playing different games on the same time
-- storing on a separate database all the users and scores
-- add on other voice API which is not chargeable
+As described above, there are some features which are not in the scope of this project. The following features can be added to the tool:
+- playing different games at the same time
+- storing all the users and scores on a separate database 
+- add another voice API which is not chargeable
 
-We thank in advance to all the voluntary developer who have fun to improve our Game. Please make sure to tag us :)
+We give thanks in advance to all the voluntary developers who have fun to improve our Game. Please make sure to tag us :)
 
 ## Authors and acknowledgment
 
