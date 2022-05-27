@@ -6,9 +6,17 @@ import DiscardPiles from "../../DiscardPiles.png";
 import DrawPile from "../../DrawPile.png";
 import NoMovesButton from "../../NoMovesButton.png";
 import BackwardsTrick from "../../BackwardsTrick.png";
+import {connect} from "../utils/sockClient";
+import {useHistory} from "react-router-dom";
 
 
 const RulePage = () => {
+    const history = useHistory();
+
+
+    const goToHome = () => {
+            history.push('/startpage');
+    }
 
 
 
@@ -16,6 +24,7 @@ const RulePage = () => {
 
     content = (
         <div className="rules">
+
             <div class = "rules column">
                 <b>Players:</b> 2 – 4 people <br/>
                 <b>Age:</b> 8 + <br/>
@@ -25,7 +34,7 @@ const RulePage = () => {
                     Two piles are in ascending order (numbers 1–99), and two piles are in descending order (numbers 100–2).
                     Everyone plays together in the same team and tries to play as many cards as possible, all 98 if possible, in four piles of cards.
                 </p>
-                <b>Rules for Laying Cards</b>
+
                 <p>
                     In an ascending pile of cards the card number of each card played must always be greater than the card played before it. How much space left between the cards does not matter, e.g. 3, 11, 12, 13, 18, 20, 34, 35, 51. Or 2, 7, 19, 25, 28, 29, 49, etc. The smaller the space left between cards the better, so that you can play as many cards as possible.
                     Only the top card of each pile is visible.
@@ -89,8 +98,12 @@ const RulePage = () => {
         <div>
             <HeaderHome height="100"/>
         <BaseContainer className = "rules container">
-            <div className="rules title">Rules for The Game</div>
+            <div className="rules title">
+
+                Rules for The Game</div>
+
             <div className="rules form">
+
 
             {content}
             </div>
@@ -100,5 +113,9 @@ const RulePage = () => {
     ) ;
 
 }
+
+/*<img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" width="30px" className="rules backbutton-left"
+     onClick={() => goToHome()}/>
+<text> </text>*/
 
 export default RulePage;

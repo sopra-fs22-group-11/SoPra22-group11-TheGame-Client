@@ -11,7 +11,7 @@ export  const CheckLoggedInForWaitingroom = props => {
         return props.children;
     }
     // if user is already registered, redirects to the main app
-    sessionStorage.setItem('FormWaitingRoom', JSON.stringify(true));
+    sessionStorage.setItem('FromWaitingRoom', JSON.stringify(true));
     return <Redirect to="/registration"/>;
 };
 

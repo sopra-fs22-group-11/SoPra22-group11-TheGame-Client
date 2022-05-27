@@ -67,7 +67,7 @@ const HeaderGame = props => {
 
             <div className="header-right">
                 <a
-                    onClick={() => clickRules()} /*gotoRulesPage()}*/
+                    onClick={() => clickRules()}
                 >
                     <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="40px"/>
                     <br />

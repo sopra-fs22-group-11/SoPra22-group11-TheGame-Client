@@ -14,7 +14,7 @@
   &.form {
     flex-direction: column;
     justify-content: center;
-    width: 90%;
+    width: 100%;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -75,6 +75,12 @@
     width: 33%;
     font-size: 12px;
     padding: 10px;
+
+  }
+  .backbutton-left{
+    float: left;
+    cursor: pointer;
+    margin-top: 10px;
 
   }
 

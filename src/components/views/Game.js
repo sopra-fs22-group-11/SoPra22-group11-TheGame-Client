@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
@@ -56,6 +56,7 @@ const Game = () => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [textToDisplay, setTextToDisplay] = useState("");
+    const [modalHelpIsOpen, setModalHelpIsOpen] = useState(false);
 
     const [locationKeys, setLocationKeys] = useState([]);
 
@@ -866,6 +867,23 @@ const Game = () => {
         </div>);
     }
 
+    function clickHelp(){
+        setModalHelpIsOpen(true);
+    }
+    const helpText = (
+        <div>
+            <div className="help-title">Help for Communication</div>
+            <div className="help-rules-overlay">
+                <p>You need to allow the use of your mic for this application otherwise the communication is not working. </p>
+                <p>After that, please wait some seconds (approx. 5sec) until you see the red point on the tab.</p>
+                <p>When you see the red point you are able to unmute and mute yourself.</p>
+                <p>If the red point doesn't appear:</p>
+                <p>Please leave The Game and restart.</p>
+                <p>Before you start again, please check your settings and your mic. </p>
+            </div>
+        </div>
+    )
+
 
     //************************  HTML  *******************************************************
 
@@ -874,7 +892,7 @@ const Game = () => {
 
 
     //*************************************************************************
-    //TODO
+
     //Comment the next line, when working on the gameObj
 
 
@@ -891,6 +909,12 @@ const Game = () => {
                 <BaseContainer className = "overlay">
                     {modalIsOpen && <Modal text ={textToDisplay}/>}
                     {modalIsOpen &&<Backdrop />}
+
+                </BaseContainer>
+                <BaseContainer className = "overlay">
+                    {modalHelpIsOpen && <Modal text ={helpText}/>}
+                    {modalHelpIsOpen && <Backdrop clicked ={setModalHelpIsOpen(false)}/>}
+
                 </BaseContainer>
                     <div className="game formGame">
                     <div className="gameBoard top">
@@ -973,6 +997,10 @@ const Game = () => {
                 <div className="right-middle">
                     <div className="new-Label">
                         Communication:
+                            <img src="https://img.icons8.com/external-bearicons-detailed-outline-bearicons/64/FFFFFF/external-question-call-to-action-bearicons-detailed-outline-bearicons.png" width="40px"
+                                 onClick={() => clickHelp()}
+                            />
+
                     </div>
 
                     <button id="js-mic-button" className="meeting-control-button meeting-control-button__off">

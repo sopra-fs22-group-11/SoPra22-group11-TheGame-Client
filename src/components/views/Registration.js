@@ -74,8 +74,8 @@ const Registration = props => {
             sessionStorage.setItem('username', user.username);
             sessionStorage.setItem('clickedStart', JSON.stringify(false));
 
-            if (JSON.parse(sessionStorage.getItem('FormWaitingRoom'))==true){
-                sessionStorage.removeItem('FormWaitingRoom');
+            if (JSON.parse(sessionStorage.getItem('FromWaitingRoom'))==true){
+                sessionStorage.removeItem('FromWaitingRoom');
 
                 history.push("/waitingroom/1");
 

@@ -698,6 +698,20 @@
   max-height: 100vh;
 }
 
+.help-title {
+  font-weight: bold;
+  color: $accent;
+  text-align: left;
+  width: 70%;
+  font-size: 27px;
+}
+.help-rules-overlay {
+  color: $textColor;
+  text-align: left;
+  width: 100%;
+  font-size: 18px;
+}
+
 .backdrop {
   position: fixed;
   z-index: 4;
@@ -714,6 +728,8 @@
   margin-top: 10px;
 
 }
+
+
 .edit-right{
   float: right;
   width:37px;
