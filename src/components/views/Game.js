@@ -832,12 +832,12 @@ const Game = () => {
     )
 
     function onLostOrWon(headerText, descriptionText, score){
-        setTextToDisplay(
-            <div>
-            <Spinner/>
-    </div>
-        )
-        setTimeout(() =>{
+   //    setTextToDisplay(
+   //        <div>
+   //        <Spinner/>
+   //</div>
+    //    )
+        //setTimeout(() =>{
         setTextToDisplay(
             <div>
             <h2> {headerText}</h2>
@@ -856,8 +856,7 @@ const Game = () => {
             </Button>
             {leaveButton}
             {playAgainButton}
-        </div>)}, 500
-        );
+        </div> ) //}, 500);
     }
 
 
