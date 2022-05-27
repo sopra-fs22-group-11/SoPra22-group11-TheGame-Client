@@ -190,6 +190,8 @@ const Game = () => {
                 whyFinished()
             } catch (e) {
                 console.log (e + "we are why finsihed not working")
+                client.leave();
+                alert("Reload is not allowed. See you next time :)")
                 history.push("/startpage");
 
             }
