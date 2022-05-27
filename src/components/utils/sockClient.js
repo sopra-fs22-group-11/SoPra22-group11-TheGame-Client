@@ -68,8 +68,6 @@ export const gameLost = () => {
 
 
 export const whyFinished = () => {
-    console.log('vor send')
-    console.log('this is stompclient: '+JSON.stringify(stompClient))
     stompClient.send("/app/gameStatus", {})
 }
 

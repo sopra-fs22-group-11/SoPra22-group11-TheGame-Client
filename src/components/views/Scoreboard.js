@@ -10,7 +10,8 @@ import HeaderHome from "./HeaderHome";
 
 const Scoreboard = () => {
 
-    //const history = useHistory();
+
+    const history = useHistory();
 
     const [users, setUsers] = useState(null);
 
@@ -40,6 +41,12 @@ const Scoreboard = () => {
 
         fetchData();
     }, []);
+
+
+    const goToHome = () => {
+        history.push('/startpage');
+    }
+
 
     let content = <Spinner/>;
     if (users) {
@@ -76,6 +83,11 @@ const Scoreboard = () => {
         <BaseContainer className = "score container">
             <div className="score titleSmall">Scoreboard</div>
             <div className="score form">
+                <img src="https://img.icons8.com/ios/50/FFFFFF/back--v1.png" width="30px" className="rules backbutton-left"
+                     onClick={() => goToHome()}/>
+                <h2> </h2>
+                <h2> </h2>
+                <h2> </h2>
             {content}
             </div>
         </BaseContainer>
