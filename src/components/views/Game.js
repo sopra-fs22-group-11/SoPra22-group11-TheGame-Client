@@ -119,7 +119,6 @@ const Game = () => {
         } else {
             registerGameSocket();
         }
-
     }, []);
 
     useEffect(() => {
@@ -148,9 +147,12 @@ const Game = () => {
 
             event.returnValue = 'See you the next time :)'
 
+            //localStorage.setItem('gto', JSON.stringify(gameObj));
             //sessionStorage.setItem('gto', JSON.stringify(gameObj));
-            playerLeaves();
-            return ;
+            connect(registerGameSocket);
+            playerLeaves()
+            checkForFinishedGame();
+            return;
         };
 
 

@@ -11,7 +11,7 @@ import {
     startGame,
     subscribe,
     LeaveWaitingRoom,
-    ClearWaitingRoom, currentGameStatus, playerLeaves
+    ClearWaitingRoom, currentGameStatus, playerLeaves, sock
 } from "../utils/sockClient";
 import {getDomain} from "../../helpers/getDomain";
 import {isProduction} from "../../helpers/isProduction";
@@ -74,7 +74,7 @@ const Waitingroom = () => {
 
                 } else {
                     setLocationKeys((keys) => [ location.key, ...keys ])
-                    LeaveWaitingRoom(sessionStorage.getItem('username'));
+                    leave();
                 }
             }
         })
@@ -106,8 +106,6 @@ const Waitingroom = () => {
             sessionStorage.setItem('playerList', JSON.stringify(msg));
         });
 
-
-
         subscribe('/topic/start', msg => {
             sessionStorage.setItem('gto', JSON.stringify(msg));
             sessionStorage.removeItem('playerList');
@@ -129,6 +127,7 @@ const Waitingroom = () => {
         if (!players.includes(sessionStorage.getItem('username'))) {
             sendName(sessionStorage.getItem('username'));
         }
+
     };
 
 

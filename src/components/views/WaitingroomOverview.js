@@ -50,9 +50,9 @@ const WaitingroomOverview = () => {
             sessionStorage.setItem('playerList', JSON.stringify(msg))
         });
 
-        subscribe('/topic/start', msg => {
-            setGameStatus(msg.gameRunning);
-        });
+        //subscribe('/topic/start', msg => {
+          //  setGameStatus(msg.gameRunning);
+        //});
 
         subscribe('/topic/game', msg => {
             setGameStatus(msg.gameRunning);
@@ -116,7 +116,7 @@ const WaitingroomOverview = () => {
                     Game Room Overview
                 </div>
                 <div className="home label">
-                    Join the waiting-room and wait for other players to join, before you will start The Game.
+                    Join the waiting-room and wait for other players to join, before you start The Game.
                 </div>
                 <Button
                     width="100%"
