@@ -990,7 +990,7 @@ const Game = () => {
 
 
                 <Button className ="cannotplay-button"
-                        disabled = {false}
+                        disabled = {gameObj.whoseTurn != name}
                         onClick={() => {
                             // eslint-disable-next-line no-restricted-globals
                             let result = confirm("Are you sure you have no moves left, this will end the game for you and your teammates.")
