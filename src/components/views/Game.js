@@ -185,8 +185,14 @@ const Game = () => {
     const checkForFinishedGame = () => {
         sessionStorage.setItem('go', JSON.stringify(gameObj))
         if (!gameObj.gameRunning) {
+            try {
 
-            whyFinished()
+                whyFinished()
+            } catch (e) {
+                console.log (e + "we are why finsihed not working")
+                history.push("/startpage");
+
+            }
         }
     }
 
