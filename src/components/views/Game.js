@@ -744,21 +744,27 @@ const Game = () => {
 
     const getScoreOfCurrentPlayers =async (title, text) => {
         let getRequestResult
+        setTextToDisplay(
+            <div>
+                <Spinner/>
+            </div>
+        )
+        setTimeout( async () => {
+            try {
+                //
+                const response = await api.get('/users');
 
-        try {
-            const response = await api.get('/users');
+                await new Promise(resolve => setTimeout(resolve, 700));
 
-            await new Promise(resolve => setTimeout(resolve, 700));
-
-            // Get the returned users and update the state.
-            getRequestResult = response.data;
+                // Get the returned users and update the state.
+                getRequestResult = response.data;
 
 
-        } catch (error) {
-            console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
-            console.error("Details:", error);
-            alert("Something went wrong while fetching the users! See the console for details.");
-        }
+            } catch (error) {
+                console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                console.error("Details:", error);
+                alert("Something went wrong while fetching the users! See the console for details.");
+            }
 
 
         //setTimeout( function () {
@@ -792,6 +798,7 @@ const Game = () => {
 
         onLostOrWon(title, text, scorelist)
         return scorelist
+        },500 )
 
     }
 
