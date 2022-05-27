@@ -238,7 +238,7 @@ const Game = () => {
 
 
     const draw = () => {
-        if (disableDrawCards ==true){
+        if (!checkForDraw()){
             alert("You need to play more cards, before you can finish your move.")
             return;
         }
