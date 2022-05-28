@@ -191,6 +191,7 @@ const Waitingroom = () => {
                 onClick={() => navigator.clipboard.writeText(getLink())}
             >
                 <img src="https://img.icons8.com/material-rounded/24/FFFFFF/copy.png"/>
+
             </Button>
                 </div>
             <h3> When all your team players are in the waiting-room, <br /> you can start The Game for everybody. </h3>
