@@ -36,7 +36,6 @@ const initButtonClickHandlers = async (zoomClient, mediaStream) => {
             }
 
 
-
             //micButton.classList.toggle('meeting-control-button__off');
             //document.getElementById('js-mic-button').className = "meeting-control-button meeting-control-button__off";
         }
