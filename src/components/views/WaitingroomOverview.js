@@ -112,7 +112,7 @@ const WaitingroomOverview = () => {
         if (!checkIfWaitingRoomHasSpace()) {
             return "The waiting room is already full"
         }
-        return "Waiting Room 1 - ("+noOfPlayers.length+"/4 players are in this Waiting Room)"
+        return "Waiting Room - ("+noOfPlayers.length+"/4 players are in this Waiting Room)"
     }
 
     const goToHome = () => {
