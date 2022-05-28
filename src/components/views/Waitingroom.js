@@ -68,18 +68,19 @@ const Waitingroom = () => {
         }, []);
 
     useEffect(() => {
-        return history.listen(location => {
+        return history.listen(async location => {
             if (history.action === 'PUSH') {
-                setLocationKeys([ location.key ])
+                setLocationKeys([location.key])
             }
 
             if (history.action === 'POP') {
                 if (locationKeys[1] === location.key) {
-                    setLocationKeys(([ _, ...keys ]) => keys)
+                    setLocationKeys(([_, ...keys]) => keys)
 
                 } else {
-                    setLocationKeys((keys) => [ location.key, ...keys ])
-                    leave();
+                    //setLocationKeys((keys) => [ location.key, ...keys ])
+                    await leave();
+                    history.push('/startpage');
                 }
             }
         })
