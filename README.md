@@ -43,14 +43,31 @@ On the Server side we are using Java with bootRun. A detailed description you wi
 
 ## High Level components
 
-Header
+The following components are essential for the client of The Game:
 
-Sockclient
+- [SockClient](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Client/blob/fcb7b22130a6acfb7d2fc4d163c6ef03ef39810d/src/components/utils/sockClient.js)
 
-Waitingroom
+- Waiting-room
 
-Game
+- Game
 
+- Zoom
+
+
+
+One of the most important once is the SockClient component. It is responsible for the bidirectional communication with the WebsocketController from the [server repository](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server).
+The subscriptions to the different topics will be done in the components where it is needed (e.g. Game, Waiting-room etc.), but the requests are defined in the [SockClient](src/components/utils/sockClient.js) component.
+
+In order to start The Game all together, the players will join a Waiting-room and connects in the background with [Websocket](src/components/utils/sockClient.js). This enables the functionalities that we can see who is in the waiting-room and enables us to 
+start the Game for all players at the same time. If you leave the Waiting-Room, the connection to websocket will be closed.
+
+In the Game we subscribe to two main channels in websocket: '/topic/game' and '/topic/status'. These two subscriptions will inform us, if another player has done a move and will rerender the UI.
+The Game view is split into different parts: on the left side we have the Game Board and on the right side we have the communication ([Game CSS](src/styles/views/Game.scss)).
+To be able to speak with each other the Game view collaborates with the Zoom API.
+
+The [Zoom folder](src/zoom) enables us to speak with each other during the Game. We are using the [Zoom SDK](https://marketplace.zoom.us/docs/sdk/video/introduction).
+The whole folder is built from different JavaScript files. The most important once are the [tool](src/zoom/js/tool.js) and the [button-click-handler](src/zoom/js/meeting/session/button-click-handlers.js).
+The [Tool](src/zoom/js/tool.js) component will send a signature request to our [Zoom server](https://zoomvideosdk-signature.herokuapp.com/), which enables the client to join the zoom call.
 
 
 ## Launch & Deployment
