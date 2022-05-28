@@ -5,7 +5,7 @@ export const GameIdGuard = props => {
     if( null!=sessionStorage.getItem("gto")){
         return props.children;
     }
-    return <Redirect to="/startpage"/>;
+    return <Redirect to="/reload"/>;
 };
 
 GameIdGuard.propTypes = {
