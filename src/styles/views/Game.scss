@@ -142,6 +142,7 @@
 .gameBoard{
   width:80%;
   float: left;
+  //height: 1600px;
   //display: block;
   &.top{
     width: 100%;
@@ -736,7 +737,10 @@
   margin-top: 10px;
   cursor: pointer;
 
-
-
 }
+
+.question-communication{
+  cursor: pointer;
+}
+
 
