@@ -55,19 +55,19 @@ The following components are essential for the client of The Game:
 
 
 
-One of the most important once is the SockClient component. It is responsible for the bidirectional communication with the WebsocketController from the [server repository](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server).
+One of the most important ones is the SockClient component. It is responsible for the bidirectional communication with the WebsocketController from the [server repository](https://github.com/sopra-fs22-group-11/SoPra22-group11-TheGame-Server).
 The subscriptions to the different topics will be done in the components where it is needed (e.g. Game, Waiting-room etc.), but the requests are defined in the [SockClient](src/components/utils/sockClient.js) component.
 
-In order to start The Game all together, the players will join a Waiting-room and connects in the background with [Websocket](src/components/utils/sockClient.js). This enables the functionalities that we can see who is in the waiting-room and enables us to 
-start the Game for all players at the same time. If you leave the Waiting-Room, the connection to websocket will be closed.
+In order to start The Game together, the players will join a waiting-room and connect in the background with [Websocket](src/components/utils/sockClient.js). This enables the functionalities that we can see who is in the waiting-room and enables us to 
+start the Game for all players at the same time. If you leave the waiting-room, the connection to websocket will be ended.
 
-In the Game we subscribe to two main channels in websocket: '/topic/game' and '/topic/status'. These two subscriptions will inform us, if another player has done a move and will rerender the UI.
-The Game view is split into different parts: on the left side we have the Game Board and on the right side we have the communication ([Game CSS](src/styles/views/Game.scss)).
-To be able to speak with each other the Game view collaborates with the Zoom API.
+In the game we subscribe to two main channels in websocket: '/topic/game' and '/topic/status'. These two subscriptions will inform us, if another player has done a move and will rerender the UI.
+The game view is split into different parts: on the left side we have the Game Board and on the right side we have the communication ([Game CSS](src/styles/views/Game.scss)).
+To be able to speak with each other the game view collaborates with the Zoom API.
 
 The [Zoom folder](src/zoom) enables us to speak with each other during the Game. We are using the [Zoom SDK](https://marketplace.zoom.us/docs/sdk/video/introduction).
-The whole folder is built from different JavaScript files. The most important once are the [tool](src/zoom/js/tool.js) and the [button-click-handler](src/zoom/js/meeting/session/button-click-handlers.js).
-The [Tool](src/zoom/js/tool.js) component will send a signature request to our [Zoom server](https://zoomvideosdk-signature.herokuapp.com/), which enables the client to join the zoom call.
+The whole folder is built from different JavaScript files. The most important ones are the [tool](src/zoom/js/tool.js) and the [button-click-handler](src/zoom/js/meeting/session/button-click-handlers.js).
+The [tool](src/zoom/js/tool.js) component will send a signature request to our [Zoom server](https://zoomvideosdk-signature.herokuapp.com/), which enables the client to join the zoom call.
 
 
 ## Launch & Deployment
@@ -97,15 +97,19 @@ Before you can enter The Game you need to register or login.
 
 After that you will be redirected to the startpage where you have different options. You can see the rules, check the scores, edit your profile
 or play a game.
+![Scoreboard](src/scoreboard.png)
 
+When clicking on "Let's play" you will be redirected to the waitingroom overview, where you can click a button to join the waitingroom, if it is not full yet.
 
-When clicking on "Let's play" you will be redirected to the waitingroom, where you can see which players are also waiting 
-for the game to start. When one of the other players clicks on start, the game will begin for all of them.
+![waiting-room overview](src/waitingroomOverview.png)
 
+As soon as enough players have joined the waiting-room, someone can click on "Let's start for everybody", and everyone is forwarded to the game.
+![waiting-room](src/waiting-room.png)
 
 In the game, they can see all their cards displayed in front of them. You can also see how many cards the other players have. In the 
 middle there are the four piles and the draw pile. When clicking on one of your cards, the card is selected and you can choose on which pile 
 you want to play it.
+![Game](src/game-view.png)
 
 When The Game is won, it will finish automatically and you will see that 100 points will be added to your score.
 
