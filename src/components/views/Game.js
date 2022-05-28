@@ -165,7 +165,6 @@ const Game = () => {
             return true;
         }
         return false;
-
     }
 
     const checkWhoseTurn = () => {
