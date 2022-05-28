@@ -16,6 +16,7 @@ import {StartpageGuard} from "../routeProtectors/StartpageGuard";
 import LandingPage from "../../views/LandingPage";
 import {WaitingRoomGuard} from "../routeProtectors/WaitingRoomGuard";
 import {CheckLoggedInForWaitingroom} from "../routeProtectors/CheckLoggedInForWaitingroom";
+import AfterReload from "../../views/AfterReload";
 
 /**
  * Main router of your application.
@@ -44,6 +45,12 @@ const AppRouter = () => {
           <StartpageGuard>
             <Startpage/>
           </StartpageGuard>
+        </Route>
+
+        <Route path="/reload">
+          <CheckLoggedIn>
+            <AfterReload/>
+          </CheckLoggedIn>
         </Route>
 
         <Route exact path="/registration">

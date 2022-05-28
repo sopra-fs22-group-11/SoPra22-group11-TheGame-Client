@@ -115,19 +115,19 @@ const Game = () => {
         }
     }, []);
 
-    useEffect(() => {
-        return history.listen(location => {
+    useEffect(async () => {
+        return history.listen(async location => {
             if (history.action === 'PUSH') {
-                setLocationKeys([ location.key ])
+                setLocationKeys([location.key])
             }
 
             if (history.action === 'POP') {
                 if (locationKeys[1] === location.key) {
-                    setLocationKeys(([ _, ...keys ]) => keys)
+                    setLocationKeys(([_, ...keys]) => keys)
 
                 } else {
                     playerLeaves();
-                    close("/startpage");
+                    await close("/startpage");
                 }
             }
         })
@@ -135,12 +135,13 @@ const Game = () => {
 
 
     useEffect(() => {
-        const handleTabClose = event => {
+        const handleTabClose = async (event) => {
             event.preventDefault();
 
             event.returnValue = 'See you the next time :)'
 
             playerLeaves()
+            await close("/reload")
             return;
         };
 
@@ -180,9 +181,6 @@ const Game = () => {
                 whyFinished()
             } catch (e) {
                 console.log (e)
-                client.leave();
-                alert("Reload is not allowed. See you next time :)")
-                history.push("/startpage");
 
             }
         }
@@ -301,6 +299,7 @@ const Game = () => {
             sessionStorage.removeItem('playerList')
             sessionStorage.removeItem('gameStatus')
             sessionStorage.removeItem('gto');
+            sessionStorage.removeItem('go');
             history.push(destination)
 
         }
